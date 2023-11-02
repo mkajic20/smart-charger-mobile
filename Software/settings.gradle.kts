@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Smart Charger"
 include(":app")
+include(":api")
