@@ -1,4 +1,4 @@
-package org.foi.air.api.models.network
+package org.foi.air.api.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,4 +10,6 @@ object ApiService {
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    val authService: AuthenticationService = instance.create(AuthenticationService::class.java)
 }
