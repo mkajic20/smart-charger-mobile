@@ -8,12 +8,12 @@
     tools:context=".MainActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
 
         >
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/backgroundtop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-20dp"
@@ -37,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/hamburger"
             android:layout_width="49dp"
             android:layout_height="33dp"
             android:layout_marginStart="5dp"
@@ -47,7 +47,7 @@
             app:srcCompat="@drawable/ic_hamburgermenu" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/connectionHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="272dp"
@@ -58,31 +58,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView2" />
+            app:layout_constraintTop_toTopOf="@+id/backgroundtop" />
+
+        <ImageView
+            android:id="@+id/cardIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="316dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_rfidcard" />
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/instructions"
+            android:layout_width="276dp"
+            android:layout_height="63dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="-20dp"
             android:layout_marginEnd="20dp"
+            android:fontFamily="@font/open_sans_semibold"
             android:text="Before you start using charger you will have to connect with your RFID card."
             android:textAlignment="center"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="@+id/cardIcon"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintStart_toStartOf="@+id/cardIcon"
+            app:layout_constraintTop_toBottomOf="@+id/cardIcon" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button1"
             android:layout_width="151dp"
             android:layout_height="49dp"
 
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="50dp"
-            android:background="@drawable/custom_button"
 
+            android:background="@drawable/custom_button_background"
             android:fontFamily="@font/abeezee"
             android:text="Connect"
             android:textColor="#FFFFFF"
@@ -90,18 +102,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/instructions"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="288dp"
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="298dp"
+            android:layout_height="26dp"
+            android:layout_marginBottom="-40dp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="#004054"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/cardIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_rfidcard" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
