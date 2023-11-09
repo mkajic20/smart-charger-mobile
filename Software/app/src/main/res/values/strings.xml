@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Smart Charger</string>
+    <string name="register_page_title">REGISTER</string>
+    <string name="input_field_first_name">First name</string>
+    <string name="input_field_last_name">Last name</string>
+    <string name="input_field_email">Email</string>
+    <string name="input_field_password">Password</string>
+    <string name="input_field_confirm_password">Confirm password</string>
 </resources>
