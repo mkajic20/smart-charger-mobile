@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Smart Charger</string>
+    <string name="main_header_title">WELCOME!</string>
+    <string name="body_header_title">Charger connection</string>
+    <string name="instructions_before_connection">Before you start using charger you will have to connect with your RFID card.</string>
+    <string name="connect_button_text">Connect</string>
+    <string name="instructions_rfid_connection">Please put your RFID card on the phone screen to connect with the charger</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="status_waiting_card">Status: Waiting for card&#8230;</string>
 </resources>

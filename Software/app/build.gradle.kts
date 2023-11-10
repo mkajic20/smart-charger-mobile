@@ -5,16 +5,20 @@ plugins {
 
 android {
     namespace = "org.foi.air.smartcharger"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "org.foi.air.smartcharger"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
