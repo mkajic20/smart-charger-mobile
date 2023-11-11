@@ -7,4 +7,8 @@
     <string name="instructions_rfid_connection">Please put your RFID card on the phone screen to connect with the charger</string>
     <string name="cancel_button_text">Cancel</string>
     <string name="status_waiting_card">Status: Waiting for card&#8230;</string>
+
+    <string name="login_page_title">LOGIN</string>
+    <string name="input_field_email">Email</string>
+    <string name="input_field_password">Password</string>
 </resources>
