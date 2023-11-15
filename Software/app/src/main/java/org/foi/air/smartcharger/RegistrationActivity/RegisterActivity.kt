@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import org.foi.air.api.models.RegistrationBody
 import org.foi.air.api.request_handlers.RegistrationRequestHandler
-import org.foi.air.core.network.ResponseListener
+import org.foi.air.core.network.RegisterResponseListener
 import org.foi.air.core.network.models.ErrorResponseBody
-import org.foi.air.core.network.models.SuccessfulResponseBody
-import org.foi.air.smartcharger.R
+import org.foi.air.core.network.models.SuccessfulRegisterResponseBody
 import org.foi.air.smartcharger.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
@@ -31,10 +30,12 @@ class RegisterActivity : AppCompatActivity() {
             val registrationRequestHandler = RegistrationRequestHandler(requestBody)
             btnRegister.isEnabled = false
 
-            registrationRequestHandler.sendRequest(object: ResponseListener{
-                override fun <T> onSuccessfulResponse(response: SuccessfulResponseBody<T>) {
+            registrationRequestHandler.sendRequest(object: RegisterResponseListener{
+
+                override fun onSuccessfulResponse(response: SuccessfulRegisterResponseBody) {
                     btnRegister.isEnabled = true
                     Log.i("WUBADUBADU","Success")
+                    Log.i("WUBADUBADU","User data: "+response.user)
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {

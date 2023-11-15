@@ -1,10 +1,10 @@
 package org.foi.air.core.network
 
 import org.foi.air.core.network.models.ErrorResponseBody
-import org.foi.air.core.network.models.SuccessfulResponseBody
+import org.foi.air.core.network.models.SuccessfulRegisterResponseBody
 
-interface ResponseListener {
-    fun <T> onSuccessfulResponse(response: SuccessfulResponseBody<T>)
+interface RegisterResponseListener {
+    fun onSuccessfulResponse(response: SuccessfulRegisterResponseBody)
     fun onErrorResponse(response: ErrorResponseBody)
     fun onApiConnectionFailure(t: Throwable)
 }
