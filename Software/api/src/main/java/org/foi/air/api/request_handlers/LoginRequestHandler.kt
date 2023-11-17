@@ -3,35 +3,30 @@ package org.foi.air.api.request_handlers
 import ResponseListener
 import com.google.gson.Gson
 import okhttp3.ResponseBody
-import org.foi.air.api.models.RegistrationBody
+import org.foi.air.api.models.LoginBody
 import org.foi.air.api.network.ApiService
 import org.foi.air.core.data_classes.UserInfo
 import org.foi.air.core.network.RequestHandler
 import org.foi.air.core.network.models.ErrorResponseBody
-import org.foi.air.core.network.models.SuccessfulRegisterResponseBody
-import org.json.JSONException
+import org.foi.air.core.network.models.SuccessfulLoginResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegistrationRequestHandler(private val requestBody: RegistrationBody):
-    RequestHandler<SuccessfulRegisterResponseBody> {
-     override fun sendRequest(responseListener: ResponseListener<SuccessfulRegisterResponseBody>) {
+class LoginRequestHandler(private val requestBody: LoginBody): RequestHandler<SuccessfulLoginResponseBody> {
+    override fun sendRequest(responseListener: ResponseListener<SuccessfulLoginResponseBody>){
         val service = ApiService.authService
-        val serviceCall = service.registerUser(requestBody)
+        val serviceCall = service.loginUser(requestBody)
 
         serviceCall.enqueue(object : Callback<ResponseBody>{
-
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        val convertedResponse = successfulResponseConverter(response.body()!!)
-                        if(convertedResponse == null){
-                            responseListener.onErrorResponse(ErrorResponseBody(false,"Registered successfully, but failed to convert request data. Please go to Login page and login.","Unsuccessful request conversion"))
-                        }
-                        responseListener.onSuccessfulResponse(convertedResponse!!)
+                if(response.isSuccessful){
+                    val convertedResponse = successfulResponseConverter(response.body()!!)
+                    if(convertedResponse == null) {
+                        responseListener.onErrorResponse(ErrorResponseBody(false,"Failed to convert request and login user","Unsuccessful request conversion"))
                     }
+                    responseListener.onSuccessfulResponse(convertedResponse!!)
                 }else{
                     val errorResponse = Gson().fromJson(response.errorBody()!!.string(), ErrorResponseBody::class.java)
                     responseListener.onErrorResponse(errorResponse)
@@ -45,7 +40,7 @@ class RegistrationRequestHandler(private val requestBody: RegistrationBody):
         })
     }
 
-    private fun successfulResponseConverter(responseBody: ResponseBody): SuccessfulRegisterResponseBody? {
+    private fun successfulResponseConverter(responseBody: ResponseBody): SuccessfulLoginResponseBody? {
         try {
             val jsonResponse = JSONObject(responseBody.string())
 
@@ -58,11 +53,12 @@ class RegistrationRequestHandler(private val requestBody: RegistrationBody):
                 userDataJson.getString("lastName"),
                 userDataJson.getString("email")
             )
-            return SuccessfulRegisterResponseBody(success, message, userInfo)
-        } catch (e: JSONException) {
+
+            val token = jsonResponse.getString("token")
+
+            return SuccessfulLoginResponseBody(success, message, userInfo, token)
+        } catch (e: Exception) {
             return null
         }
     }
 }
-
-
