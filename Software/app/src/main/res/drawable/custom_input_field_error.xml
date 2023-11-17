@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Background with rounded corners -->
+<item>
+    <shape android:shape="rectangle">
+        <solid android:color="#BEBEBE"/>
+        <corners android:radius="50dp"/>
+    </shape>
+</item>
+<!-- Border -->
+<item>
+    <shape android:shape="rectangle">
+        <stroke android:color="#B68585" android:width="5dp"/>
+        <corners android:radius="45dp"/>
+    </shape>
+</item>
+</layer-list>
