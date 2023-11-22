@@ -11,4 +11,12 @@
     <string name="login_page_title">LOGIN</string>
     <string name="input_field_email">Email</string>
     <string name="input_field_password">Password</string>
+    <string name="wrong_password">You have entered the wrong password.</string>
+    <string name="disabled_account">This account is disabled.</string>
+    <string name="unregistered_email">This email is not registered.</string>
+    <string name="invalid_email">Email is not valid.</string>
+    <string name="short_password">Password must have at least 6 characters.</string>
+    <string name="unexpected_login_error">Something went wrong...</string>
+    <string name="login_succeeded">Correct</string>
+
 </resources>
