@@ -100,9 +100,11 @@ class LoginActivity : AppCompatActivity() {
         val editor = storedUserData.edit()
         val userId = getUserId(jwt)
         editor.apply{
+            putString("firstName", user.firstName)
+            putString("lastName", user.lastName)
             putString("userId", userId)
             putString("jwt", jwt)
-            commit()
+            apply()
         }
     }
     private fun getUserId(jwt: String): String{
@@ -121,10 +123,12 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
     }
     private fun callDummyActivity(storedUserData : SharedPreferences){
-        var userId = storedUserData.getString("userId", "doesn't exist")
-        var jwt = storedUserData.getString("jwt" , "doesn't exist")
+        var firstName = storedUserData.getString("firstName", "")
+        var lastName = storedUserData.getString("lastName" , "")
+        var userId = storedUserData.getString("userId", "")
+        var jwt = storedUserData.getString("jwt" , "")
         Log.i("login",userId + jwt)
-        if(userId != "doesn't exist" && jwt != "doesn't exist"){
+        if(firstName != "" && lastName != "" && userId != "" && jwt != ""){
             val intent = Intent(this, dummyLogoutActivity::class.java)
             startActivity(intent)
         }

@@ -15,8 +15,12 @@ class dummyLogoutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val storedUserData = getSharedPreferences("loggedUser", Context.MODE_PRIVATE)
-        val userId = storedUserData.getString("userId", "doesn't exist")
-        val jwt = storedUserData.getString("jwt" , "doesn't exist")
+        val firstName = storedUserData.getString("firstName", "")
+        val lastName = storedUserData.getString("lastName" , "")
+        val userId = storedUserData.getString("userId", "")
+        val jwt = storedUserData.getString("jwt" , "")
+        binding.tvFirstName.text = "First name: " + firstName
+        binding.tvLastName.text = "Last name: " + lastName
         binding.tvUserId.text = "User id: " + userId
         binding.tvJwt.text = "jwt: " + jwt
 
