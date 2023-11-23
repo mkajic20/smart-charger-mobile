@@ -26,6 +26,8 @@ class dummyLogoutActivity : AppCompatActivity() {
 
         binding.btnLogout.setOnClickListener{
             val editor = storedUserData.edit()
+            editor.remove("firstName")
+            editor.remove("lastName")
             editor.remove("userId")
             editor.remove("jwt")
             editor.apply()
