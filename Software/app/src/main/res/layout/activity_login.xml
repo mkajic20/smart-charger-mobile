@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/bg_login_wave"
+            android:id="@+id/bgLoginWave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
@@ -31,7 +31,7 @@
         app:srcCompat="@drawable/ic_hamburgermenu" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btnLogin"
         android:layout_width="151dp"
         android:layout_height="49dp"
 
@@ -43,7 +43,7 @@
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_password_layout_wrapper" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper" />
 
     <TextView
         android:id="@+id/tvMainHeader"
@@ -53,13 +53,13 @@
         android:textColor="@color/white"
         android:textSize="39sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/bg_login_wave"
-        app:layout_constraintEnd_toEndOf="@+id/bg_login_wave"
-        app:layout_constraintStart_toStartOf="@+id/bg_login_wave"
+        app:layout_constraintBottom_toBottomOf="@+id/bgLoginWave"
+        app:layout_constraintEnd_toEndOf="@+id/bgLoginWave"
+        app:layout_constraintStart_toStartOf="@+id/bgLoginWave"
         app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/txt_email"
+            android:id="@+id/txtEmail"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="75dp"
@@ -74,10 +74,10 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bg_login_wave" />
+            app:layout_constraintTop_toBottomOf="@+id/bgLoginWave" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_password_layout_wrapper"
+            android:id="@+id/txtPasswordLayoutWrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -85,12 +85,12 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_email"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmail"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/gray">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txt_password"
+                android:id="@+id/txtPassword"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -105,7 +105,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_email" />
+                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -115,9 +115,9 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/abeezee"
             android:textColor="#980000"
-            app:layout_constraintEnd_toEndOf="@+id/txt_email"
-            app:layout_constraintStart_toStartOf="@+id/txt_email"
-            app:layout_constraintTop_toBottomOf="@+id/txt_email"
+            app:layout_constraintEnd_toEndOf="@+id/txtEmail"
+            app:layout_constraintStart_toStartOf="@+id/txtEmail"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmail"
             tools:text="This email does not exist" />
 
         <TextView
@@ -127,9 +127,9 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/abeezee"
             android:textColor="#980000"
-            app:layout_constraintEnd_toEndOf="@+id/txt_password_layout_wrapper"
-            app:layout_constraintStart_toStartOf="@+id/txt_password_layout_wrapper"
-            app:layout_constraintTop_toBottomOf="@+id/txt_password_layout_wrapper"
+            app:layout_constraintEnd_toEndOf="@+id/txtPasswordLayoutWrapper"
+            app:layout_constraintStart_toStartOf="@+id/txtPasswordLayoutWrapper"
+            app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper"
             tools:text="You have entered wrong password" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

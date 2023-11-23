@@ -18,5 +18,7 @@
     <string name="short_password">Password must have at least 6 characters.</string>
     <string name="unexpected_login_error">Something went wrong...</string>
     <string name="login_succeeded">Correct</string>
+    <string name="cant_reach_server">Can\'t connect to server. Please try later.</string>
+
 
 </resources>
