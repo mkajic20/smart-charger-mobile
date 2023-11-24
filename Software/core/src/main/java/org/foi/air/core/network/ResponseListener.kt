@@ -1,4 +1,4 @@
-import org.foi.air.core.network.models.ErrorResponseBody
+import org.foi.air.core.models.ErrorResponseBody
 
 interface ResponseListener<T> {
     fun onSuccessfulResponse(response: T)
