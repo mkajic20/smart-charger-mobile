@@ -7,8 +7,8 @@ import org.foi.air.api.models.RegistrationBody
 import org.foi.air.api.network.ApiService
 import org.foi.air.core.data_classes.UserInfo
 import org.foi.air.core.network.RequestHandler
-import org.foi.air.core.network.models.ErrorResponseBody
-import org.foi.air.core.network.models.SuccessfulRegisterResponseBody
+import org.foi.air.core.models.ErrorResponseBody
+import org.foi.air.core.models.SuccessfulRegisterResponseBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call

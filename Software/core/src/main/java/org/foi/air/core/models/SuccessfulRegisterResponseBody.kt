@@ -1,4 +1,4 @@
-package org.foi.air.core.network.models
+package org.foi.air.core.models
 
 import org.foi.air.core.data_classes.UserInfo
 

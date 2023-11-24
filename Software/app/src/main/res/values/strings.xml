@@ -6,4 +6,10 @@
     <string name="input_field_email">Email</string>
     <string name="input_field_password">Password</string>
     <string name="input_field_confirm_password">Confirm password</string>
+    <string name="lowercase_register">Register</string>
+    <string name="validation_confirm_password">Your passwords do not match</string>
+    <string name="validation_password">Password should have at least 6 digits</string>
+    <string name="validation_email">Use this format: name@domain.abc</string>
+    <string name="validation_lastname">Last name must contain at least 1 letter</string>
+    <string name="validation_firstname">Name must contain at least 1 letter</string>
 </resources>
