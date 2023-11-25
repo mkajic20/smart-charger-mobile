@@ -24,7 +24,8 @@ class LoginRequestHandler(private val requestBody: LoginBody): RequestHandler<Su
                 if(response.isSuccessful){
                     val convertedResponse = successfulResponseConverter(response.body()!!)
                     if(convertedResponse == null) {
-                        responseListener.onErrorResponse(ErrorResponseBody(false,"Failed to convert request and login user","Unsuccessful request conversion"))
+                        val errorMessage = "Registered successfully, please go to login page"
+                        responseListener.onErrorResponse(ErrorResponseBody(false,errorMessage,errorMessage))
                     }
                     responseListener.onSuccessfulResponse(convertedResponse!!)
                 }else{

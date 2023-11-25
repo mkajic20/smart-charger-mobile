@@ -28,7 +28,8 @@ class RegistrationRequestHandler(private val requestBody: RegistrationBody):
                     if (response.body() != null) {
                         val convertedResponse = successfulResponseConverter(response.body()!!)
                         if(convertedResponse == null){
-                            responseListener.onErrorResponse(ErrorResponseBody(false,"Registered successfully, but failed to convert request data. Please go to Login page and login.","Unsuccessful request conversion"))
+                            val errorMessage = "Registered successfully, please go to login page"
+                            responseListener.onErrorResponse(ErrorResponseBody(false,errorMessage,errorMessage))
                         }
                         responseListener.onSuccessfulResponse(convertedResponse!!)
                     }
