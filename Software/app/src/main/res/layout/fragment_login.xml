@@ -20,43 +20,33 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/bg_simple_wave" />
 
-    <ImageView
-        android:id="@+id/ivHamburgerMenu"
-        android:layout_width="49dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_hamburgermenu" />
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="151dp"
+            android:layout_height="49dp"
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="151dp"
-        android:layout_height="49dp"
+            android:layout_marginTop="40dp"
 
-        android:layout_marginTop="40dp"
+            android:background="@drawable/custom_button"
+            android:text="Login"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper" />
 
-        android:background="@drawable/custom_button"
-        android:text="Login"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper" />
-
-    <TextView
-        android:id="@+id/tvMainHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login_page_title"
-        android:textColor="@color/white"
-        android:textSize="39sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/bgLoginWave"
-        app:layout_constraintEnd_toEndOf="@+id/bgLoginWave"
-        app:layout_constraintStart_toStartOf="@+id/bgLoginWave"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvMainHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_page_title"
+            android:textColor="@color/white"
+            android:textSize="39sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/bgLoginWave"
+            app:layout_constraintEnd_toEndOf="@+id/bgLoginWave"
+            app:layout_constraintStart_toStartOf="@+id/bgLoginWave"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/txtEmail"
@@ -131,6 +121,14 @@
             app:layout_constraintStart_toStartOf="@+id/txtPasswordLayoutWrapper"
             app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper"
             tools:text="You have entered wrong password" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

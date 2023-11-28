@@ -1,51 +1,60 @@
-package org.foi.air.smartcharger
+package org.foi.air.smartcharger.fragments
 
 import ResponseListener
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import org.foi.air.api.models.LoginBody
 import org.foi.air.api.request_handlers.LoginRequestHandler
-import org.foi.air.core.data_classes.UserInfo
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
-import org.foi.air.smartcharger.databinding.ActivityLoginBinding
-import org.json.JSONObject
+import org.foi.air.smartcharger.R
+import org.foi.air.smartcharger.context.Auth
+import org.foi.air.smartcharger.databinding.FragmentLoginBinding
 
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityLoginBinding
+class LoginFragment : Fragment() {
 
-
+    private lateinit var binding: FragmentLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val storedUserData = getSharedPreferences("loggedUser", Context.MODE_PRIVATE)
-        callDummyActivity(storedUserData)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        Auth.initialize(this)
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentLoginBinding.inflate(inflater,container,false)
+
+        Auth.initialize(this)
+        if(Auth.isLoggedIn()){}
+            //changeActivity()
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
                 binding.txtPassword.text.toString()
             )
-            loginUser(loginBody, storedUserData)
+            loginUser(loginBody)
         }
-    }
 
-    private fun loginUser(loginBody: LoginBody, storedUserData: SharedPreferences) {
+        val view = binding.root
+        return view
+    }
+    private fun loginUser(loginBody: LoginBody) {
         val loginRequestHandler = LoginRequestHandler(loginBody)
 
         loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
             override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
                 binding.tvEmailError.text = resources.getString(R.string.login_succeeded)
                 binding.tvPasswordError.text = resources.getString(R.string.login_succeeded)
-                saveUserData(response.user, response.jwt, storedUserData);
-                callDummyActivity(storedUserData)
+                Auth.saveUserData(response.user, response.jwt);
+                //if(Auth.isLoggedIn())
+                //changeActivity()
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
@@ -95,43 +104,13 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-    private fun saveUserData(user : UserInfo, jwt : String, storedUserData : SharedPreferences){
-        //save data to phone memory with private security level
-        val editor = storedUserData.edit()
-        val userId = getUserId(jwt)
-        editor.apply{
-            putString("firstName", user.firstName)
-            putString("lastName", user.lastName)
-            putString("userId", userId)
-            putString("jwt", jwt)
-            apply()
-        }
-    }
-    private fun getUserId(jwt: String): String{
-        val elements = jwt.split('.')
-        val payload = elements[1]
-        val payloadString = Base64.decode(payload, Base64.DEFAULT).decodeToString()
-        val userId = JSONObject(payloadString).optString("userId", "")
-        Log.i("login", "Ovo je dekodirani token - user id:" + userId)
-        return userId
 
+    /*private fun changeFragment(){
+        Log.i("login","Changing activity")
+        val intent = Intent(this, dummyLogoutActivity::class.java)
+        startActivity(intent)
     }
-    private fun deleteUserData(sharedPreferences: SharedPreferences){
-        val editor = sharedPreferences.edit()
-        editor.remove("userId")
-        editor.remove("jwt")
-        editor.apply()
-    }
-    private fun callDummyActivity(storedUserData : SharedPreferences){
-        var firstName = storedUserData.getString("firstName", "")
-        var lastName = storedUserData.getString("lastName" , "")
-        var userId = storedUserData.getString("userId", "")
-        var jwt = storedUserData.getString("jwt" , "")
-        Log.i("login",userId + jwt)
-        if(firstName != "" && lastName != "" && userId != "" && jwt != ""){
-            val intent = Intent(this, dummyLogoutActivity::class.java)
-            startActivity(intent)
-        }
-    }
+
+     */
 
 }
