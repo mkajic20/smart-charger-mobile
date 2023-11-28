@@ -3,7 +3,6 @@ package org.foi.air.smartcharger.context
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
-import android.util.Log
 import androidx.fragment.app.Fragment
 import org.foi.air.core.data_classes.UserInfo
 import org.json.JSONObject
@@ -50,8 +49,6 @@ object Auth {
         updateData()
     }
     fun isLoggedIn() : Boolean{
-        Log.i("login","podaci su spremljeni...mozda")
-        Log.i("login",firstName.toString())
         return firstName != "" && lastName != "" && userId != "" && jwt != ""
     }
 
@@ -59,8 +56,8 @@ object Auth {
         val elements = jwt.split('.')
         val payload = elements[1]
         val payloadString = Base64.decode(payload, Base64.DEFAULT).decodeToString()
-        val userId = JSONObject(payloadString).optString("userId", "")
-        return userId
+        return JSONObject(payloadString).optString("userId", "")
+
 
     }
 

@@ -28,12 +28,9 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
         Auth.initialize(this)
-        if(Auth.isLoggedIn()){}
-            //changeActivity()
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
@@ -42,8 +39,7 @@ class LoginFragment : Fragment() {
             loginUser(loginBody)
         }
 
-        val view = binding.root
-        return view
+        return binding.root
     }
     private fun loginUser(loginBody: LoginBody) {
         val loginRequestHandler = LoginRequestHandler(loginBody)
@@ -52,17 +48,12 @@ class LoginFragment : Fragment() {
             override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
                 binding.tvEmailError.text = resources.getString(R.string.login_succeeded)
                 binding.tvPasswordError.text = resources.getString(R.string.login_succeeded)
-                Auth.saveUserData(response.user, response.jwt);
-                //if(Auth.isLoggedIn())
-                //changeActivity()
+                Auth.saveUserData(response.user, response.jwt)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
                 Log.i("login","Error: "+response.error)
                 errorResponse(response.error)
-
-
-
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
@@ -104,13 +95,4 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
-    /*private fun changeFragment(){
-        Log.i("login","Changing activity")
-        val intent = Intent(this, dummyLogoutActivity::class.java)
-        startActivity(intent)
-    }
-
-     */
-
 }
