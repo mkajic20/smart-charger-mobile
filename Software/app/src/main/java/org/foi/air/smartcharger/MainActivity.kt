@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             }
             //If button has "Cancel" text on it
             else {
-                binding.btnConnectionButton.background = ContextCompat.getDrawable(this, R.drawable.custom_buttonbackground_connect)
+                binding.btnConnectionButton.background = ContextCompat.getDrawable(this, R.drawable.custom_button)
                 binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
                 binding.tvInstructions.text = resources.getString(R.string.instructions_before_connection)
                 binding.tvStatus.text = ""

@@ -24,6 +24,7 @@ class LoginRequestHandler(private val requestBody: LoginBody): RequestHandler<Su
                 if(response.isSuccessful){
                     val convertedResponse = successfulResponseConverter(response.body()!!)
                     if(convertedResponse == null) {
+
                         val errorMessage = "Unsuccessful login, please try again!"
                         responseListener.onErrorResponse(ErrorResponseBody(false,errorMessage,errorMessage))
                     }

@@ -7,6 +7,18 @@
     <string name="instructions_rfid_connection">Please put your RFID card on the phone screen to connect with the charger</string>
     <string name="cancel_button_text">Cancel</string>
     <string name="status_waiting_card">Status: Waiting for card&#8230;</string>
+
+
+    <string name="login_page_title">LOGIN</string>
+    <string name="wrong_password">You have entered the wrong password.</string>
+    <string name="disabled_account">This account is disabled.</string>
+    <string name="unregistered_email">This email is not registered.</string>
+    <string name="invalid_email">Email is not valid.</string>
+    <string name="short_password">Password must have at least 6 characters.</string>
+    <string name="unexpected_login_error">Something went wrong...</string>
+    <string name="login_succeeded">Correct</string>
+    <string name="cant_reach_server">Can\'t connect to server. Please try later.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_page_title">REGISTER</string>
     <string name="input_field_first_name">First name</string>
     <string name="input_field_last_name">Last name</string>
@@ -19,4 +31,5 @@
     <string name="validation_email">Use this format: name@domain.abc</string>
     <string name="validation_lastname">Last name must contain at least 1 letter</string>
     <string name="validation_firstname">Name must contain at least 1 letter</string>
+
 </resources>

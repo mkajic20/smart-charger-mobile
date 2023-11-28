@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3d6d50df-6d2d-471e-b73f-04a8c728c08b" name="Changes" comment="" />
+    <list default="true" id="3d6d50df-6d2d-471e-b73f-04a8c728c08b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Software/app/src/main/java/org/foi/air/smartcharger/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Software/app/src/main/java/org/foi/air/smartcharger/LoginActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Software/app/src/main/java/org/foi/air/smartcharger/dummyLogoutActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Software/app/src/main/java/org/foi/air/smartcharger/dummyLogoutActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Software/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/Software/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Software/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Software/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Software/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Software/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
