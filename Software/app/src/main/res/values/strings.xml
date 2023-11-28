@@ -8,9 +8,8 @@
     <string name="cancel_button_text">Cancel</string>
     <string name="status_waiting_card">Status: Waiting for card&#8230;</string>
 
+
     <string name="login_page_title">LOGIN</string>
-    <string name="input_field_email">Email</string>
-    <string name="input_field_password">Password</string>
     <string name="wrong_password">You have entered the wrong password.</string>
     <string name="disabled_account">This account is disabled.</string>
     <string name="unregistered_email">This email is not registered.</string>
@@ -19,8 +18,18 @@
     <string name="unexpected_login_error">Something went wrong...</string>
     <string name="login_succeeded">Correct</string>
     <string name="cant_reach_server">Can\'t connect to server. Please try later.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="register_page_title">REGISTER</string>
+    <string name="input_field_first_name">First name</string>
+    <string name="input_field_last_name">Last name</string>
+    <string name="input_field_email">Email</string>
+    <string name="input_field_password">Password</string>
+    <string name="input_field_confirm_password">Confirm password</string>
+    <string name="lowercase_register">Register</string>
+    <string name="validation_confirm_password">Your passwords do not match</string>
+    <string name="validation_password">Password should have at least 6 digits</string>
+    <string name="validation_email">Use this format: name@domain.abc</string>
+    <string name="validation_lastname">Last name must contain at least 1 letter</string>
+    <string name="validation_firstname">Name must contain at least 1 letter</string>
 
 </resources>

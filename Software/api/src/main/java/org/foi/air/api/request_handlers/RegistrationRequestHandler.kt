@@ -3,32 +3,36 @@ package org.foi.air.api.request_handlers
 import ResponseListener
 import com.google.gson.Gson
 import okhttp3.ResponseBody
-import org.foi.air.api.models.LoginBody
+import org.foi.air.api.models.RegistrationBody
 import org.foi.air.api.network.ApiService
 import org.foi.air.core.data_classes.UserInfo
 import org.foi.air.core.network.RequestHandler
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.core.models.SuccessfulRegisterResponseBody
+import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginRequestHandler(private val requestBody: LoginBody): RequestHandler<SuccessfulLoginResponseBody> {
-    override fun sendRequest(responseListener: ResponseListener<SuccessfulLoginResponseBody>){
+class RegistrationRequestHandler(private val requestBody: RegistrationBody):
+    RequestHandler<SuccessfulRegisterResponseBody> {
+     override fun sendRequest(responseListener: ResponseListener<SuccessfulRegisterResponseBody>) {
         val service = ApiService.authService
-        val serviceCall = service.loginUser(requestBody)
+        val serviceCall = service.registerUser(requestBody)
 
         serviceCall.enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if(response.isSuccessful){
-                    val convertedResponse = successfulResponseConverter(response.body()!!)
-                    if(convertedResponse == null) {
 
-                        val errorMessage = "Unsuccessful login, please try again!"
-                        responseListener.onErrorResponse(ErrorResponseBody(false,errorMessage,errorMessage))
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        val convertedResponse = successfulResponseConverter(response.body()!!)
+                        if(convertedResponse == null){
+                            val errorMessage = "Registered successfully, please go to login page"
+                            responseListener.onErrorResponse(ErrorResponseBody(false,errorMessage,errorMessage))
+                        }
+                        responseListener.onSuccessfulResponse(convertedResponse!!)
                     }
-                    responseListener.onSuccessfulResponse(convertedResponse!!)
                 }else{
                     val errorResponse = Gson().fromJson(response.errorBody()!!.string(), ErrorResponseBody::class.java)
                     responseListener.onErrorResponse(errorResponse)
@@ -42,7 +46,7 @@ class LoginRequestHandler(private val requestBody: LoginBody): RequestHandler<Su
         })
     }
 
-    private fun successfulResponseConverter(responseBody: ResponseBody): SuccessfulLoginResponseBody? {
+    private fun successfulResponseConverter(responseBody: ResponseBody): SuccessfulRegisterResponseBody? {
         try {
             val jsonResponse = JSONObject(responseBody.string())
 
@@ -55,12 +59,11 @@ class LoginRequestHandler(private val requestBody: LoginBody): RequestHandler<Su
                 userDataJson.getString("lastName"),
                 userDataJson.getString("email")
             )
-
-            val token = jsonResponse.getString("token")
-
-            return SuccessfulLoginResponseBody(success, message, userInfo, token)
-        } catch (e: Exception) {
+            return SuccessfulRegisterResponseBody(success, message, userInfo)
+        } catch (e: JSONException) {
             return null
         }
     }
 }
+
+
