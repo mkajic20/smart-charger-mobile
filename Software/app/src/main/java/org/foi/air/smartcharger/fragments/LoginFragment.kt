@@ -30,7 +30,6 @@ class LoginFragment : Fragment() {
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
-        Auth.initialize(this)
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
