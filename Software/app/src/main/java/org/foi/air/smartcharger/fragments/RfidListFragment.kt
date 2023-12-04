@@ -1,11 +1,10 @@
 package org.foi.air.smartcharger.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.foi.air.smartcharger.R
@@ -50,11 +49,6 @@ class RfidListFragment : Fragment() {
         rfidCardList = arrayListOf<RfidCardModel>()
         getRfidCardsData()
 
-
-
-        binding.imageButton.setOnClickListener{
-            Log.i("showCards", "clicked")
-        }
         return binding.root
     }
 
