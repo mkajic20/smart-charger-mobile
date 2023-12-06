@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/bgLoginWave"
@@ -29,7 +29,7 @@
             android:layout_marginTop="40dp"
 
             android:background="@drawable/custom_button"
-            android:text="Login"
+            android:text="@string/login_button"
             android:textColor="#FFFFFF"
             app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,14 +123,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper"
             tools:text="You have entered wrong password" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:name="org.foi.air.smartcharger.fragments.LoginFragment" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

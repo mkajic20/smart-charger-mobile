@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.foi.air.api.models.LoginBody
+import org.foi.air.api.network.ApiService
 import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
@@ -27,7 +28,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
         binding.btnLogin.setOnClickListener{
@@ -36,6 +37,7 @@ class LoginFragment : Fragment() {
                 binding.txtPassword.text.toString()
             )
             loginUser(loginBody)
+            ApiService.authToken = Auth.jwt!!
         }
 
         return binding.root

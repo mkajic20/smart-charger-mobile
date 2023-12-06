@@ -9,7 +9,7 @@
         android:id="@+id/btnDelete"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:adjustViewBounds="false"
         android:background="@null"
         android:scaleType="fitXY"
@@ -17,6 +17,7 @@
         android:scaleY="1"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/cvCard"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cvCard"
         app:layout_constraintTop_toTopOf="@+id/cvCard"
         app:srcCompat="@drawable/delete_card_button" />
@@ -25,7 +26,7 @@
         android:id="@+id/cvCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="85dp"
+        android:layout_marginEnd="70dp"
         app:cardBackgroundColor="#006D90"
         app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,24 +43,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Card name" />
+                tools:text="@string/card_name" />
 
-            <Switch
-                android:id="@+id/swRfidCardSwitch"
+            <TextView
+                android:id="@+id/tvRfidCardState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:scaleX="1.17"
-                android:scaleY="1"
-                android:thumb="@drawable/ic_thumb"
-                android:track="@drawable/bg_track"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="STATE" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
