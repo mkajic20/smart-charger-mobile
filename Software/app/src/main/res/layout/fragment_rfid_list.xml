@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <View
-        android:id="@+id/view2"
+        android:id="@+id/vHeaderBackground"
         android:layout_width="wrap_content"
         android:layout_height="170dp"
         android:background="#004054"
@@ -17,19 +17,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/svRfidList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:contentDescription="scrollableListOfRFIDcards"
+        android:contentDescription="@string/scrollablelistofrfidcards"
         app:layout_constraintBottom_toTopOf="@id/ibAddCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/vHeaderBackground"
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -38,6 +38,32 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </ScrollView>
+
+    <TextView
+        android:id="@+id/tvServerError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cant_reach_server"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/vHeaderBackground" />
+
+    <Button
+        android:id="@+id/btnRetryConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_popup_button"
+        android:text="@string/retry"
+        android:visibility="invisible"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvServerError" />
 
     <TextView
         android:id="@+id/tvMainHeader3"
@@ -58,14 +84,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:background="@null"
-        android:contentDescription="addNewRFIDcard"
+        android:contentDescription="@string/addnewrfidcard"
         android:src="@drawable/ic_plus_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvCardNameColumn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -73,11 +99,11 @@
         android:fontFamily="@font/abeezee"
         android:text="@string/card_name"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
+        app:layout_constraintStart_toStartOf="@+id/svRfidList"
+        app:layout_constraintTop_toTopOf="@+id/vHeaderBackground" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvCardStateColumn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="188dp"
@@ -85,7 +111,7 @@
         android:fontFamily="@font/abeezee"
         android:text="@string/active"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
+        app:layout_constraintEnd_toEndOf="@+id/svRfidList"
+        app:layout_constraintTop_toTopOf="@+id/vHeaderBackground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
