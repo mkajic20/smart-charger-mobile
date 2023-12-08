@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#8B8B8B</color>
     <color name="lightgray">#D6D6D6</color>
+    <color name="rfidCardColor">#006D90</color>
 </resources>

@@ -15,7 +15,7 @@
     <string name="unregistered_email">This email is not registered.</string>
     <string name="invalid_email">Email is not valid.</string>
     <string name="short_password">Password must have at least 6 characters.</string>
-    <string name="unexpected_login_error">Something went wrong...</string>
+    <string name="unexpected_login_error">Something went wrong…</string>
     <string name="login_succeeded">Correct</string>
     <string name="cant_reach_server">Can\'t connect to server. Please try later.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -31,5 +31,22 @@
     <string name="validation_email">Use this format: name@domain.abc</string>
     <string name="validation_lastname">Last name must contain at least 1 letter</string>
     <string name="validation_firstname">Name must contain at least 1 letter</string>
+
+    <string name="rfid_list_title">RFID cards</string>
+    <string name="login_button">LOGIN</string>
+    <string name="card_value">Card value</string>
+    <string name="create_card_button">Create card</string>
+    <string name="card_name">Card name</string>
+    <string name="add_new_card_header">Add new card</string>
+    <string name="delete_card_question">Are you sure you want to delete card \"Druga kartica\"</string>
+    <string name="delete_button">Delete</string>
+    <string name="active">Active</string>
+    <string name="scrollable_list_of_rfid_cards">scrollable_list_of_rfid_cards</string>
+    <string name="retry">Retry</string>
+    <string name="add_new_rfid_card">addNewRFIDcard</string>
+    <string name="header_background">header_background</string>
+    <string name="hamburger_menu_icon">hamburger_menu_icon</string>
+    <string name="delete_card_button">delete_card_button</string>
+
 
 </resources>
