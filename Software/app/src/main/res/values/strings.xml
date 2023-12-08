@@ -41,6 +41,9 @@
     <string name="delete_card_question">Are you sure you want to delete card \"Druga kartica\"</string>
     <string name="delete_button">Delete</string>
     <string name="active">Active</string>
+    <string name="scrollablelistofrfidcards">scrollableListOfRFIDcards</string>
+    <string name="retry">Retry</string>
+    <string name="addnewrfidcard">addNewRFIDcard</string>
 
 
 </resources>
