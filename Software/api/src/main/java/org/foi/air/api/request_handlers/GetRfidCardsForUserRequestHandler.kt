@@ -13,7 +13,7 @@ import org.foi.air.core.data_classes.RfidCard
 import org.foi.air.core.models.ErrorResponseBody
 import org.json.JSONObject
 
-class GetRfidCardsForUserRequestHandler (var userId : Int): RequestHandler<RfidCardResponseBody> {
+class GetRfidCardsForUserRequestHandler (private var userId : Int): RequestHandler<RfidCardResponseBody> {
     override fun sendRequest(responseListener: ResponseListener<RfidCardResponseBody>) {
         val service = ApiService.rfidCardService
         val serviceCall = service.getAllCards(userId)

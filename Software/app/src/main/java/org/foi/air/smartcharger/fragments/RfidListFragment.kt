@@ -1,16 +1,15 @@
 package org.foi.air.smartcharger.fragments
 
 import ResponseListener
-import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -29,6 +28,7 @@ import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.context.CardBodyModel
 import org.foi.air.smartcharger.context.RfidCardRecyclerAdapter
 import org.foi.air.smartcharger.databinding.FragmentRfidListBinding
+import org.foi.air.smartcharger.dialogs.AddNewRfidCardDialog
 
 class RfidListFragment : Fragment() {
 
@@ -61,10 +61,11 @@ class RfidListFragment : Fragment() {
         newRecyclerView.layoutManager = LinearLayoutManager(context)
 
         binding.ibAddCard.setOnClickListener{
-            openPopup(R.layout.create_new_card_popup)
+            openDialog(R.layout.create_new_card_dialog)
+            //openPopup(R.layout.create_new_card_popup)
         }
 
-        rfidCardList = arrayListOf<CardBodyModel>()
+        rfidCardList = arrayListOf()
 
         return binding.root
     }
@@ -102,37 +103,23 @@ class RfidListFragment : Fragment() {
             val rfidCard = CardBodyModel(rfidCardList[i].name,rfidCardList[i].active.toString(), rfidCardList[i].id)
             this.rfidCardList.add(rfidCard)
         }
-        newRecyclerView.adapter = RfidCardRecyclerAdapter(this.rfidCardList, getContext())
+        newRecyclerView.adapter = RfidCardRecyclerAdapter(this.rfidCardList, context)
     }
 
-    private fun openPopup(popup : Int){
-        val mainActivityView = requireActivity().findViewById<View>(R.id.view)
-        mainActivityView.visibility = View.VISIBLE
-        val inflater = requireActivity().getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(popup, null)
+    private fun openDialog(dialog: Int){
+        val dialogLayout = AddNewRfidCardDialog(requireContext())
+        dialogLayout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogLayout.show()
 
-        val popupWindow = PopupWindow(
-            popupView,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.setOnDismissListener {
-            mainActivityView.visibility = View.INVISIBLE
-        }
-
-        popupWindow.showAtLocation(requireActivity().findViewById(R.id.mainConstraint), Gravity.CENTER, 0, 0)
-
-        if(popup == R.layout.create_new_card_popup){
-            val btnCreateCard = popupView.findViewById<Button>(R.id.btnDeleteCard)
-            val CardName = popupView.findViewById<EditText>(R.id.etCardName)
-            val CardValue = popupView.findViewById<EditText>(R.id.etCardValue)
-            val ErrorText = popupView.findViewById<TextView>(R.id.tvError)
+        if(dialog == R.layout.create_new_card_dialog){
+            val btnCreateCard = dialogLayout.findViewById<Button>(R.id.btnDeleteCard)
+            val cardName = dialogLayout.findViewById<EditText>(R.id.etCardName)
+            val cardValue = dialogLayout.findViewById<EditText>(R.id.etCardValue)
+            val errorText = dialogLayout.findViewById<TextView>(R.id.tvError)
             btnCreateCard.setOnClickListener{
                 val newCardBody = NewRfidCardBody(
-                    CardValue.text.toString(),
-                    CardName.text.toString()
+                    cardValue.text.toString(),
+                    cardName.text.toString()
                 )
                 val loginRequestHandler = CreateCardRequestHandler(Auth.userId!!.toInt(), newCardBody)
 
@@ -141,27 +128,25 @@ class RfidListFragment : Fragment() {
                         val toast = Toast.makeText(this@RfidListFragment.context, response.message, Toast.LENGTH_LONG)
                         toast.show()
                         getAllCards()
-                        popupWindow.dismiss()
+                        dialogLayout.dismiss()
                     }
 
                     override fun onErrorResponse(response: ErrorResponseBody) {
-                        ErrorText.text = response.message
+                        errorText.text = response.message
 
                     }
 
                     override fun onApiConnectionFailure(t: Throwable) {
-                        ErrorText.text = resources.getString(R.string.cant_reach_server)
+                        errorText.text = resources.getString(R.string.cant_reach_server)
                     }
 
 
                 })
             }
 
-        }
-
 
     }
-
+    }
 
 
 }

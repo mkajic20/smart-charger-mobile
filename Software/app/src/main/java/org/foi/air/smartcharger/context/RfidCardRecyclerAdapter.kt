@@ -63,7 +63,7 @@ class RfidCardRecyclerAdapter(private val rfidCardList: ArrayList<CardBodyModel>
         }
         holder.btnDelete.setOnClickListener{
 
-            val deleteCardRequestHandler = DeleteCardRequestHandler(Auth.userId!!.toInt(), currentItem.Id)
+            val deleteCardRequestHandler = DeleteCardRequestHandler(Auth.userId!!.toInt(), currentItem.id)
 
             deleteCardRequestHandler.sendRequest(object: ResponseListener<ResponseBody>{
                 override fun onSuccessfulResponse(response: ResponseBody) {

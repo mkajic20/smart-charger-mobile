@@ -20,7 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cvCard"
         app:layout_constraintTop_toTopOf="@+id/cvCard"
-        app:srcCompat="@drawable/delete_card_button" />
+        app:srcCompat="@drawable/delete_card_button"
+        android:contentDescription="@string/delete_card_button" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvCard"

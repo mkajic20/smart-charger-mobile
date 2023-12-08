@@ -1,7 +1,6 @@
 package org.foi.air.api.request_handlers
 
 import ResponseListener
-import android.util.Log
 import com.google.gson.Gson
 import org.foi.air.api.network.ApiService
 import org.foi.air.core.network.RequestHandler
@@ -13,7 +12,7 @@ import org.foi.air.core.models.ErrorResponseBody
 import org.json.JSONObject
 
 
-class DeleteCardRequestHandler (var userId : Int, var cardId : Int): RequestHandler<org.foi.air.core.models.ResponseBody> {
+class DeleteCardRequestHandler (private var userId : Int, private var cardId : Int): RequestHandler<org.foi.air.core.models.ResponseBody> {
     override fun sendRequest(responseListener: ResponseListener<org.foi.air.core.models.ResponseBody>) {
         val service = ApiService.rfidCardService
         val serviceCall = service.deleteCard(userId, cardId)

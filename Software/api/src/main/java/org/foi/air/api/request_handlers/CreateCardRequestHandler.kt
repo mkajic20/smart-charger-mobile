@@ -14,7 +14,7 @@ import org.foi.air.core.models.CreateCardResponseBody
 import org.foi.air.core.models.ErrorResponseBody
 import org.json.JSONObject
 
-class CreateCardRequestHandler (var userId : Int, var requestBody : NewRfidCardBody): RequestHandler<CreateCardResponseBody> {
+class CreateCardRequestHandler (private var userId : Int, private var requestBody : NewRfidCardBody): RequestHandler<CreateCardResponseBody> {
     override fun sendRequest(responseListener: ResponseListener<CreateCardResponseBody>) {
         val service = ApiService.rfidCardService
         val serviceCall = service.createCard(userId, requestBody)
