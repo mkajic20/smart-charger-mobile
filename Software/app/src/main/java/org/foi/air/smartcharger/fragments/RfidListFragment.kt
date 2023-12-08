@@ -102,7 +102,7 @@ class RfidListFragment : Fragment() {
             val rfidCard = CardBodyModel(rfidCardList[i].name,rfidCardList[i].active.toString(), rfidCardList[i].id)
             this.rfidCardList.add(rfidCard)
         }
-        newRecyclerView.adapter = RfidCardRecyclerAdapter(this.rfidCardList, getContext(), this)
+        newRecyclerView.adapter = RfidCardRecyclerAdapter(this.rfidCardList, getContext())
     }
 
     private fun openPopup(popup : Int){
