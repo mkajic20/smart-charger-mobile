@@ -18,3 +18,4 @@ include(":app")
 include(":api")
 include(":core")
 
+include(":login_email_password")
