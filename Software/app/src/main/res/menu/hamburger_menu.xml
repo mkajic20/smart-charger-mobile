@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="Charger">
+            <menu>
+                <item
+                    android:id="@+id/charger_connection"
+                    android:icon="@drawable/ic_charger"
+                    android:title="CHARGER CONNECTION"
+                    >
+                </item>
+            </menu>
+        </item>
+
+
+
+    </group>
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="Profile">
+            <menu>
+                <item
+                    android:id="@+id/REGISTER"
+                    android:icon="@drawable/ic_register"
+                    android:title="REGISTER">
+                </item>
+                <item
+                    android:id="@+id/LOGIN"
+                    android:icon="@drawable/ic_login"
+                    android:title="LOGIN">
+
+                </item>
+            </menu>
+        </item>
+
+
+
+
+    </group>
+
+</menu>

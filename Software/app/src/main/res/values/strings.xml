@@ -47,6 +47,8 @@
     <string name="header_background">header_background</string>
     <string name="hamburger_menu_icon">hamburger_menu_icon</string>
     <string name="delete_card_button">delete_card_button</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close Drawer</string>
 
 
 </resources>
