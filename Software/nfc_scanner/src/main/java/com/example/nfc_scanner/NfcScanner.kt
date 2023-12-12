@@ -23,6 +23,10 @@ class NfcScanner(private val activity: Activity) {
         try {
             nfcAdapter = NfcAdapter.getDefaultAdapter(activity)
 
+            if(nfcAdapter?.isEnabled!!){
+                Toast.makeText(activity.baseContext,
+                    activity.baseContext.getString(R.string.this_device_doesn_t_support_nfc),Toast.LENGTH_SHORT).show()
+            }
             val intent = Intent(activity, javaClass).apply {
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             }
@@ -32,8 +36,7 @@ class NfcScanner(private val activity: Activity) {
                 nfcAdapter?.enableForegroundDispatch(activity,pendingIntent,null,null)
             }
         } catch (e: Exception){
-            Toast.makeText(activity.baseContext,"This device doesn't support NFC",Toast.LENGTH_SHORT).show()
-            Log.e("NFC",e.toString())
+            Log.e("nfcSuperSecretCode",e.toString())
         }
     }
 

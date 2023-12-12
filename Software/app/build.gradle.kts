@@ -51,6 +51,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation(project(mapOf("path" to ":api")))
     implementation(project(mapOf("path" to ":core")))
+    implementation(project(mapOf("path" to ":nfc_scanner")))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
