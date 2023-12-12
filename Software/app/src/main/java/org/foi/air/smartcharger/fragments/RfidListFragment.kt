@@ -71,6 +71,8 @@ class RfidListFragment : Fragment() {
     }
 
     private fun getAllCards(){
+        if(!Auth.isLoggedIn())
+            return
         val getRfidCardsForUserRequestHandler = GetRfidCardsForUserRequestHandler(Auth.userId!!.toInt())
         binding.tvServerError.visibility = View.INVISIBLE
         binding.btnRetryConnection.visibility = View.INVISIBLE
@@ -107,6 +109,8 @@ class RfidListFragment : Fragment() {
     }
 
     private fun openDialog(dialog: Int){
+        if(!Auth.isLoggedIn())
+            return
         val dialogLayout = AddNewRfidCardDialog(requireContext())
         dialogLayout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogLayout.show()
