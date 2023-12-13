@@ -1,22 +1,14 @@
 package org.foi.air.smartcharger.fragments
 
-import ResponseListener
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import org.foi.air.api.models.LoginBody
-import org.foi.air.api.network.ApiService
-import org.foi.air.api.request_handlers.LoginRequestHandler
-import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentChargerConnectionBinding
-import org.foi.air.smartcharger.databinding.FragmentLoginBinding
 
 
 class ChargerConnectionFragment : Fragment() {
@@ -46,7 +38,7 @@ class ChargerConnectionFragment : Fragment() {
             }
             //If button has "Cancel" text on it
             else {
-                binding.btnConnectionButton.background = ContextCompat.getDrawable(this.requireContext(), R.drawable.custom_button)
+                binding.btnConnectionButton.background = ContextCompat.getDrawable(this.requireContext(), R.drawable.custom_blue_button)
                 binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
                 binding.tvInstructions.text = resources.getString(R.string.instructions_before_connection)
                 binding.tvStatus.text = ""

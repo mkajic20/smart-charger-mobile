@@ -33,7 +33,8 @@
     <string name="validation_firstname">Name must contain at least 1 letter</string>
 
     <string name="rfid_list_title">RFID cards</string>
-    <string name="login_button">LOGIN</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Register</string>
     <string name="card_value">Card value</string>
     <string name="create_card_button">Create card</string>
     <string name="card_name">Card name</string>

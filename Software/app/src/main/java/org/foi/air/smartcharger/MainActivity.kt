@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding : ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var hamburgerIcon: ImageView
-    private lateinit var navigationView : NavigationView
+    lateinit var navigationView : NavigationView
     private var currentFragment : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
 
         navigationView.bringToFront()
+
+        setupDrawerToggle()
+
+
+        navigationView.setCheckedItem(R.id.chargerConnectionItem)
+
+        updateMenuVisibilityIfUserLoggedIn()
+
+        changeFragment("ChargerConnectionFragment")
+
+
+    }
+
+    private fun setupDrawerToggle() {
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -45,12 +60,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+    }
 
-        navigationView.setCheckedItem(R.id.chargerConnectionItem)
+    private fun updateMenuVisibilityIfUserLoggedIn(){
         val menu = navigationView.menu
         val header = navigationView.getHeaderView(0)
-
-
         hamburgerIcon.setOnClickListener{
             if(Auth.isLoggedIn()){
                 menu.findItem(R.id.registerItem).isVisible = false
@@ -73,24 +87,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        changeFragment("ChargerConnectionFragment")
-
-
     }
-    private fun changeFragment(fragmentName: String){
-        val fragment = when (fragmentName) {
+
+     fun changeFragment(fragmentName: String){
+        val fragment = getFragmentByName(fragmentName)
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment, fragment, fragmentName)
+        fragmentTransaction.commit()
+    }
+
+    private fun getFragmentByName(fragmentName : String) : Fragment {
+        return when (fragmentName) {
             "LoginFragment" -> LoginFragment()
             "RegistrationFragment" -> RegistrationFragment()
             "ChargerConnectionFragment" -> ChargerConnectionFragment()
             "RfidListFragment" -> RfidListFragment()
             "ChargingHistoryFragment" -> ChargingHistoryFragment()
-            // Add more cases for other fragments as needed
             else -> throw IllegalArgumentException("Unknown fragment name: $fragmentName")
         }
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment, fragment, fragmentName)
-        fragmentTransaction.commit()
     }
 
     @Deprecated("Deprecated in Java")
