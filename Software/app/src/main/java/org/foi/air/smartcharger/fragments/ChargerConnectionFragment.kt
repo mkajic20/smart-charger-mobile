@@ -14,7 +14,7 @@ import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.databinding.FragmentHomepageBinding
 
-class HomepageFragment : Fragment() {
+class ChargerConnectionFragment : Fragment() {
     private lateinit var binding : FragmentHomepageBinding
     private lateinit var nfcScanner: NfcScanner
     private var isNfcScanningEnabled = false

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import org.foi.air.core.interfaces.OnNewIntentListener
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
-import org.foi.air.smartcharger.fragments.HomepageFragment
+import org.foi.air.smartcharger.fragments.ChargerConnectionFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment, HomepageFragment())
+                .replace(R.id.fragment, ChargerConnectionFragment())
                 .commit()
         }
     }
