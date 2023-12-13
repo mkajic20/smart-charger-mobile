@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.cvFragment, HomepageFragment())
+                .replace(R.id.fragment, HomepageFragment())
                 .commit()
         }
     }

@@ -2,7 +2,6 @@ package org.foi.air.smartcharger.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +46,7 @@ class HomepageFragment : Fragment() {
                     btnConnectBg()
                 }
             } else {
-                Toast.makeText(requireContext(), "Please active NFC", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.please_active_nfc), Toast.LENGTH_SHORT).show()
             }
         }
         return binding.root
@@ -66,7 +65,6 @@ class HomepageFragment : Fragment() {
     fun fragmentHandleIntent(intent: Intent){
         if(isNfcScanningEnabled){
             nfcScanner.handleIntent(intent)
-            Log.i("nfcSuperSecretCode","Scanned: "+nfcScanner.getScannedTag())
         }
     }
 
