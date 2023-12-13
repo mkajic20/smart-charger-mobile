@@ -49,6 +49,7 @@
     <string name="delete_card_button">delete_card_button</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close Drawer</string>
+    <string name="header_name">%1$s %2$s</string>
 
 
 </resources>
