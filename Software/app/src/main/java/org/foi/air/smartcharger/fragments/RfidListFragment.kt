@@ -1,10 +1,10 @@
 package org.foi.air.smartcharger.fragments
 
 import ResponseListener
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +15,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nfc_scanner.NfcScanner
 import org.foi.air.api.models.NewRfidCardBody
 import org.foi.air.api.network.ApiService
 import org.foi.air.api.request_handlers.CreateCardRequestHandler
 import org.foi.air.api.request_handlers.GetRfidCardsForUserRequestHandler
 import org.foi.air.core.data_classes.RfidCard
+import org.foi.air.core.interfaces.OnNewIntentListener
 import org.foi.air.core.models.CreateCardResponseBody
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.RfidCardResponseBody
+import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.context.CardBodyModel
@@ -33,10 +36,19 @@ import org.foi.air.smartcharger.dialogs.AddNewRfidCardDialog
 class RfidListFragment : Fragment() {
 
     private lateinit var binding: FragmentRfidListBinding
+    private lateinit var nfcScanner: NfcScanner
+    private var isNfcScanningEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Auth.initialize(this)
+        (activity as MainActivity?)!!.setOnNewIntentListener(object : OnNewIntentListener {
+            override fun newIntent(intent: Intent?) {
+                if(intent != null){
+                    fragmentHandleIntent(intent)
+                }
+            }
+        })
     }
 
     private lateinit var newRecyclerView : RecyclerView
@@ -46,15 +58,12 @@ class RfidListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentRfidListBinding.inflate(inflater,container,false)
         ApiService.authToken = Auth.jwt!!
-
-        //get all cards for logged user
+        nfcScanner = NfcScanner(requireActivity())
         getAllCards()
         binding.btnRetryConnection.setOnClickListener{
             getAllCards()
-            Log.i("rfid", "click")
         }
 
         newRecyclerView = binding.rwRfidCards
@@ -62,7 +71,6 @@ class RfidListFragment : Fragment() {
 
         binding.ibAddCard.setOnClickListener{
             openDialog(R.layout.create_new_card_dialog)
-            //openPopup(R.layout.create_new_card_popup)
         }
 
         rfidCardList = arrayListOf()
@@ -71,6 +79,8 @@ class RfidListFragment : Fragment() {
     }
 
     private fun getAllCards(){
+        if(!Auth.isLoggedIn())
+            return
         val getRfidCardsForUserRequestHandler = GetRfidCardsForUserRequestHandler(Auth.userId!!.toInt())
         binding.tvServerError.visibility = View.INVISIBLE
         binding.btnRetryConnection.visibility = View.INVISIBLE
@@ -107,47 +117,76 @@ class RfidListFragment : Fragment() {
     }
 
     private fun openDialog(dialog: Int){
+        if(!Auth.isLoggedIn())
+            return
         val dialogLayout = AddNewRfidCardDialog(requireContext())
         dialogLayout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogLayout.show()
 
         if(dialog == R.layout.create_new_card_dialog){
-            val btnCreateCard = dialogLayout.findViewById<Button>(R.id.btnDeleteCard)
+            val btnCreateCard = dialogLayout.findViewById<Button>(R.id.btnAddCard)
+            val btnScanCard = dialogLayout.findViewById<Button>(R.id.btnScanCard)
             val cardName = dialogLayout.findViewById<EditText>(R.id.etCardName)
-            val cardValue = dialogLayout.findViewById<EditText>(R.id.etCardValue)
-            val errorText = dialogLayout.findViewById<TextView>(R.id.tvError)
+            val cardValue = dialogLayout.findViewById<TextView>(R.id.txtCardValue)
+            btnScanCard.setOnClickListener(){
+                if(nfcScanner.getNfcAdapterStatus()){
+                    isNfcScanningEnabled = !isNfcScanningEnabled
+                    if(isNfcScanningEnabled) btnScanCard.text = resources.getString(R.string.cancel_button_text)
+                    else btnCreateCard.text = resources.getString(R.string.scan_card)
+                } else {
+                    Toast.makeText(requireContext(),
+                        getString(R.string.please_active_nfc), Toast.LENGTH_SHORT).show()
+                }
+            }
+
             btnCreateCard.setOnClickListener{
+                if(cardValue.text.toString()==""){
+                    dialogLayout.findViewById<TextView>(R.id.tvError).text = resources.getString(R.string.please_scan_your_card_first)
+                    return@setOnClickListener
+                }
+
                 val newCardBody = NewRfidCardBody(
                     cardValue.text.toString(),
                     cardName.text.toString()
                 )
-                val loginRequestHandler = CreateCardRequestHandler(Auth.userId!!.toInt(), newCardBody)
-
-                loginRequestHandler.sendRequest(object: ResponseListener<CreateCardResponseBody>{
-                    override fun onSuccessfulResponse(response: CreateCardResponseBody) {
-                        val toast = Toast.makeText(this@RfidListFragment.context, response.message, Toast.LENGTH_LONG)
-                        toast.show()
-                        getAllCards()
-                        dialogLayout.dismiss()
-                    }
-
-                    override fun onErrorResponse(response: ErrorResponseBody) {
-                        errorText.text = response.message
-
-                    }
-
-                    override fun onApiConnectionFailure(t: Throwable) {
-                        errorText.text = resources.getString(R.string.cant_reach_server)
-                    }
-
-
-                })
+                createNewCard(newCardBody, dialogLayout)
             }
-
-
-    }
+        }
     }
 
+    private fun createNewCard(newCardBody: NewRfidCardBody, dialogLayout: AddNewRfidCardDialog) {
+        val errorText = dialogLayout.findViewById<TextView>(R.id.tvError)
+        val loginRequestHandler = CreateCardRequestHandler(Auth.userId!!.toInt(), newCardBody)
+        loginRequestHandler.sendRequest(object: ResponseListener<CreateCardResponseBody>{
+            override fun onSuccessfulResponse(response: CreateCardResponseBody) {
+                val toast = Toast.makeText(this@RfidListFragment.context, response.message, Toast.LENGTH_LONG)
+                toast.show()
+                getAllCards()
+                dialogLayout.dismiss()
+            }
+            override fun onErrorResponse(response: ErrorResponseBody) {
+                errorText.text = response.message
 
+            }
+            override fun onApiConnectionFailure(t: Throwable) {
+                errorText.text = resources.getString(R.string.cant_reach_server)
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        nfcScanner.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        nfcScanner.onPause()
+    }
+
+    fun fragmentHandleIntent(intent: Intent) {
+        if(isNfcScanningEnabled){
+            nfcScanner.handleIntent(intent)
+        }
+    }
 }
-
