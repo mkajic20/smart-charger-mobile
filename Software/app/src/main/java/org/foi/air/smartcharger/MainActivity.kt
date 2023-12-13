@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -46,8 +47,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navigationView.setCheckedItem(R.id.chargerConnectionItem)
+        val menu = navigationView.menu
+        val header = navigationView.getHeaderView(0)
+
 
         hamburgerIcon.setOnClickListener{
+            if(Auth.isLoggedIn()){
+                menu.findItem(R.id.registerItem).isVisible = false
+                menu.findItem(R.id.loginItem).isVisible = false
+                menu.findItem(R.id.rfidCardsItem).isVisible = true
+                menu.findItem(R.id.chargingHistoryItem).isVisible = true
+                menu.findItem(R.id.logoutItem).isVisible = true
+                header.findViewById<TextView>(R.id.tvHeaderName).text = getString(R.string.header_name, Auth.firstName, Auth.lastName)
+                header.findViewById<TextView>(R.id.tvHeaderEmail).text = "${Auth.email}"
+
+            }else{
+                menu.findItem(R.id.registerItem).isVisible = true
+                menu.findItem(R.id.loginItem).isVisible = true
+                menu.findItem(R.id.rfidCardsItem).isVisible = false
+                menu.findItem(R.id.chargingHistoryItem).isVisible = false
+                menu.findItem(R.id.logoutItem).isVisible = false
+                header.findViewById<TextView>(R.id.tvHeaderName).text = "SMART CHARGER"
+                header.findViewById<TextView>(R.id.tvHeaderEmail).text = ""
+            }
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
@@ -65,15 +87,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // Add more cases for other fragments as needed
             else -> throw IllegalArgumentException("Unknown fragment name: $fragmentName")
         }
-
         val fragmentManager = supportFragmentManager
-
         val fragmentTransaction = fragmentManager.beginTransaction()
-
         fragmentTransaction.replace(R.id.fragment, fragment, fragmentName)
-
         fragmentTransaction.commit()
     }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed(){
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){

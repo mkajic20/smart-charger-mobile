@@ -12,6 +12,7 @@ object Auth {
     var firstName : String? = ""
     var lastName : String?  = ""
     var userId : String?  = ""
+    var email : String? = ""
     var jwt : String? = ""
 
     fun initialize(context: Context){
@@ -30,6 +31,7 @@ object Auth {
         editor?.apply{
             putString("firstName", user.firstName)
             putString("lastName", user.lastName)
+            putString("email", user.email)
             putString("userId", userId)
             putString("jwt", jwt)
             apply()
@@ -40,6 +42,7 @@ object Auth {
         firstName = storedUserData?.getString("firstName", "")
         lastName = storedUserData?.getString("lastName" , "")
         userId = storedUserData?.getString("userId", "")
+        email = storedUserData?.getString("email", "")
         jwt = storedUserData?.getString("jwt" , "")
     }
     fun deleteData(){
@@ -49,7 +52,7 @@ object Auth {
         updateData()
     }
     fun isLoggedIn() : Boolean{
-        return firstName != "" && lastName != "" && userId != "" && jwt != ""
+        return firstName != "" && lastName != "" && userId != "" && email != "" && jwt != ""
     }
 
     private fun getUserId(jwt: String): String{
