@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import org.foi.air.api.models.LoginBody
-import org.foi.air.api.network.ApiService
 import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
@@ -22,10 +21,6 @@ import org.foi.air.smartcharger.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Auth.initialize(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +34,6 @@ class LoginFragment : Fragment() {
                 binding.txtPassword.text.toString()
             )
             loginUser(loginBody)
-            ApiService.authToken = Auth.jwt!!
         }
 
         binding.btnSwitchRegister.setOnClickListener{
@@ -66,6 +60,8 @@ class LoginFragment : Fragment() {
                 val toast = Toast.makeText(this@LoginFragment.context, "Successful log in.", Toast.LENGTH_LONG)
                 toast.show()
                 (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                val mainActivity = activity as MainActivity
+                mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {

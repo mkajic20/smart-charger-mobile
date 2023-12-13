@@ -16,12 +16,12 @@ import org.foi.air.core.models.SuccessfulLoginResponseBody
 import org.foi.air.core.models.SuccessfulRegisterResponseBody
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
+import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentRegistrationBinding
 import org.foi.air.smartcharger.validations.RegistrationValidations
 
 class RegistrationFragment : Fragment() {
     private lateinit var binding: FragmentRegistrationBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,9 +89,12 @@ class RegistrationFragment : Fragment() {
 
         loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
             override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
+                Auth.saveUserData(response.user, response.jwt)
                 val toast = Toast.makeText(this@RegistrationFragment.context, "Successful register.", Toast.LENGTH_LONG)
                 toast.show()
                 (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                val mainActivity = activity as MainActivity
+                mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {

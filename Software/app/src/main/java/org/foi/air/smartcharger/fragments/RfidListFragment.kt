@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.foi.air.api.models.NewRfidCardBody
-import org.foi.air.api.network.ApiService
 import org.foi.air.api.request_handlers.CreateCardRequestHandler
 import org.foi.air.api.request_handlers.GetRfidCardsForUserRequestHandler
 import org.foi.air.core.data_classes.RfidCard
@@ -34,11 +33,6 @@ class RfidListFragment : Fragment() {
 
     private lateinit var binding: FragmentRfidListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Auth.initialize(this)
-    }
-
     private lateinit var newRecyclerView : RecyclerView
     private lateinit var rfidCardList : ArrayList<CardBodyModel>
 
@@ -46,15 +40,13 @@ class RfidListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentRfidListBinding.inflate(inflater,container,false)
-        ApiService.authToken = Auth.jwt!!
 
-        //get all cards for logged user
+        Log.i("login", Auth.jwt.toString())
+        //list all cards for logged user
         getAllCards()
         binding.btnRetryConnection.setOnClickListener{
             getAllCards()
-            Log.i("rfid", "click")
         }
 
         newRecyclerView = binding.rwRfidCards
@@ -62,7 +54,6 @@ class RfidListFragment : Fragment() {
 
         binding.ibAddCard.setOnClickListener{
             openDialog(R.layout.create_new_card_dialog)
-            //openPopup(R.layout.create_new_card_popup)
         }
 
         rfidCardList = arrayListOf()

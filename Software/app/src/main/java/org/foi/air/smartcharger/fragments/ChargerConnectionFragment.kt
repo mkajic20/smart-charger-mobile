@@ -7,17 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import org.foi.air.smartcharger.R
-import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentChargerConnectionBinding
 
 
 class ChargerConnectionFragment : Fragment() {
 
     private lateinit var binding: FragmentChargerConnectionBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Auth.initialize(this)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -2,6 +2,7 @@ package org.foi.air.smartcharger
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,7 +25,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var hamburgerIcon: ImageView
     lateinit var navigationView : NavigationView
-    private var currentFragment : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 menu.findItem(R.id.rfidCardsItem).isVisible = false
                 menu.findItem(R.id.chargingHistoryItem).isVisible = false
                 menu.findItem(R.id.logoutItem).isVisible = false
-                header.findViewById<TextView>(R.id.tvHeaderName).text = "SMART CHARGER"
+                header.findViewById<TextView>(R.id.tvHeaderName).text = getString(R.string.app_name).uppercase()
                 header.findViewById<TextView>(R.id.tvHeaderEmail).text = ""
             }
             drawerLayout.openDrawer(GravityCompat.START)
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        if(currentFragment != item.title.toString()){
+        if(navigationView.checkedItem!!.title != item.title.toString()){
             when(item.getItemId()){
                 R.id.chargerConnectionItem-> changeFragment("ChargerConnectionFragment")
                 R.id.registerItem-> changeFragment("RegistrationFragment")
@@ -130,12 +130,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.logoutItem-> {
                     Auth.deleteData()
                     changeFragment("LoginFragment")
-
+                    updateMenuVisibilityIfUserLoggedIn()
+                    Handler().postDelayed({
+                        navigationView.setCheckedItem(R.id.loginItem)
+                    }, 200)
                 }
             }
         }
-
-        currentFragment = item.title.toString()
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
