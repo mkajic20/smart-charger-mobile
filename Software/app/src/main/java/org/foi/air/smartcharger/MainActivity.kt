@@ -21,6 +21,7 @@ import org.foi.air.smartcharger.fragments.LoginFragment
 import org.foi.air.smartcharger.fragments.RegistrationFragment
 import org.foi.air.smartcharger.fragments.RfidListFragment
 
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding : ActivityMainBinding
