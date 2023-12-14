@@ -36,7 +36,7 @@
     <string name="login_button">Login</string>
     <string name="register_button">Register</string>
     <string name="card_value">Card value</string>
-    <string name="create_card_button">Create card</string>
+    <string name="create_card_button">Add card</string>
     <string name="card_name">Card name</string>
     <string name="add_new_card_header">Add new card</string>
     <string name="delete_card_question">Are you sure you want to delete card \"Druga kartica\"</string>
@@ -51,6 +51,10 @@
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close Drawer</string>
     <string name="header_name">%1$s %2$s</string>
+    <string name="scan_card">Scan card</string>
+    <string name="please_active_nfc">Please active NFC</string>
+    <string name="please_scan_your_card_first">Please scan your card first!</string>
+
 
 
 </resources>

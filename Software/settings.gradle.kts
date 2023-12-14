@@ -18,3 +18,4 @@ include(":app")
 include(":api")
 include(":core")
 
+include(":nfc_scanner")
