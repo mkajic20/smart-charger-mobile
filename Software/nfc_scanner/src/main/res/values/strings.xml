@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="this_device_doesn_t_support_nfc">This device doesn\'t support NFC</string>
+</resources>
