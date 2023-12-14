@@ -4,7 +4,6 @@ import ResponseListener
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,8 +40,6 @@ class RfidListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRfidListBinding.inflate(inflater,container,false)
-
-        Log.i("login", Auth.jwt.toString())
         //list all cards for logged user
         getAllCards()
         binding.btnRetryConnection.setOnClickListener{
