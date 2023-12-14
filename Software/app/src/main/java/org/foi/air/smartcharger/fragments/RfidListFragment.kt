@@ -36,6 +36,9 @@ class RfidListFragment : Fragment() {
 
     private lateinit var binding: FragmentRfidListBinding
     private lateinit var nfcScanner: NfcScanner
+    private lateinit var cardValue: TextView
+    private lateinit var errorText: TextView
+    private lateinit var btnScanCard: Button
     private var isNfcScanningEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,23 +125,24 @@ class RfidListFragment : Fragment() {
 
         if(dialog == R.layout.create_new_card_dialog){
             val btnCreateCard = dialogLayout.findViewById<Button>(R.id.btnAddCard)
-            val btnScanCard = dialogLayout.findViewById<Button>(R.id.btnScanCard)
+            btnScanCard = dialogLayout.findViewById<Button>(R.id.btnScanCard)
             val cardName = dialogLayout.findViewById<EditText>(R.id.etCardName)
-            val cardValue = dialogLayout.findViewById<TextView>(R.id.txtCardValue)
+            cardValue = dialogLayout.findViewById<TextView>(R.id.txtCardValue)
+            errorText = dialogLayout.findViewById<TextView>(R.id.tvError)
             btnScanCard.setOnClickListener(){
                 if(nfcScanner.getNfcAdapterStatus()){
+                    errorText.text = ""
                     isNfcScanningEnabled = !isNfcScanningEnabled
                     if(isNfcScanningEnabled) btnScanCard.text = resources.getString(R.string.cancel_button_text)
-                    else btnCreateCard.text = resources.getString(R.string.scan_card)
+                    else btnScanCard.text = resources.getString(R.string.scan_card)
                 } else {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.please_active_nfc), Toast.LENGTH_SHORT).show()
+                    errorText.text = getString(R.string.please_active_nfc)
                 }
             }
 
             btnCreateCard.setOnClickListener{
                 if(cardValue.text.toString()==""){
-                    dialogLayout.findViewById<TextView>(R.id.tvError).text = resources.getString(R.string.please_scan_your_card_first)
+                    errorText.text = resources.getString(R.string.please_scan_your_card_first)
                     return@setOnClickListener
                 }
 
@@ -152,7 +156,6 @@ class RfidListFragment : Fragment() {
     }
 
     private fun createNewCard(newCardBody: NewRfidCardBody, dialogLayout: AddNewRfidCardDialog) {
-        val errorText = dialogLayout.findViewById<TextView>(R.id.tvError)
         val loginRequestHandler = CreateCardRequestHandler(Auth.userId!!.toInt(), newCardBody)
         loginRequestHandler.sendRequest(object: ResponseListener<CreateCardResponseBody>{
             override fun onSuccessfulResponse(response: CreateCardResponseBody) {
@@ -184,6 +187,14 @@ class RfidListFragment : Fragment() {
     fun fragmentHandleIntent(intent: Intent) {
         if(isNfcScanningEnabled){
             nfcScanner.handleIntent(intent)
+            cardScanned(nfcScanner.getScannedTag())
         }
+    }
+
+    private fun cardScanned(tag: String?) {
+        if(tag==null) return
+        cardValue.text = tag
+        isNfcScanningEnabled = false
+        btnScanCard.text = resources.getString(R.string.scan_card)
     }
 }
