@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
 
-    private const val BASE_URL = "http://smartcharger-dev.eba-gdmzsi2g.us-east-1.elasticbeanstalk.com"
+    private const val BASE_URL = "https://baccboysapi.onrender.com/"
 
 
     var authToken : String = ""
