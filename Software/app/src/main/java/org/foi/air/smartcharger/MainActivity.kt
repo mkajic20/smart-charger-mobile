@@ -1,5 +1,6 @@
 package org.foi.air.smartcharger
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import org.foi.air.smartcharger.context.Auth
+import org.foi.air.core.interfaces.OnNewIntentListener
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
 import org.foi.air.smartcharger.fragments.ChargerConnectionFragment
 import org.foi.air.smartcharger.fragments.ChargingHistoryFragment
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var hamburgerIcon: ImageView
     lateinit var navigationView : NavigationView
+    private var mOnNewIntentListener: OnNewIntentListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -138,6 +141,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+        return true}
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        mOnNewIntentListener?.newIntent(intent)
+    }
+
+    fun setOnNewIntentListener(onNewIntentListener: OnNewIntentListener?){
+        mOnNewIntentListener = onNewIntentListener
     }
 }

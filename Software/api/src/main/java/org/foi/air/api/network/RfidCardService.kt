@@ -15,8 +15,6 @@ interface RfidCardService {
     fun getAllCards(@Path("userId") userId: Int): Call<ResponseBody>
     @POST("/api/users/{userId}/cards")
     fun createCard(@Path("userId") userId: Int, @Body rfidCard: NewRfidCardBody): Call<ResponseBody>
-
     @DELETE("/api/users/{userId}/cards/{cardId}")
     fun deleteCard(@Path("userId") userId: Int, @Path("cardId") cardId: Int): Call<ResponseBody>
-
 }
