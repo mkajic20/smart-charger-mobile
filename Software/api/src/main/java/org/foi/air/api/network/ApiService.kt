@@ -7,10 +7,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
 
-    private const val BASE_URL = "http://10.0.2.2:5294"
+    private const val BASE_URL = "http://baccboysapi.onrender.com/"
 
 
-    lateinit var authToken : String
+    var authToken : String = ""
 
     private val interceptor = Interceptor {
         chain ->

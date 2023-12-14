@@ -33,7 +33,8 @@
     <string name="validation_firstname">Name must contain at least 1 letter</string>
 
     <string name="rfid_list_title">RFID cards</string>
-    <string name="login_button">LOGIN</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Register</string>
     <string name="card_value">Card value</string>
     <string name="create_card_button">Add card</string>
     <string name="card_name">Card name</string>
@@ -47,6 +48,9 @@
     <string name="header_background">header_background</string>
     <string name="hamburger_menu_icon">hamburger_menu_icon</string>
     <string name="delete_card_button">delete_card_button</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+    <string name="header_name">%1$s %2$s</string>
     <string name="scan_card">Scan card</string>
     <string name="please_active_nfc">Please active NFC</string>
     <string name="please_scan_your_card_first">Please scan your card first!</string>

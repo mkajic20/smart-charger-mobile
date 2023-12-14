@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nfc_scanner.NfcScanner
 import org.foi.air.api.models.NewRfidCardBody
-import org.foi.air.api.network.ApiService
 import org.foi.air.api.request_handlers.CreateCardRequestHandler
 import org.foi.air.api.request_handlers.GetRfidCardsForUserRequestHandler
 import org.foi.air.core.data_classes.RfidCard
@@ -41,7 +40,6 @@ class RfidListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Auth.initialize(this)
         (activity as MainActivity?)!!.setOnNewIntentListener(object : OnNewIntentListener {
             override fun newIntent(intent: Intent?) {
                 if(intent != null){
@@ -59,7 +57,6 @@ class RfidListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRfidListBinding.inflate(inflater,container,false)
-        ApiService.authToken = Auth.jwt!!
         nfcScanner = NfcScanner(requireActivity())
         getAllCards()
         binding.btnRetryConnection.setOnClickListener{

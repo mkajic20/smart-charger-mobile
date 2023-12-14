@@ -12,10 +12,10 @@ import com.example.nfc_scanner.NfcScanner
 import org.foi.air.core.interfaces.OnNewIntentListener
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
-import org.foi.air.smartcharger.databinding.FragmentHomepageBinding
+import org.foi.air.smartcharger.databinding.FragmentChargerConnectionBinding
 
 class ChargerConnectionFragment : Fragment() {
-    private lateinit var binding : FragmentHomepageBinding
+    private lateinit var binding : FragmentChargerConnectionBinding
     private lateinit var nfcScanner: NfcScanner
     private var isNfcScanningEnabled = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +33,7 @@ class ChargerConnectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomepageBinding.inflate(layoutInflater)
+        binding = FragmentChargerConnectionBinding.inflate(layoutInflater)
         nfcScanner = NfcScanner(requireActivity())
 
         binding.btnConnectionButton.setOnClickListener()
@@ -76,7 +76,7 @@ class ChargerConnectionFragment : Fragment() {
     }
 
     private fun btnConnectBg(){
-        binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_button)
+        binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
         binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
         binding.tvInstructions.text = resources.getString(R.string.instructions_before_connection)
         binding.tvStatus.text = ""

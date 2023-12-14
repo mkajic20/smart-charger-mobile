@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.nfc_scanner"
+    namespace = "org.foi.hr.nfc_scanner"
     compileSdk = 33
 
     defaultConfig {

@@ -8,6 +8,7 @@ import android.nfc.Tag
 import android.nfc.tech.MifareClassic
 import android.util.Log
 import android.widget.Toast
+import org.foi.hr.nfc_scanner.R
 
 class NfcScanner(private val activity: Activity) {
     private var nfcAdapter: NfcAdapter? = null

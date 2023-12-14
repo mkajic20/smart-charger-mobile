@@ -7,11 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import org.foi.air.api.models.LoginBody
-import org.foi.air.api.network.ApiService
 import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentLoginBinding
@@ -20,10 +21,6 @@ import org.foi.air.smartcharger.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Auth.initialize(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +34,21 @@ class LoginFragment : Fragment() {
                 binding.txtPassword.text.toString()
             )
             loginUser(loginBody)
-            ApiService.authToken = Auth.jwt!!
+        }
+
+        binding.btnSwitchRegister.setOnClickListener{
+            switchToRegisterFragment()
         }
 
         return binding.root
     }
+
+    private fun switchToRegisterFragment() {
+        (requireActivity() as MainActivity).changeFragment("RegistrationFragment")
+        val mainActivity = activity as MainActivity
+        mainActivity.navigationView.setCheckedItem(R.id.registerItem)
+    }
+
     private fun loginUser(loginBody: LoginBody) {
         val loginRequestHandler = LoginRequestHandler(loginBody)
 
@@ -50,6 +57,11 @@ class LoginFragment : Fragment() {
                 binding.tvEmailError.text = resources.getString(R.string.login_succeeded)
                 binding.tvPasswordError.text = resources.getString(R.string.login_succeeded)
                 Auth.saveUserData(response.user, response.jwt)
+                val toast = Toast.makeText(this@LoginFragment.context, "Successful log in.", Toast.LENGTH_LONG)
+                toast.show()
+                (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                val mainActivity = activity as MainActivity
+                mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
