@@ -7,8 +7,6 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.MifareClassic
 import android.util.Log
-import android.widget.Toast
-import org.foi.hr.nfc_scanner.R
 
 class NfcScanner(private val activity: Activity) {
     private var nfcAdapter: NfcAdapter? = null
@@ -24,10 +22,6 @@ class NfcScanner(private val activity: Activity) {
         try {
             nfcAdapter = NfcAdapter.getDefaultAdapter(activity)
 
-            if(nfcAdapter?.isEnabled!!){
-                Toast.makeText(activity.baseContext,
-                    activity.baseContext.getString(R.string.this_device_doesn_t_support_nfc),Toast.LENGTH_SHORT).show()
-            }
             val intent = Intent(activity, javaClass).apply {
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             }
@@ -80,7 +74,11 @@ class NfcScanner(private val activity: Activity) {
     }
 
     fun getNfcAdapterStatus(): Boolean {
-        if (nfcAdapter != null && nfcAdapter!!.isEnabled) return true
+        if (nfcAdapter != null && nfcAdapter!!.isEnabled) {
+            onResume()
+            return true
+        }
+        onPause()
         return false
     }
 }

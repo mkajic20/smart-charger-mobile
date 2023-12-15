@@ -52,7 +52,7 @@
     <string name="close_drawer">Close Drawer</string>
     <string name="header_name">%1$s %2$s</string>
     <string name="scan_card">Scan card</string>
-    <string name="please_active_nfc">Please active NFC</string>
+    <string name="please_active_nfc">Please activate NFC</string>
     <string name="please_scan_your_card_first">Please scan your card first!</string>
 
 
