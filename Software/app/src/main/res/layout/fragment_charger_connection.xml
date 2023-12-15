@@ -79,7 +79,7 @@
         <Button
             android:id="@+id/btnConnectionButton"
             android:layout_width="151dp"
-            android:layout_height="49dp"
+            android:layout_height="52dp"
 
             android:layout_marginTop="15dp"
 
