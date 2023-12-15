@@ -37,7 +37,7 @@
         <EditText
             android:id="@+id/txt_first_name"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="52dp"
             android:layout_marginTop="75dp"
             android:background="@drawable/custom_input_field"
             android:drawableStart="@drawable/ic_person"
@@ -45,9 +45,9 @@
             android:hint="@string/input_field_first_name"
             android:inputType="text"
             android:paddingStart="15dp"
-            android:textStyle="bold"
-            android:textColorHint="@color/gray"
             android:textColor="@color/gray"
+            android:textColorHint="@color/gray"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bg_register_wave" />
@@ -65,17 +65,17 @@
         <EditText
             android:id="@+id/txt_last_name"
             android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="25dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/custom_input_field"
             android:drawableStart="@drawable/ic_person"
             android:drawablePadding="8dp"
             android:hint="@string/input_field_last_name"
             android:inputType="text"
             android:paddingStart="15dp"
-            android:textStyle="bold"
-            android:textColorHint="@color/gray"
             android:textColor="@color/gray"
+            android:textColorHint="@color/gray"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_first_name" />
@@ -93,16 +93,16 @@
         <EditText
             android:id="@+id/txt_email"
             android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="25dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/custom_input_field"
             android:drawableStart="@drawable/ic_email"
             android:drawablePadding="8dp"
             android:hint="@string/input_field_email"
             android:inputType="textEmailAddress"
-            android:textColorHint="@color/gray"
-            android:textColor="@color/black"
             android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -122,27 +122,28 @@
             android:id="@+id/txt_password_layout_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
+            android:layout_marginTop="40dp"
             app:hintEnabled="false"
-            android:layout_marginTop="25dp"
-            app:passwordToggleTint="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_email">
+            app:layout_constraintTop_toBottomOf="@+id/txt_email"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/gray">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txt_password"
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/custom_input_field"
                 android:drawableStart="@drawable/ic_key"
                 android:drawablePadding="8dp"
+                android:hint="@string/input_field_password"
                 android:inputType="textPassword"
                 android:paddingStart="15dp"
-                android:hint="@string/input_field_password"
-                android:textStyle="bold"
-                android:textColorHint="@color/gray"
                 android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_email" />
@@ -162,27 +163,27 @@
             android:id="@+id/txt_confirm_password_layout_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/gray"
+            android:layout_marginTop="40dp"
             app:hintEnabled="false"
-            android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_password_layout_wrapper"
-            >
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/gray">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txt_confirm_password"
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="52dp"
                 android:background="@drawable/custom_input_field"
                 android:drawableStart="@drawable/ic_key"
                 android:drawablePadding="8dp"
                 android:hint="@string/input_field_confirm_password"
                 android:inputType="textPassword"
                 android:paddingStart="15dp"
-                android:textStyle="bold"
+                android:textColor="@color/gray"
                 android:textColorHint="@color/gray"
-                android:textColor="@color/gray"/>
+                android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -198,9 +199,9 @@
         <Button
             android:id="@+id/btn_register"
             android:layout_width="151dp"
-            android:layout_height="49dp"
+            android:layout_height="52dp"
 
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/custom_blue_button"
 
             android:text="@string/lowercase_register"
@@ -208,7 +209,7 @@
             app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_confirm_password_layout_wrapper"/>
+            app:layout_constraintTop_toBottomOf="@+id/txt_confirm_password_layout_wrapper" />
 
         <TextView
             android:id="@+id/lb_error_messages"
@@ -256,13 +257,15 @@
         <Button
             android:id="@+id/btnSwitchLogin"
             android:layout_width="151dp"
-            android:layout_height="49dp"
+            android:layout_height="52dp"
 
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
             android:background="@drawable/custom_white_button"
             android:text="@string/login_button"
             android:textColor="@color/black"
             app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvOr" />
