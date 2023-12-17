@@ -35,7 +35,6 @@ class LoginFragment : Fragment() {
 
         var loginHandler = EmailPasswordLoginHandler()
 
-        Auth.initialize(this)
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
