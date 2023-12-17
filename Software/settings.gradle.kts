@@ -17,5 +17,5 @@ rootProject.name = "Smart Charger"
 include(":app")
 include(":api")
 include(":core")
-
+include(":login_email_password")
 include(":nfc_scanner")

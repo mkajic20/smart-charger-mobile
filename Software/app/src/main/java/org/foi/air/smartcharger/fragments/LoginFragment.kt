@@ -10,12 +10,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import org.foi.air.api.models.LoginBody
 import org.foi.air.api.request_handlers.LoginRequestHandler
+import org.foi.air.core.login.LoginHandler
+import org.foi.air.core.login.LoginOutcomeListener
+import org.foi.air.core.login.LoginUserData
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.login_email_password.EmailPasswordLoginHandler
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentLoginBinding
+import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
@@ -28,12 +33,14 @@ class LoginFragment : Fragment() {
     ): View {
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
+        var loginHandler = EmailPasswordLoginHandler()
+
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
                 binding.txtPassword.text.toString()
             )
-            loginUser(loginBody)
+            loginUser(loginHandler, loginBody)
         }
 
         binding.btnSwitchRegister.setOnClickListener{
@@ -49,11 +56,12 @@ class LoginFragment : Fragment() {
         mainActivity.navigationView.setCheckedItem(R.id.registerItem)
     }
 
-    private fun loginUser(loginBody: LoginBody) {
-        val loginRequestHandler = LoginRequestHandler(loginBody)
-
-        loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
+    fun loginUser(
+        loginHandler: LoginHandler,
+        loginBody: LoginBody,
+    ) {
+        loginHandler.handleLogin(loginBody.email, loginBody.password, object : LoginOutcomeListener {
+            override fun onSuccessfulLogin(response: SuccessfulLoginResponseBody) {
                 binding.tvEmailError.text = resources.getString(R.string.login_succeeded)
                 binding.tvPasswordError.text = resources.getString(R.string.login_succeeded)
                 Auth.saveUserData(response.user, response.jwt)
@@ -64,7 +72,7 @@ class LoginFragment : Fragment() {
                 mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
             }
 
-            override fun onErrorResponse(response: ErrorResponseBody) {
+            override fun onFailedLogin(response: ErrorResponseBody) {
                 Log.i("login","Error: "+response.error)
                 errorResponse(response.error)
             }
@@ -74,7 +82,6 @@ class LoginFragment : Fragment() {
                 binding.tvEmailError.text = resources.getString(R.string.cant_reach_server)
                 binding.tvPasswordError.text = resources.getString(R.string.cant_reach_server)
             }
-
         })
     }
 
