@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import org.foi.air.api.models.LoginBody
 import org.foi.air.api.models.RegistrationBody
 import org.foi.air.api.request_handlers.LoginRequestHandler
@@ -13,13 +14,14 @@ import org.foi.air.api.request_handlers.RegistrationRequestHandler
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
 import org.foi.air.core.models.SuccessfulRegisterResponseBody
+import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
+import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentRegistrationBinding
 import org.foi.air.smartcharger.validations.RegistrationValidations
 
 class RegistrationFragment : Fragment() {
     private lateinit var binding: FragmentRegistrationBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,8 +71,17 @@ class RegistrationFragment : Fragment() {
                 }
             })
         }
+        binding.btnSwitchLogin.setOnClickListener{
+            switchToLoginFragment()
+        }
 
         return view
+    }
+
+    private fun switchToLoginFragment() {
+        (requireActivity() as MainActivity).changeFragment("LoginFragment")
+        val mainActivity = activity as MainActivity
+        mainActivity.navigationView.setCheckedItem(R.id.loginItem)
     }
 
     private fun loginUser(loginBody: LoginBody) {
@@ -78,7 +89,12 @@ class RegistrationFragment : Fragment() {
 
         loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
             override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
-                TODO("Implement navigation to another page")
+                Auth.saveUserData(response.user, response.jwt)
+                val toast = Toast.makeText(this@RegistrationFragment.context, "Successful register.", Toast.LENGTH_LONG)
+                toast.show()
+                (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                val mainActivity = activity as MainActivity
+                mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {

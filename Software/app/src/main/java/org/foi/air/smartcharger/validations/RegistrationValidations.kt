@@ -17,7 +17,7 @@ class RegistrationValidations {
     }
 
     fun passwordValidation(password: String): Boolean{
-        return password.trim().length>6
+        return password.trim().length>=6
     }
 
     fun confirmPasswordValidation(password: String, confirmPassword: String): Boolean{
