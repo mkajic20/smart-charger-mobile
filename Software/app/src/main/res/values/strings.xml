@@ -54,6 +54,13 @@
     <string name="scan_card">Scan card</string>
     <string name="please_active_nfc">Please activate NFC</string>
     <string name="please_scan_your_card_first">Please scan your card first!</string>
+    <string name="charger_1">Charger 1</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="charger_box_image">Charger Box image</string>
+    <string name="status_not_charging">Status: Not charging</string>
+    <string name="charging_time">Charging time:</string>
+    <string name="consumed">Consumed:</string>
+    <string name="button_for_changing_state">Button for changing state</string>
 
 
 </resources>
