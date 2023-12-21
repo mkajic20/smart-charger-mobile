@@ -16,6 +16,7 @@ import org.foi.air.smartcharger.context.Auth
 import org.foi.air.core.interfaces.OnNewIntentListener
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
 import org.foi.air.smartcharger.fragments.ChargerConnectionFragment
+import org.foi.air.smartcharger.fragments.ChargerSimulatorFragment
 import org.foi.air.smartcharger.fragments.ChargingHistoryFragment
 import org.foi.air.smartcharger.fragments.LoginFragment
 import org.foi.air.smartcharger.fragments.RegistrationFragment
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "LoginFragment" -> LoginFragment()
             "RegistrationFragment" -> RegistrationFragment()
             "ChargerConnectionFragment" -> ChargerConnectionFragment()
+            "ChargerSimulatorFragment" -> ChargerSimulatorFragment()
             "RfidListFragment" -> RfidListFragment()
             "ChargingHistoryFragment" -> ChargingHistoryFragment()
             else -> throw IllegalArgumentException("Unknown fragment name: $fragmentName")

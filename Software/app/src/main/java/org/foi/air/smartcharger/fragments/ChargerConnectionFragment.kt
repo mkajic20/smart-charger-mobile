@@ -64,6 +64,7 @@ class ChargerConnectionFragment : Fragment() {
     fun fragmentHandleIntent(intent: Intent){
         if(isNfcScanningEnabled){
             nfcScanner.handleIntent(intent)
+            (requireActivity() as MainActivity).changeFragment("ChargerSimulatorFragment")
         }
     }
 
