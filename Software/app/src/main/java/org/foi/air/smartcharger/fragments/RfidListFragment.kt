@@ -21,7 +21,7 @@ import org.foi.air.api.request_handlers.CreateCardRequestHandler
 import org.foi.air.api.request_handlers.GetRfidCardsForUserRequestHandler
 import org.foi.air.core.data_classes.RfidCard
 import org.foi.air.core.interfaces.OnNewIntentListener
-import org.foi.air.core.models.CreateCardResponseBody
+import org.foi.air.core.models.CardResponseBody
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.RfidCardResponseBody
 import org.foi.air.smartcharger.MainActivity
@@ -157,8 +157,8 @@ class RfidListFragment : Fragment() {
 
     private fun createNewCard(newCardBody: NewRfidCardBody, dialogLayout: AddNewRfidCardDialog) {
         val loginRequestHandler = CreateCardRequestHandler(Auth.userId!!.toInt(), newCardBody)
-        loginRequestHandler.sendRequest(object: ResponseListener<CreateCardResponseBody>{
-            override fun onSuccessfulResponse(response: CreateCardResponseBody) {
+        loginRequestHandler.sendRequest(object: ResponseListener<CardResponseBody>{
+            override fun onSuccessfulResponse(response: CardResponseBody) {
                 val toast = Toast.makeText(this@RfidListFragment.context, response.message, Toast.LENGTH_LONG)
                 toast.show()
                 getAllCards()
