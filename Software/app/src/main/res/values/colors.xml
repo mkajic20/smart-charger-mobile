@@ -6,4 +6,5 @@
     <color name="lightgray">#D6D6D6</color>
     <color name="rfidCardColor">#006D90</color>
     <color name="errorColor">#540500</color>
+    <color name="orange">#DF7325</color>
 </resources>

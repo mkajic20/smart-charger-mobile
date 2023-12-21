@@ -3,6 +3,7 @@ package org.foi.air.smartcharger.fragments
 import ResponseListener
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ class ChargerConnectionFragment : Fragment() {
     private lateinit var binding : FragmentChargerConnectionBinding
     private lateinit var nfcScanner: NfcScanner
     private var isNfcScanningEnabled = false
+    private var countDownTimer: CountDownTimer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as MainActivity?)!!.setOnNewIntentListener(object : OnNewIntentListener{
@@ -45,8 +47,10 @@ class ChargerConnectionFragment : Fragment() {
             if(nfcScanner.getNfcAdapterStatus()){
                 isNfcScanningEnabled = !isNfcScanningEnabled
                 if (isNfcScanningEnabled) {
+                    startTimer()
                     btnCancelBg()
                 } else {
+                    stopTimer()
                     btnConnectBg()
                 }
             } else {
@@ -69,16 +73,18 @@ class ChargerConnectionFragment : Fragment() {
     fun fragmentHandleIntent(intent: Intent){
         if(isNfcScanningEnabled){
             nfcScanner.handleIntent(intent)
+            stopTimer()
             checkCard(nfcScanner.getScannedTag())
         }
     }
 
     private fun checkCard(cardValue: String?) {
+        isNfcScanningEnabled=false
         if(cardValue!=null){
             val verifyCardHandler = VerifyCardRequestHandler(cardValue)
             verifyCardHandler.sendRequest(object: ResponseListener<CardResponseBody>{
                 override fun onSuccessfulResponse(response: CardResponseBody) {
-                    Log.i("scannedCard", "Value: $cardValue")
+                    Log.i("scannedCard", "Value: ${response.rfidCard.id}")
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {
@@ -122,12 +128,13 @@ class ChargerConnectionFragment : Fragment() {
         binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_error))
     }
 
-
     private fun btnCancelBg(){
         binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_buttonbackground_cancel)
         binding.btnConnectionButton.text = resources.getString(R.string.cancel_button_text)
         binding.tvStatus.text = resources.getString(R.string.status_waiting_card)
         binding.tvInstructions.text = resources.getString(R.string.instructions_rfid_connection)
+        binding.tvStatus.setTextColor(resources.getColor(R.color.black))
+        binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard))
     }
 
     private fun btnConnectBg(){
@@ -135,5 +142,31 @@ class ChargerConnectionFragment : Fragment() {
         binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
         binding.tvInstructions.text = resources.getString(R.string.instructions_before_connection)
         binding.tvStatus.text = ""
+        binding.tvStatus.setTextColor(resources.getColor(R.color.black))
+        binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard))
+    }
+
+    private fun startTimer() {
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(60000, 1000) { // 1 minute timer
+            override fun onTick(millisUntilFinished: Long) {
+                //No change
+            }
+
+            override fun onFinish() {
+                isNfcScanningEnabled = false
+                binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
+                binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
+                binding.tvInstructions.text =
+                    getString(R.string.rfid_card_not_detected_within_the_allotted_time)
+                binding.tvStatus.setTextColor(resources.getColor(R.color.orange))
+                binding.tvStatus.text = getString(R.string.status_scan_timeout)
+                binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_timeout))
+            }
+        }.start()
+    }
+
+    private fun stopTimer() {
+        countDownTimer?.cancel()
     }
 }
