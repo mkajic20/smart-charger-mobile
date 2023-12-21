@@ -1,14 +1,19 @@
 package org.foi.air.smartcharger.fragments
 
+import ResponseListener
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.example.nfc_scanner.NfcScanner
+import org.foi.air.api.request_handlers.VerifyCardRequestHandler
 import org.foi.air.core.interfaces.OnNewIntentListener
+import org.foi.air.core.models.CardResponseBody
+import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.databinding.FragmentChargerConnectionBinding
@@ -64,7 +69,30 @@ class ChargerConnectionFragment : Fragment() {
     fun fragmentHandleIntent(intent: Intent){
         if(isNfcScanningEnabled){
             nfcScanner.handleIntent(intent)
+            checkCard(nfcScanner.getScannedTag())
         }
+    }
+
+    private fun checkCard(cardValue: String?) {
+        if(cardValue!=null){
+            val verifyCardHandler = VerifyCardRequestHandler(cardValue)
+            verifyCardHandler.sendRequest(object: ResponseListener<CardResponseBody>{
+                override fun onSuccessfulResponse(response: CardResponseBody) {
+                    Log.i("scannedCard", "Value: $cardValue")
+                }
+
+                override fun onErrorResponse(response: ErrorResponseBody) {
+                    Log.i("scannedCard", "Some error: $response")
+                }
+
+                override fun onApiConnectionFailure(t: Throwable) {
+                    Log.i("scannedCard", "Connection problem: $t")
+                }
+
+            })
+            return
+        }
+        Log.i("scannedCard", "We got null")
     }
 
     private fun btnCancelBg(){
