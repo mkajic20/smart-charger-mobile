@@ -13,4 +13,6 @@ interface AuthenticationService {
     fun registerUser(@Body registerBody: RegistrationBody): Call<ResponseBody>
     @POST("/api/login")
     fun loginUser(@Body loginBody: LoginBody): Call<ResponseBody>
+    @POST("/api/login/google")
+    fun googleLoginUser(@Body accessToken: String): Call<ResponseBody>
 }
