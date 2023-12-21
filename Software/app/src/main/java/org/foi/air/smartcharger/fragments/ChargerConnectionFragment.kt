@@ -82,18 +82,46 @@ class ChargerConnectionFragment : Fragment() {
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {
-                    Log.i("scannedCard", "Some error: $response")
+                    errorUI()
                 }
 
                 override fun onApiConnectionFailure(t: Throwable) {
-                    Log.i("scannedCard", "Connection problem: $t")
+                    connectionErrorUI(t)
                 }
 
             })
             return
         }
-        Log.i("scannedCard", "We got null")
+        nullError()
     }
+
+    private fun errorUI(){
+        binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
+        binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
+        binding.tvInstructions.text = getString(R.string.your_card_is_not_registered)
+        binding.tvStatus.setTextColor(resources.getColor(R.color.errorColor))
+        binding.tvStatus.text = getString(R.string.status_invalid_card)
+        binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_error))
+    }
+
+    private fun connectionErrorUI(t: Throwable) {
+        binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_error))
+        binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
+        binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
+        binding.tvInstructions.text = t.message
+        binding.tvStatus.setTextColor(resources.getColor(R.color.errorColor))
+        binding.tvStatus.text = resources.getString(R.string.status_service_unreachable)
+    }
+
+    private fun nullError() {
+        binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
+        binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
+        binding.tvInstructions.text = getString(R.string.this_card_is_not_supported)
+        binding.tvStatus.setTextColor(resources.getColor(R.color.errorColor))
+        binding.tvStatus.text = getString(R.string.status_invalid_card)
+        binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_error))
+    }
+
 
     private fun btnCancelBg(){
         binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_buttonbackground_cancel)
