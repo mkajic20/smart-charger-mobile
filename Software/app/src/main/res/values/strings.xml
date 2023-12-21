@@ -54,6 +54,7 @@
     <string name="scan_card">Scan card</string>
     <string name="please_active_nfc">Please activate NFC</string>
     <string name="please_scan_your_card_first">Please scan your card first!</string>
+    <string name="google_login">Google Login</string>
 
 
 </resources>
