@@ -85,6 +85,7 @@ class ChargerConnectionFragment : Fragment() {
             verifyCardHandler.sendRequest(object: ResponseListener<CardResponseBody>{
                 override fun onSuccessfulResponse(response: CardResponseBody) {
                     Log.i("scannedCard", "Value: ${response.rfidCard.id}")
+                    Log.i("scannedCard", "Value: ${response.rfidCard.userId}")
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {

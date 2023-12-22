@@ -45,13 +45,14 @@ class CreateCardRequestHandler (private var userId : Int, private var requestBod
             val message = jsonResponse.getString("message")
 
             val rfidCardJson = jsonResponse.getJSONObject("card")
+            val userJson = rfidCardJson.getJSONObject("user")
 
                 val rfidCard = RfidCard(
                     rfidCardJson.getString("name"),
                     rfidCardJson.getString("value"),
                     rfidCardJson.getBoolean("active"),
-                    rfidCardJson.getInt("id")
-
+                    rfidCardJson.getInt("id"),
+                    userJson.getInt("id")
                 )
 
 

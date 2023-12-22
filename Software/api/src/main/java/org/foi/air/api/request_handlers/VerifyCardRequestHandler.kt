@@ -43,12 +43,14 @@ class VerifyCardRequestHandler(private var cardValue: String): RequestHandler<Ca
             val message = jsonResponse.getString("message")
 
             val cardJson = jsonResponse.getJSONObject("card")
+            val userJson = cardJson.getJSONObject("user")
 
             val rfidCard = RfidCard(
                 cardJson.getString("name"),
                 cardJson.getString("value"),
                 cardJson.getBoolean("active"),
                 cardJson.getInt("id"),
+                userJson.getInt("id")
             )
 
             return CardResponseBody(success, message, rfidCard)
