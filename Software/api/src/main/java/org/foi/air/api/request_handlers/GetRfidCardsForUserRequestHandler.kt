@@ -47,12 +47,13 @@ class GetRfidCardsForUserRequestHandler (private var userId : Int): RequestHandl
             val rfidCardList = mutableListOf<RfidCard>()
             for (i in 0 until rfidCardArray.length()) {
                 val rfidCardDataJson = rfidCardArray.getJSONObject(i)
+                val userJson = rfidCardDataJson.getJSONObject("user")
                 val rfidCardElement = RfidCard(
                     rfidCardDataJson.getString("name"),
                     rfidCardDataJson.getString("value"),
                     rfidCardDataJson.getBoolean("active"),
-                    rfidCardDataJson.getInt("id")
-
+                    rfidCardDataJson.getInt("id"),
+                    userJson.getInt("id")
                 )
                 rfidCardList.add(rfidCardElement)
             }
