@@ -30,8 +30,8 @@ class ChargerSimulatorFragment : Fragment() {
 
     private lateinit var binding: FragmentChargerSimulatorBinding
     lateinit var chronometer : Chronometer
-    var pauseOffset : Long = 0
     var lastUpdateTime = 0L
+    lateinit var tvState: TextView
     lateinit var power : TextView
     lateinit var btnChangeState : ImageButton
     lateinit var changeStateInstruction : TextView
@@ -45,6 +45,7 @@ class ChargerSimulatorFragment : Fragment() {
     ): View {
         binding = FragmentChargerSimulatorBinding.inflate(inflater,container,false)
 
+        tvState = binding.tvChargingStatus
         chronometer = binding.chChargingTime
         power = binding.tvConsumedValue
         btnChangeState = binding.ibState
@@ -55,7 +56,7 @@ class ChargerSimulatorFragment : Fragment() {
             changeState()
 
             chronometer.setOnChronometerTickListener { chronometer ->
-                val elapsedMillis = SystemClock.elapsedRealtime() - chronometer.base
+                val elapsedMillis = SystemClock.elapsedRealtime()
 
                 // Check if 10 seconds have passed since the last update
                 if (elapsedMillis - lastUpdateTime >= 1000) {
@@ -87,21 +88,22 @@ class ChargerSimulatorFragment : Fragment() {
 
     private fun changeState() {
         state = if(state){
-            Log.i("punjenje", "ugasen")
             //pause charger
             btnChangeState.setImageResource(R.drawable.ic_start)
             changeStateInstruction.text = getString(R.string.start_charger_instruction)
+            tvState.text = getString(R.string.status_not_charging)
             pauseTimer()
+            power.text = "0.0"
             stopCharging()
             false
 
         }else{
-            Log.i("punjenje", "upaljen")
             //start charger
             btnChangeState.setImageResource(R.drawable.ic_pause)
             changeStateInstruction.text = getString(R.string.pause_charger_instruction)
+            tvState.text = getString(R.string.status_charging)
+
             startTimer()
-            Log.i("punjenje", getTime())
             startCharging()
             true
 
@@ -114,9 +116,7 @@ class ChargerSimulatorFragment : Fragment() {
             power.text.toString(),
             eventId,
         )
-        Log.i("punjenje", getTime())
-        Log.i("punjenje", power.text.toString())
-        Log.i("punjenje", eventBody.Id)
+
         val startChargingHandler = StopChargingRequestHandler(eventBody)
         startChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
             override fun onSuccessfulResponse(response: StopEventResponseBody) {
@@ -144,11 +144,8 @@ class ChargerSimulatorFragment : Fragment() {
         val startChargingHandler = StartChargingRequestHandler(eventBody)
         startChargingHandler.sendRequest(object: ResponseListener<StartEventResponseBody>{
             override fun onSuccessfulResponse(response: StartEventResponseBody) {
-                Log.i("punjenje", response.message)
-                if(response.event.eventId != null){
-                    Log.i("punjenje", response.event.eventId)
                     eventId = response.event.eventId
-                }
+
 
             }
 
@@ -178,7 +175,7 @@ class ChargerSimulatorFragment : Fragment() {
 
     private fun startTimer() {
         if(!state){
-            chronometer.base = SystemClock.elapsedRealtime() - pauseOffset
+            chronometer.base = SystemClock.elapsedRealtime()
             chronometer.start()
         }
     }
@@ -186,7 +183,7 @@ class ChargerSimulatorFragment : Fragment() {
     private fun pauseTimer() {
         if(state){
             chronometer.stop()
-            pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
+            chronometer.base = SystemClock.elapsedRealtime()
         }
     }
 
