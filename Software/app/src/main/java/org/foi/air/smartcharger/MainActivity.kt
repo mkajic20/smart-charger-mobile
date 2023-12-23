@@ -14,8 +14,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.core.interfaces.OnNewIntentListener
+import org.foi.air.smartcharger.context.Charger
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
 import org.foi.air.smartcharger.fragments.ChargerConnectionFragment
+import org.foi.air.smartcharger.fragments.ChargerSimulatorFragment
 import org.foi.air.smartcharger.fragments.ChargingHistoryFragment
 import org.foi.air.smartcharger.fragments.LoginFragment
 import org.foi.air.smartcharger.fragments.RegistrationFragment
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Auth.initialize(this)
+        Charger.initialize(this)
 
         drawerLayout = binding.drawerLayout
         hamburgerIcon = binding.ivHamburger
@@ -94,7 +97,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
      fun changeFragment(fragmentName: String){
-        val fragment = getFragmentByName(fragmentName)
+         var fragment : Fragment
+         if(fragmentName=="ChargerConnectionFragment" && Charger.isChargerConnected())
+             fragment = getFragmentByName("ChargerSimulatorFragment")
+         else
+        fragment = getFragmentByName(fragmentName)
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment, fragment, fragmentName)
@@ -106,6 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "LoginFragment" -> LoginFragment()
             "RegistrationFragment" -> RegistrationFragment()
             "ChargerConnectionFragment" -> ChargerConnectionFragment()
+            "ChargerSimulatorFragment" -> ChargerSimulatorFragment()
             "RfidListFragment" -> RfidListFragment()
             "ChargingHistoryFragment" -> ChargingHistoryFragment()
             else -> throw IllegalArgumentException("Unknown fragment name: $fragmentName")

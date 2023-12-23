@@ -17,6 +17,7 @@ import org.foi.air.core.models.CardResponseBody
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
+import org.foi.air.smartcharger.context.Charger
 import org.foi.air.smartcharger.databinding.FragmentChargerConnectionBinding
 
 class ChargerConnectionFragment : Fragment() {
@@ -86,6 +87,10 @@ class ChargerConnectionFragment : Fragment() {
                 override fun onSuccessfulResponse(response: CardResponseBody) {
                     Log.i("scannedCard", "Value: ${response.rfidCard.id}")
                     Log.i("scannedCard", "Value: ${response.rfidCard.userId}")
+                    Charger.userId=response.rfidCard.userId.toString()
+                    Charger.cardId=response.rfidCard.id.toString()
+                    Charger.saveChargerData()
+                    (requireActivity() as MainActivity).changeFragment("ChargerSimulatorFragment")
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {

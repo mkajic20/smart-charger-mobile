@@ -62,4 +62,14 @@
     <string name="rfid_card_not_detected_within_the_allotted_time">RFID card not detected within the allotted time. Please restart the scanning.</string>
 
 
+    <string name="charger_1">Charger 1</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="charger_box_image">Charger Box image</string>
+    <string name="status_not_charging">Status: Not charging</string>
+    <string name="status_charging">Status: Charging</string>
+    <string name="charging_time">Charging time:</string>
+    <string name="consumed">Consumed (kW):</string>
+    <string name="button_for_changing_state">Button for changing state</string>
+    <string name="start_charger_instruction">Click play button to start charging</string>
+    <string name="pause_charger_instruction">Click pause button to stop charging</string>
 </resources>
