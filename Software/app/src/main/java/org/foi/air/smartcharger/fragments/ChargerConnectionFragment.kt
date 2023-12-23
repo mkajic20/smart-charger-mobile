@@ -89,6 +89,7 @@ class ChargerConnectionFragment : Fragment() {
                     Log.i("scannedCard", "Value: ${response.rfidCard.userId}")
                     Charger.userId=response.rfidCard.userId.toString()
                     Charger.cardId=response.rfidCard.id.toString()
+                    Charger.saveChargerData()
                     (requireActivity() as MainActivity).changeFragment("ChargerSimulatorFragment")
                 }
 

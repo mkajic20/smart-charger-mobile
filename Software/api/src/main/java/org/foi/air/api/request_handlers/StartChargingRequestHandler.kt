@@ -1,7 +1,6 @@
 package org.foi.air.api.request_handlers
 
 import ResponseListener
-import android.util.Log
 import com.google.gson.Gson
 import okhttp3.ResponseBody
 import org.foi.air.api.models.StartEventBody
@@ -49,7 +48,6 @@ class StartChargingRequestHandler(private val requestBody: StartEventBody): Requ
             val eventInfo = EventInfo(
                 eventDataJson.getString("id")
             )
-            Log.i("punjenje", message)
 
             return StartEventResponseBody(success, message, eventInfo)
         } catch (e: Exception) {

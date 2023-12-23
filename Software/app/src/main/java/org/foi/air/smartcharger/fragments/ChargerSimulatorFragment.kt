@@ -19,6 +19,7 @@ import org.foi.air.api.request_handlers.StopChargingRequestHandler
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.StartEventResponseBody
 import org.foi.air.core.models.StopEventResponseBody
+import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Charger
 import org.foi.air.smartcharger.databinding.FragmentChargerSimulatorBinding
@@ -36,7 +37,6 @@ class ChargerSimulatorFragment : Fragment() {
     lateinit var btnChangeState : ImageButton
     lateinit var changeStateInstruction : TextView
     lateinit var btnDisconnect : Button
-    lateinit var eventId : String
     var state = false
 
     override fun onCreateView(
@@ -51,7 +51,10 @@ class ChargerSimulatorFragment : Fragment() {
         btnChangeState = binding.ibState
         changeStateInstruction = binding.tvChangeStateInstructions
         btnDisconnect = binding.btnDisconnect
-
+        //in case app closed while charging was on
+        if(Charger.eventId!="") {
+            stopCharging()
+        }
         btnChangeState.setOnClickListener{
             changeState()
 
@@ -60,7 +63,6 @@ class ChargerSimulatorFragment : Fragment() {
 
                 // Check if 10 seconds have passed since the last update
                 if (elapsedMillis - lastUpdateTime >= 1000) {
-                    // Update the power variable or perform any other actions
                     updatePower()
                     lastUpdateTime = elapsedMillis
                 }
@@ -69,6 +71,11 @@ class ChargerSimulatorFragment : Fragment() {
         }
         btnDisconnect.setOnClickListener{
 
+            if(state)
+                stopCharging()
+            Charger.deleteChargerData()
+            (requireActivity() as MainActivity).changeFragment("ChargerConnectionFragment")
+            Log.i("punjenje", "Disconnected from charger")
         }
 
 
@@ -111,14 +118,17 @@ class ChargerSimulatorFragment : Fragment() {
     }
 
     private fun stopCharging() {
+        //in case there is no running event
+        if(Charger.eventId == "")
+            return
         val eventBody = StopEventBody(
             getTime(),
             power.text.toString(),
-            eventId,
+            Charger.eventId!!,
         )
 
-        val startChargingHandler = StopChargingRequestHandler(eventBody)
-        startChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
+        val stopChargingHandler = StopChargingRequestHandler(eventBody)
+        stopChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
             override fun onSuccessfulResponse(response: StopEventResponseBody) {
                 Log.i("punjenje", response.message)
             }
@@ -132,20 +142,25 @@ class ChargerSimulatorFragment : Fragment() {
             }
 
         })
+        Charger.eventId=""
+        Charger.saveChargerData()
     }
 
     private fun startCharging() {
         val eventBody = StartEventBody(
             getTime(),
-            Charger.cardId,
+            Charger.cardId!!,
             Charger.chargerId,
-            Charger.userId
+            Charger.userId!!
         )
+
         val startChargingHandler = StartChargingRequestHandler(eventBody)
         startChargingHandler.sendRequest(object: ResponseListener<StartEventResponseBody>{
             override fun onSuccessfulResponse(response: StartEventResponseBody) {
-                    eventId = response.event.eventId
 
+                Charger.eventId = response.event.eventId
+                Charger.saveChargerData()
+                Log.i("punjenje", response.message)
 
             }
 
@@ -168,9 +183,13 @@ class ChargerSimulatorFragment : Fragment() {
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val second = calendar.get(Calendar.SECOND)
+
+        val formattedMonth = String.format("%02d", month)
+        val formattedDay = String.format("%02d", day)
+        val formattedHour = String.format("%02d", hour)
         val formattedMinute = String.format("%02d", minute)
         val formattedSecond = String.format("%02d", second)
-        return "$year-$month-${day}T$hour:$formattedMinute:${formattedSecond}Z"
+        return "$year-$formattedMonth-${formattedDay}T$formattedHour:$formattedMinute:${formattedSecond}Z"
     }
 
     private fun startTimer() {
