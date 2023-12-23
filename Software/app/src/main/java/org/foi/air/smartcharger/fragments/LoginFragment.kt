@@ -1,46 +1,59 @@
 package org.foi.air.smartcharger.fragments
 
-import ResponseListener
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import org.foi.air.api.models.LoginBody
-import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
-import org.foi.air.core.login.LoginUserData
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
 import org.foi.air.login_email_password.EmailPasswordLoginHandler
+import org.foi.air.login_google.GoogleLoginHandler
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.databinding.FragmentLoginBinding
-import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
-        var loginHandler = EmailPasswordLoginHandler()
+        var emailPasswordLoginHandler = EmailPasswordLoginHandler()
+        var googleLoginHandler = GoogleLoginHandler(this, getString(R.string.server_client_id), getString(R.string.client_secret))
 
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
                 binding.txtPassword.text.toString()
             )
-            loginUser(loginHandler, loginBody)
+            loginUser(emailPasswordLoginHandler, loginBody)
+        }
+
+        binding.btnLoginGoogle.setOnClickListener{
+            googleLoginHandler.handleLogin("","", object : LoginOutcomeListener {
+                override fun onSuccessfulLogin(response: SuccessfulLoginResponseBody) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailedLogin(response: ErrorResponseBody) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onApiConnectionFailure(t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+            })
         }
 
         binding.btnSwitchRegister.setOnClickListener{

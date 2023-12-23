@@ -10,8 +10,8 @@ import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
 
 class EmailPasswordLoginHandler : LoginHandler {
-    override fun handleLogin(email: String, password: String, loginListener: LoginOutcomeListener) {
-        val loginBody = LoginBody(email, password)
+    override fun handleLogin(email: String?, password: String?, loginListener: LoginOutcomeListener) {
+        val loginBody = LoginBody(email!!, password!!)
         val loginRequestHandler = LoginRequestHandler(loginBody)
 
         loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
