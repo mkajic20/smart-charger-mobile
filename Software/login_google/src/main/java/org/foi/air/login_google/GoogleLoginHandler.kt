@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import org.foi.air.api.request_handlers.GoogleAccessTokenRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
 
@@ -25,11 +26,22 @@ class GoogleLoginHandler (fragment: Fragment, server_client_id: String, client_s
 
     val mGoogleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
 
+    private val serverClientId = server_client_id
+    private val clientSecret = client_secret
+
     fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            Log.i("success", "Token: ${account.idToken}")
             Log.i("success", "ServerAuthCode: ${account.serverAuthCode}")
+
+            val googleAccessTokenRequestHandler = GoogleAccessTokenRequestHandler(account.serverAuthCode!!, serverClientId, clientSecret)
+            googleAccessTokenRequestHandler.requestAccessToken { accessTokenResponse ->
+                if (accessTokenResponse != null) {
+                    Log.i("success", "AccessToken: ${accessTokenResponse.access_token}")
+                } else {
+                    Log.i("failure", "Failed to get access token.")
+                }
+            }
         } catch (e: ApiException) {
             Log.i("failure", e.toString())
         }
