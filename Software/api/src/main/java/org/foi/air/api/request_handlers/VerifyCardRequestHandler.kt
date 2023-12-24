@@ -2,23 +2,22 @@ package org.foi.air.api.request_handlers
 
 import ResponseListener
 import com.google.gson.Gson
-import org.foi.air.api.network.ApiService
-import org.foi.air.core.network.RequestHandler
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import okhttp3.ResponseBody
-import org.foi.air.api.models.NewRfidCardBody
+import org.foi.air.api.network.ApiService
 import org.foi.air.core.data_classes.RfidCard
 import org.foi.air.core.models.CardResponseBody
 import org.foi.air.core.models.ErrorResponseBody
+import org.foi.air.core.network.RequestHandler
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class CreateCardRequestHandler (private var userId : Int, private var requestBody : NewRfidCardBody): RequestHandler<CardResponseBody> {
+class VerifyCardRequestHandler(private var cardValue: String): RequestHandler<CardResponseBody> {
     override fun sendRequest(responseListener: ResponseListener<CardResponseBody>) {
         val service = ApiService.rfidCardService
-        val serviceCall = service.createCard(userId, requestBody)
-        serviceCall.enqueue(object: Callback<ResponseBody>{
+        val serviceCall = service.verifyCard(cardValue)
+        serviceCall.enqueue(object: Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if(response.isSuccessful){
                     val convertedResponse = successfulResponseConverter(response.body()!!)
@@ -33,7 +32,6 @@ class CreateCardRequestHandler (private var userId : Int, private var requestBod
                 responseListener.onApiConnectionFailure(t)
             }
 
-
         })
     }
 
@@ -44,17 +42,16 @@ class CreateCardRequestHandler (private var userId : Int, private var requestBod
             val success = jsonResponse.getBoolean("success")
             val message = jsonResponse.getString("message")
 
-            val rfidCardJson = jsonResponse.getJSONObject("card")
-            val userJson = rfidCardJson.getJSONObject("user")
+            val cardJson = jsonResponse.getJSONObject("card")
+            val userJson = cardJson.getJSONObject("user")
 
-                val rfidCard = RfidCard(
-                    rfidCardJson.getString("name"),
-                    rfidCardJson.getString("value"),
-                    rfidCardJson.getBoolean("active"),
-                    rfidCardJson.getInt("id"),
-                    userJson.getInt("id")
-                )
-
+            val rfidCard = RfidCard(
+                cardJson.getString("name"),
+                cardJson.getString("value"),
+                cardJson.getBoolean("active"),
+                cardJson.getInt("id"),
+                userJson.getInt("id")
+            )
 
             return CardResponseBody(success, message, rfidCard)
         } catch (e: Exception) {
