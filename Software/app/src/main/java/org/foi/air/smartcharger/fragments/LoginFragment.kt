@@ -43,15 +43,22 @@ class LoginFragment : Fragment() {
         binding.btnLoginGoogle.setOnClickListener{
             googleLoginHandler.handleLogin("","", object : LoginOutcomeListener {
                 override fun onSuccessfulLogin(response: SuccessfulLoginResponseBody) {
-                    TODO("Not yet implemented")
+                    Auth.saveUserData(response.user, response.jwt)
+                    val toast = Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_successful), Toast.LENGTH_LONG)
+                    toast.show()
+                    (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                    val mainActivity = activity as MainActivity
+                    mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
                 }
 
                 override fun onFailedLogin(response: ErrorResponseBody) {
-                    TODO("Not yet implemented")
+                    val toast = Toast.makeText(this@LoginFragment.context, resources.getString(R.string.google_login_failed), Toast.LENGTH_LONG)
+                    toast.show()
                 }
 
                 override fun onApiConnectionFailure(t: Throwable) {
-                    TODO("Not yet implemented")
+                    val toast = Toast.makeText(this@LoginFragment.context, resources.getString(R.string.cant_reach_server), Toast.LENGTH_LONG)
+                    toast.show()
                 }
             })
         }
@@ -78,7 +85,7 @@ class LoginFragment : Fragment() {
                 binding.tvEmailError.text = resources.getString(R.string.login_succeeded)
                 binding.tvPasswordError.text = resources.getString(R.string.login_succeeded)
                 Auth.saveUserData(response.user, response.jwt)
-                val toast = Toast.makeText(this@LoginFragment.context, "Successful log in.", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_successful), Toast.LENGTH_LONG)
                 toast.show()
                 (requireActivity() as MainActivity).changeFragment("RfidListFragment")
                 val mainActivity = activity as MainActivity
