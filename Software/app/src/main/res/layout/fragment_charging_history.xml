@@ -1,29 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <View
+        android:id="@+id/vHeaderBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="170dp"
+        android:background="#004054"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tvMainHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/bitter_bold"
+        android:text="@string/charging_history_page_title"
+        android:textColor="@color/white"
+        android:textSize="39sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/vHeaderBackground"
+        app:layout_constraintStart_toStartOf="@+id/vHeaderBackground"
+        app:layout_constraintTop_toTopOf="@+id/vHeaderBackground" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B5B5B5"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vHeaderBackground">
 
         <TextView
-            android:id="@+id/dummyText"
-            android:layout_width="wrap_content"
+            android:id="@+id/chargerNameTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:text="Charging history dummy fragment"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:text="@string/charger_name_title" />
 
-</ScrollView>
+        <TextView
+            android:id="@+id/timeStartedTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:text="@string/time_started_title" />
+
+        <TextView
+            android:id="@+id/timeEndedTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:text="@string/time_ended_title" />
+
+        <TextView
+            android:id="@+id/consumedTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:text="@string/consumed_title" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/svChargingHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vHeaderBackground">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChargingHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
