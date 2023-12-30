@@ -77,4 +77,9 @@
     <string name="button_for_changing_state">Button for changing state</string>
     <string name="start_charger_instruction">Click play button to start charging</string>
     <string name="pause_charger_instruction">Click pause button to stop charging</string>
+    <string name="charging_history_page_title">Charging history</string>
+    <string name="charger_name_title">Charger name</string>
+    <string name="time_started_title">Started</string>
+    <string name="consumed_title">Consumed\n(kWh)</string>
+    <string name="time_ended_title">Ended</string>
 </resources>
