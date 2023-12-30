@@ -82,8 +82,6 @@ class ChargingHistoryFragment : Fragment() {
         val geteventsForUserRequestHandler = GetEventsForUserRequestHandler(Auth.userId!!.toInt(), page)
         geteventsForUserRequestHandler.sendRequest(object: ResponseListener<EventsResponseBody>{
             override fun onSuccessfulResponse(response: EventsResponseBody) {
-                for(i in response.eventList.indices)
-                    Log.i("eventi", response.eventList[i].eventId)
                 sendDataToRV(response.eventList)
                 isLoading = false
             }
