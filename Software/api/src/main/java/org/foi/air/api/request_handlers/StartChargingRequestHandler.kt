@@ -46,7 +46,12 @@ class StartChargingRequestHandler(private val requestBody: StartEventBody): Requ
 
             val eventDataJson = jsonResponse.getJSONObject("event")
             val eventInfo = EventInfo(
-                eventDataJson.getString("id")
+                eventDataJson.getString("id"),
+                eventDataJson.getString("chargerId"),
+                eventDataJson.getString("startTime"),
+                eventDataJson.getString("endTime"),
+                eventDataJson.getString("volume")
+
             )
 
             return StartEventResponseBody(success, message, eventInfo)
