@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.foi.air.api.request_handlers.GetEventsForUserRequestHandler
@@ -21,10 +24,13 @@ import org.foi.air.smartcharger.databinding.FragmentChargingHistoryBinding
 class ChargingHistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentChargingHistoryBinding
-    private lateinit var rvHistory : RecyclerView
+    private lateinit var rvHistory: RecyclerView
     private var currentPage = 1
     private var isLoading = false
     private lateinit var chargerHistoryAdapter: ChargerHistoryAdapter
+    private lateinit var tvConnectionError: TextView
+    private lateinit var btnRetryConnection: Button
+    private var reachedEnd = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +41,12 @@ class ChargingHistoryFragment : Fragment() {
         rvHistory.layoutManager = LinearLayoutManager(context)
         chargerHistoryAdapter = ChargerHistoryAdapter(mutableListOf())
         rvHistory.adapter = chargerHistoryAdapter
+        tvConnectionError = binding.tvFailedConnection
+        btnRetryConnection = binding.btnRetryConnection
+
+        btnRetryConnection.setOnClickListener{
+            loadMoreData()
+        }
 
         rvHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -42,13 +54,8 @@ class ChargingHistoryFragment : Fragment() {
 
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                val zadnjiElement = "zadnji - " + lastVisibleItemPosition.toString()
                 val totalItemCount = layoutManager.itemCount
-                val sviElementi = "svi - " + totalItemCount.toString()
                 if (!isLoading && totalItemCount - 1 == lastVisibleItemPosition ) {
-                    Log.i("eventi",zadnjiElement)
-                    Log.i("eventi",sviElementi)
-                    // Load more data when the user is close to the end of the list
                     loadMoreData()
                 }
             }
@@ -60,10 +67,13 @@ class ChargingHistoryFragment : Fragment() {
     }
 
     private fun loadMoreData() {
-        Log.i("eventi", "More data loaded")
-        isLoading = true
-        currentPage++
-        getEventPage(currentPage)
+        if(!reachedEnd) {
+            isLoading = true
+            currentPage++
+            getEventPage(currentPage)
+            btnRetryConnection.visibility = View.INVISIBLE
+            tvConnectionError.visibility = View.INVISIBLE
+        }
     }
 
     private fun getEventPage(page: Int) {
@@ -80,11 +90,20 @@ class ChargingHistoryFragment : Fragment() {
 
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                Log.i("eventi","Error: "+response.error)
+                if(response.message=="There are no events with that parameters."){
+                    val toast = Toast.makeText(this@ChargingHistoryFragment.context, "You have reached the end of the list.", Toast.LENGTH_LONG)
+                    toast.show()
+                    isLoading = false
+                    reachedEnd = true
+                }
+
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
                 Log.i("eventi","Connection error: "+t.message)
+                isLoading = false
+                btnRetryConnection.visibility = View.VISIBLE
+                tvConnectionError.visibility = View.VISIBLE
             }
 
         })
