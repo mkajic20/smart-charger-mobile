@@ -54,7 +54,7 @@ class GetEventsForUserRequestHandler(private var userId : Int, private var page 
                 val charger = eventDataJson.getJSONObject("charger")
                 val eventElement = EventInfo(
                     eventDataJson.getString("id"),
-                    charger.getString("id"),
+                    charger.getString("name"),
                     eventDataJson.getString("startTime"),
                     eventDataJson.getString("endTime"),
                     eventDataJson.getString("volume")

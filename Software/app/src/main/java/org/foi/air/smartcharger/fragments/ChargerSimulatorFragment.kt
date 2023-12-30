@@ -96,21 +96,11 @@ class ChargerSimulatorFragment : Fragment() {
     private fun changeState() {
         state = if(state){
             //pause charger
-            btnChangeState.setImageResource(R.drawable.ic_start)
-            changeStateInstruction.text = getString(R.string.start_charger_instruction)
-            tvState.text = getString(R.string.status_not_charging)
-            pauseTimer()
-            power.text = "0.0"
             stopCharging()
             false
 
         }else{
             //start charger
-            btnChangeState.setImageResource(R.drawable.ic_pause)
-            changeStateInstruction.text = getString(R.string.pause_charger_instruction)
-            tvState.text = getString(R.string.status_charging)
-
-            startTimer()
             startCharging()
             true
 
@@ -131,6 +121,11 @@ class ChargerSimulatorFragment : Fragment() {
         stopChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
             override fun onSuccessfulResponse(response: StopEventResponseBody) {
                 Log.i("punjenje", response.message)
+                btnChangeState.setImageResource(R.drawable.ic_start)
+                changeStateInstruction.text = getString(R.string.start_charger_instruction)
+                tvState.text = getString(R.string.status_not_charging)
+                pauseTimer()
+                power.text = "0.0"
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
@@ -161,6 +156,11 @@ class ChargerSimulatorFragment : Fragment() {
                 Charger.eventId = response.event.eventId
                 Charger.saveChargerData()
                 Log.i("punjenje", response.message)
+                btnChangeState.setImageResource(R.drawable.ic_pause)
+                changeStateInstruction.text = getString(R.string.pause_charger_instruction)
+                tvState.text = getString(R.string.status_charging)
+
+                startTimer()
 
             }
 
@@ -193,14 +193,14 @@ class ChargerSimulatorFragment : Fragment() {
     }
 
     private fun startTimer() {
-        if(!state){
+        if(state){
             chronometer.base = SystemClock.elapsedRealtime()
             chronometer.start()
         }
     }
 
     private fun pauseTimer() {
-        if(state){
+        if(!state){
             chronometer.stop()
             chronometer.base = SystemClock.elapsedRealtime()
         }
