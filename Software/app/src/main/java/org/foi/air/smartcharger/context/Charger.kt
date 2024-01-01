@@ -9,6 +9,7 @@ object Charger {
     var chargerId: String = "5"
     var userId: String? = ""
     var eventId : String? = ""
+    var startTime: Long? = 0
     private var storedChargerData : SharedPreferences? = null
     fun initialize(context: Context){
         storedChargerData = context.getSharedPreferences("charger", Context.MODE_PRIVATE)
@@ -21,6 +22,7 @@ object Charger {
             putString("eventId", eventId)
             putString("cardId", cardId)
             putString("userId", userId)
+            putLong("chronometerBase", startTime!!)
             apply()
         }
         updateData()
@@ -29,6 +31,7 @@ object Charger {
         eventId = storedChargerData?.getString("eventId", "")
         cardId = storedChargerData?.getString("cardId", "")
         userId = storedChargerData?.getString("userId", "")
+        startTime = storedChargerData?.getLong("chronometerBase", 0)
     }
 
     fun deleteChargerData(){

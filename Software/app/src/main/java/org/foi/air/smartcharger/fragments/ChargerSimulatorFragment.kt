@@ -44,6 +44,7 @@ class ChargerSimulatorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChargerSimulatorBinding.inflate(inflater,container,false)
+        val startTime = Charger.startTime
 
         tvState = binding.tvChargingStatus
         chronometer = binding.chChargingTime
@@ -53,22 +54,26 @@ class ChargerSimulatorFragment : Fragment() {
         btnDisconnect = binding.btnDisconnect
         //in case app closed while charging was on
         if(Charger.eventId!="") {
-            stopCharging()
+            val elapsedMillis = System.currentTimeMillis() - startTime!!
+            chronometer.base = SystemClock.elapsedRealtime() - elapsedMillis
+            changeInterfaceStart()
+            chronometer.start()
+            state = true
         }
         btnChangeState.setOnClickListener{
             changeState()
-
-            chronometer.setOnChronometerTickListener { chronometer ->
-                val elapsedMillis = SystemClock.elapsedRealtime()
-
-                // Check if 10 seconds have passed since the last update
-                if (elapsedMillis - lastUpdateTime >= 1000) {
-                    updatePower()
-                    lastUpdateTime = elapsedMillis
-                }
-            }
-
         }
+
+        chronometer.setOnChronometerTickListener { chronometer ->
+            val elapsedMillis = SystemClock.elapsedRealtime()
+
+            // Check if 10 seconds have passed since the last update
+            if (elapsedMillis - lastUpdateTime >= 1000) {
+                updatePower()
+                lastUpdateTime = elapsedMillis
+            }
+        }
+
         btnDisconnect.setOnClickListener{
 
             if(state)
@@ -121,11 +126,9 @@ class ChargerSimulatorFragment : Fragment() {
         stopChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
             override fun onSuccessfulResponse(response: StopEventResponseBody) {
                 Log.i("punjenje", response.message)
-                btnChangeState.setImageResource(R.drawable.ic_start)
-                changeStateInstruction.text = getString(R.string.start_charger_instruction)
-                tvState.text = getString(R.string.status_not_charging)
+                changeInterfaceStop()
                 pauseTimer()
-                power.text = "0.0"
+
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
@@ -138,6 +141,7 @@ class ChargerSimulatorFragment : Fragment() {
 
         })
         Charger.eventId=""
+        Charger.startTime = 0
         Charger.saveChargerData()
     }
 
@@ -148,19 +152,17 @@ class ChargerSimulatorFragment : Fragment() {
             Charger.chargerId,
             Charger.userId!!
         )
-
         val startChargingHandler = StartChargingRequestHandler(eventBody)
         startChargingHandler.sendRequest(object: ResponseListener<StartEventResponseBody>{
             override fun onSuccessfulResponse(response: StartEventResponseBody) {
-
+                val startTime = System.currentTimeMillis()
+                Charger.startTime = startTime
                 Charger.eventId = response.event.eventId
                 Charger.saveChargerData()
                 Log.i("punjenje", response.message)
-                btnChangeState.setImageResource(R.drawable.ic_pause)
-                changeStateInstruction.text = getString(R.string.pause_charger_instruction)
-                tvState.text = getString(R.string.status_charging)
-
-                startTimer()
+                changeInterfaceStart()
+                if(Charger.eventId != "")
+                    startTimer()
 
             }
 
@@ -173,6 +175,18 @@ class ChargerSimulatorFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun changeInterfaceStart(){
+        btnChangeState.setImageResource(R.drawable.ic_pause)
+        changeStateInstruction.text = getString(R.string.pause_charger_instruction)
+        tvState.text = getString(R.string.status_charging)
+    }
+    private fun changeInterfaceStop(){
+        btnChangeState.setImageResource(R.drawable.ic_start)
+        changeStateInstruction.text = getString(R.string.start_charger_instruction)
+        tvState.text = getString(R.string.status_not_charging)
+        power.text = "0.0"
     }
 
     private fun getTime(): String {
