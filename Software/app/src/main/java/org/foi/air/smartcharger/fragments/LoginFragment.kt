@@ -23,14 +23,15 @@ import org.foi.air.smartcharger.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
+    //private var loginHandlers: List<LoginHandler> = listOf(EmailPasswordLoginHandler(), GoogleLoginHandler())
+    private var loginHandlers: List<LoginHandler> = listOf(GoogleLoginHandler())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater,container,false)
 
-        var emailPasswordLoginHandler = EmailPasswordLoginHandler()
-        var googleLoginHandler = GoogleLoginHandler(this, getString(R.string.server_client_id), getString(R.string.client_secret))
+        //var emailPasswordLoginHandler = EmailPasswordLoginHandler()
         /*
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
@@ -70,6 +71,32 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        loginHandlers.forEach { handler ->
+            handler.handleLogin(
+                this,
+                view.findViewById(R.id.login_layout),
+                object : LoginOutcomeListener {
+                    override fun onSuccessfulLogin(response: SuccessfulLoginResponseBody) {
+                        Auth.saveUserData(response.user, response.jwt)
+                        val toast = Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_successful), Toast.LENGTH_LONG)
+                        toast.show()
+                        (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                        val mainActivity = activity as MainActivity
+                        mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
+                    }
+
+                    override fun onFailedLogin(response: ErrorResponseBody) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onApiConnectionFailure(t: Throwable) {
+                        val toast = Toast.makeText(this@LoginFragment.context, resources.getString(R.string.cant_reach_server), Toast.LENGTH_LONG)
+                        toast.show()
+                    }
+                })
+        }
+    }
     private fun switchToRegisterFragment() {
         (requireActivity() as MainActivity).changeFragment("RegistrationFragment")
         val mainActivity = activity as MainActivity

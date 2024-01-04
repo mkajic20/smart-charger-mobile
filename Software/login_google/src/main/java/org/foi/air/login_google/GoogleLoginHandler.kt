@@ -2,7 +2,11 @@ package org.foi.air.login_google
 
 import ResponseListener
 import android.app.Activity
+import android.content.Context
+import android.provider.Settings.Global.getString
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -10,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.button.MaterialButton
 import org.foi.air.api.request_handlers.GoogleAccessTokenRequestHandler
 import org.foi.air.api.request_handlers.GoogleLoginRequestHandler
 import org.foi.air.core.login.LoginHandler
@@ -17,17 +22,41 @@ import org.foi.air.core.login.LoginOutcomeListener
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.SuccessfulLoginResponseBody
 
-class GoogleLoginHandler(fragment: Fragment, server_client_id: String, client_secret: String) :
+class GoogleLoginHandler :
     LoginHandler {
-    val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    private val server_client_id = "223586710221-3808p3ltsqf0e42ge6jun8mibsa2dt3k.apps.googleusercontent.com"
+    private val client_secret = "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"
+
+    private lateinit var loginButton: MaterialButton
+    private lateinit var loginListener: LoginOutcomeListener
+
+    private val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
         .requestProfile()
         .requestIdToken(server_client_id)
         .requestServerAuthCode(server_client_id)
         .build()
 
-    val mGoogleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
-    var loginListener: LoginOutcomeListener? = null
+
+    private fun handleGoogleLogin(accessToken: String) {
+        val googleLoginRequestHandler = GoogleLoginRequestHandler(accessToken)
+
+        googleLoginRequestHandler.sendRequest(object :
+            ResponseListener<SuccessfulLoginResponseBody> {
+            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
+                loginListener?.onSuccessfulLogin(response)
+            }
+
+            override fun onErrorResponse(response: ErrorResponseBody) {
+                loginListener?.onFailedLogin(response)
+            }
+
+            override fun onApiConnectionFailure(t: Throwable) {
+                loginListener?.onApiConnectionFailure(t)
+            }
+        })
+    }
+
     fun handleSignInResult(
         completedTask: Task<GoogleSignInAccount>,
         server_client_id: String,
@@ -55,42 +84,31 @@ class GoogleLoginHandler(fragment: Fragment, server_client_id: String, client_se
         }
     }
 
-    private fun handleGoogleLogin(accessToken: String) {
-        val googleLoginRequestHandler = GoogleLoginRequestHandler(accessToken)
-
-        googleLoginRequestHandler.sendRequest(object :
-            ResponseListener<SuccessfulLoginResponseBody> {
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
-                loginListener?.onSuccessfulLogin(response)
-            }
-
-            override fun onErrorResponse(response: ErrorResponseBody) {
-                loginListener?.onFailedLogin(response)
-            }
-
-            override fun onApiConnectionFailure(t: Throwable) {
-                loginListener?.onApiConnectionFailure(t)
-            }
-        })
-    }
-
-    val launcher =
-        fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                handleSignInResult(task, server_client_id, client_secret)
-            } else {
-                Log.i("failure", "Failed to get response from Google")
-            }
-        }
-
     override fun handleLogin(
-        email: String?,
-        password: String?,
+        fragment: Fragment,
+        login_layout: LinearLayout,
         loginListener: LoginOutcomeListener
     ) {
         this.loginListener = loginListener
-        val signInIntent = mGoogleSignInClient.signInIntent
-        launcher.launch(signInIntent)
+        val view = LayoutInflater.from(fragment.context).inflate(R.layout.google_login_layout, null)
+        val mGoogleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
+
+        val launcher =
+            fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    handleSignInResult(task, server_client_id, client_secret)
+                } else {
+                    Log.i("failure", "Failed to get response from Google")
+                }
+            }
+
+        loginButton = view.findViewById(R.id.btnLoginGoogle)
+        loginButton.setOnClickListener {
+            val signInIntent = mGoogleSignInClient.signInIntent
+            launcher.launch(signInIntent)
+        }
+
+        login_layout.addView(view)
     }
 }
