@@ -31,7 +31,7 @@ class LoginFragment : Fragment() {
 
         var emailPasswordLoginHandler = EmailPasswordLoginHandler()
         var googleLoginHandler = GoogleLoginHandler(this, getString(R.string.server_client_id), getString(R.string.client_secret))
-
+        /*
         binding.btnLogin.setOnClickListener{
             val loginBody = LoginBody(
                 binding.txtEmail.text.toString(),
@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
                 }
             })
         }
-
+        */
         binding.btnSwitchRegister.setOnClickListener{
             switchToRegisterFragment()
         }
@@ -75,7 +75,7 @@ class LoginFragment : Fragment() {
         val mainActivity = activity as MainActivity
         mainActivity.navigationView.setCheckedItem(R.id.registerItem)
     }
-
+    /*
     fun loginUser(
         loginHandler: LoginHandler,
         loginBody: LoginBody,
@@ -134,5 +134,5 @@ class LoginFragment : Fragment() {
                 binding.tvPasswordError.text = resources.getString(R.string.unexpected_login_error)
             }
         }
-    }
+    }*/
 }

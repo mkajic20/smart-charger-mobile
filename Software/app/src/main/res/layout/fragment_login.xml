@@ -22,35 +22,6 @@
             app:srcCompat="@drawable/bg_simple_wave"
             android:contentDescription="@string/header_background" />
 
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
-
-            android:layout_marginTop="40dp"
-
-            android:background="@drawable/custom_blue_button"
-            android:text="@string/login_button"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLoginGoogle"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/custom_blue_button"
-            android:text="@string/google_login"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="@null"
-            app:icon="@drawable/ic_google_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
         <TextView
             android:id="@+id/tvMainHeader"
             android:layout_width="wrap_content"
@@ -65,82 +36,19 @@
             app:layout_constraintStart_toStartOf="@+id/bgLoginWave"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/txtEmail"
-            android:layout_width="300dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="75dp"
-            android:autofillHints="emailAddress"
-            android:background="@drawable/custom_input_field"
-            android:drawableStart="@drawable/ic_email"
-            android:drawablePadding="8dp"
-            android:hint="@string/input_field_email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bgLoginWave" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtPasswordLayoutWrapper"
+        <LinearLayout
+            android:id="@+id/login_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:textColor="@color/black"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtEmail"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/gray">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtPassword"
-                android:layout_width="300dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/custom_input_field"
-                android:drawableStart="@drawable/ic_key"
-                android:drawablePadding="8dp"
-                android:hint="@string/input_field_password"
-                android:inputType="textPassword"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tvEmailError"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/abeezee"
-            android:textColor="#980000"
-            app:layout_constraintEnd_toEndOf="@+id/txtEmail"
-            app:layout_constraintStart_toStartOf="@+id/txtEmail"
-            app:layout_constraintTop_toBottomOf="@+id/txtEmail"
-            tools:text="This email does not exist" />
-
-        <TextView
-            android:id="@+id/tvPasswordError"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/abeezee"
-            android:textColor="#980000"
-            app:layout_constraintEnd_toEndOf="@+id/txtPasswordLayoutWrapper"
-            app:layout_constraintStart_toStartOf="@+id/txtPasswordLayoutWrapper"
-            app:layout_constraintTop_toBottomOf="@+id/txtPasswordLayoutWrapper"
-            tools:text="You have entered wrong password" />
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/bgLoginWave"
+            app:layout_constraintStart_toStartOf="@+id/bgLoginWave"
+            app:layout_constraintTop_toBottomOf="@+id/bgLoginWave">
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvOr"
@@ -150,7 +58,7 @@
             android:text="or"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLoginGoogle" />
+            app:layout_constraintTop_toBottomOf="@+id/login_layout" />
 
         <View
             android:id="@+id/verticalLine01"
@@ -160,7 +68,7 @@
             android:layout_marginEnd="24dp"
             android:background="#535353"
             app:layout_constraintEnd_toStartOf="@+id/tvOr"
-            app:layout_constraintTop_toBottomOf="@+id/btnLoginGoogle" />
+            app:layout_constraintTop_toBottomOf="@+id/login_layout" />
 
         <View
             android:id="@+id/verticalLine02"
@@ -170,11 +78,11 @@
             android:layout_marginTop="20dp"
             android:background="#535353"
             app:layout_constraintStart_toEndOf="@+id/tvOr"
-            app:layout_constraintTop_toBottomOf="@+id/btnLoginGoogle" />
+            app:layout_constraintTop_toBottomOf="@+id/login_layout" />
 
         <Button
             android:id="@+id/btnSwitchRegister"
-            android:layout_width="160dp"
+            android:layout_width="180dp"
             android:layout_height="50dp"
 
             android:layout_marginTop="20dp"
