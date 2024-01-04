@@ -45,7 +45,7 @@ class ChargerHistoryAdapter (private val eventList: MutableList<EventInfo>) : Re
             "yyyy-MM-dd'T'HH:mm:ss'Z'"
         )
 
-        val outputFormat = SimpleDateFormat("HH:mm\ndd/MM/yyyy", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("HH:mm:ss\ndd/MM/yyyy", Locale.getDefault())
 
         for (pattern in possiblePatterns) {
             try {

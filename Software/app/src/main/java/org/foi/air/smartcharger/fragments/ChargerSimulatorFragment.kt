@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import org.foi.air.api.models.StartEventBody
 import org.foi.air.api.models.StopEventBody
 import org.foi.air.api.request_handlers.StartChargingRequestHandler
@@ -37,6 +38,7 @@ class ChargerSimulatorFragment : Fragment() {
     lateinit var btnChangeState : ImageButton
     lateinit var changeStateInstruction : TextView
     lateinit var btnDisconnect : Button
+    lateinit var chargerName : TextView
     var state = false
 
     override fun onCreateView(
@@ -47,11 +49,14 @@ class ChargerSimulatorFragment : Fragment() {
         val startTime = Charger.startTime
 
         tvState = binding.tvChargingStatus
+        chargerName = binding. tvMainTitleCharger
         chronometer = binding.chChargingTime
         power = binding.tvConsumedValue
         btnChangeState = binding.ibState
         changeStateInstruction = binding.tvChangeStateInstructions
         btnDisconnect = binding.btnDisconnect
+        chargerName.text = Charger.chargerName
+
         //in case app closed while charging was on
         if(Charger.eventId!="") {
             val elapsedMillis = System.currentTimeMillis() - startTime!!
@@ -132,7 +137,8 @@ class ChargerSimulatorFragment : Fragment() {
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                Log.i("punjenje", response.message)
+                val toast = Toast.makeText(this@ChargerSimulatorFragment.context, response.message, Toast.LENGTH_LONG)
+                toast.show()
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
@@ -149,7 +155,7 @@ class ChargerSimulatorFragment : Fragment() {
         val eventBody = StartEventBody(
             getTime(),
             Charger.cardId!!,
-            Charger.chargerId,
+            Charger.chargerId!!,
             Charger.userId!!
         )
         val startChargingHandler = StartChargingRequestHandler(eventBody)
@@ -167,7 +173,8 @@ class ChargerSimulatorFragment : Fragment() {
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                Log.i("punjenje", response.message)
+                val toast = Toast.makeText(this@ChargerSimulatorFragment.context, response.message, Toast.LENGTH_LONG)
+                toast.show()
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
@@ -219,6 +226,8 @@ class ChargerSimulatorFragment : Fragment() {
             chronometer.base = SystemClock.elapsedRealtime()
         }
     }
+
+
 
 
 }

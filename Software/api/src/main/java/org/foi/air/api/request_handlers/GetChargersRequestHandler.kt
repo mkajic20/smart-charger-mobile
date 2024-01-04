@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GetChargersHandler(private var page : Int): RequestHandler<ChargersResponseBody>{
+class GetChargersRequestHandler(private var page : Int): RequestHandler<ChargersResponseBody>{
     override fun sendRequest(responseListener: ResponseListener<ChargersResponseBody>) {
         val service = ApiService.chargerService
         val serviceCall = service.getChargers(page)

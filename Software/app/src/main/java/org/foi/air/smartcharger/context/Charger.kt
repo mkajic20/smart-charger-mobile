@@ -6,7 +6,8 @@ import android.content.SharedPreferences
 object Charger {
     //dummy data for chargerId
     var cardId : String? = ""
-    var chargerId: String = "5"
+    var chargerId: String? = ""
+    var chargerName: String? = ""
     var userId: String? = ""
     var eventId : String? = ""
     var startTime: Long? = 0
@@ -22,6 +23,8 @@ object Charger {
             putString("eventId", eventId)
             putString("cardId", cardId)
             putString("userId", userId)
+            putString("chargerId", chargerId)
+            putString("chargerName", chargerName)
             putLong("chronometerBase", startTime!!)
             apply()
         }
@@ -31,6 +34,8 @@ object Charger {
         eventId = storedChargerData?.getString("eventId", "")
         cardId = storedChargerData?.getString("cardId", "")
         userId = storedChargerData?.getString("userId", "")
+        chargerId = storedChargerData?.getString("chargerId", "")
+        chargerName = storedChargerData?.getString("chargerName", "")
         startTime = storedChargerData?.getLong("chronometerBase", 0)
     }
 
@@ -42,7 +47,7 @@ object Charger {
     }
 
     fun isChargerConnected() : Boolean{
-        return cardId != "" && userId != ""
+        return cardId != "" && userId != "" && chargerId != ""
     }
 
 }
