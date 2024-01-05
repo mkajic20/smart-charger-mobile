@@ -108,6 +108,7 @@ class GoogleLoginHandler :
         val launcher =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+                    loginListener.onButtonClicked()
                     val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                     handleSignInResult(task, server_client_id, client_secret)
                 } else {
@@ -118,7 +119,6 @@ class GoogleLoginHandler :
 
         loginButton = view.findViewById(R.id.btnLoginGoogle)
         loginButton.setOnClickListener {
-            loginListener.onButtonClicked()
             val signInIntent = mGoogleSignInClient?.signInIntent
             launcher.launch(signInIntent)
         }
