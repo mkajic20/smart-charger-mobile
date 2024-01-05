@@ -24,19 +24,9 @@ import org.foi.air.core.models.SuccessfulLoginResponseBody
 
 class GoogleLoginHandler :
     LoginHandler {
-    private val server_client_id = "223586710221-3808p3ltsqf0e42ge6jun8mibsa2dt3k.apps.googleusercontent.com"
-    private val client_secret = "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"
-
+    private lateinit var fragment: Fragment
     private lateinit var loginButton: MaterialButton
     private lateinit var loginListener: LoginOutcomeListener
-
-    private val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestEmail()
-        .requestProfile()
-        .requestIdToken(server_client_id)
-        .requestServerAuthCode(server_client_id)
-        .build()
-
 
     private fun handleGoogleLogin(accessToken: String) {
         val googleLoginRequestHandler = GoogleLoginRequestHandler(accessToken)
@@ -44,15 +34,15 @@ class GoogleLoginHandler :
         googleLoginRequestHandler.sendRequest(object :
             ResponseListener<SuccessfulLoginResponseBody> {
             override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
-                loginListener?.onSuccessfulLogin(response)
+                loginListener.onSuccessfulLogin(response)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                loginListener?.onFailedLogin(response)
+                loginListener.onFailedLogin(response)
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                loginListener?.onApiConnectionFailure(t)
+                loginListener.onApiConnectionFailure(t)
             }
         })
     }
@@ -90,7 +80,20 @@ class GoogleLoginHandler :
         loginListener: LoginOutcomeListener
     ) {
         this.loginListener = loginListener
+        this.fragment = fragment
         val view = LayoutInflater.from(fragment.context).inflate(R.layout.google_login_layout, null)
+
+        val server_client_id = fragment.requireContext().getString(R.string.server_client_id)
+        val client_secret = fragment.requireContext().getString(R.string.client_secret)
+
+        val gso: GoogleSignInOptions =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestProfile()
+                .requestIdToken(server_client_id)
+                .requestServerAuthCode(server_client_id)
+                .build()
+
         val mGoogleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
 
         val launcher =
