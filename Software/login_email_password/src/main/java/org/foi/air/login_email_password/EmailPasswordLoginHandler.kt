@@ -116,7 +116,10 @@ class EmailPasswordLoginHandler : LoginHandler {
             val email = txtEmail.text.toString()
             val password = txtPassword.text.toString()
             if (validateInput(email,password))
+            {
+                loginListener.onButtonClicked()
                 performLogin(email, password)
+            }
         }
 
         login_layout.addView(view)

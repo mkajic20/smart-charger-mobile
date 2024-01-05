@@ -43,6 +43,7 @@ class LoginFragment : Fragment() {
                 view.findViewById(R.id.login_layout),
                 object : LoginOutcomeListener {
                     override fun onSuccessfulLogin(response: SuccessfulLoginResponseBody) {
+                        binding.progressBar.visibility = View.INVISIBLE
                         Auth.saveUserData(response.user, response.jwt)
                         Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_successful), Toast.LENGTH_LONG).show()
                         (requireActivity() as MainActivity).changeFragment("RfidListFragment")
@@ -51,11 +52,17 @@ class LoginFragment : Fragment() {
                     }
 
                     override fun onFailedLogin(response: ErrorResponseBody) {
-                        Toast.makeText(this@LoginFragment.context, response.error, Toast.LENGTH_LONG).show()
+                        binding.progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_unsuccessful), Toast.LENGTH_LONG).show()
                     }
 
                     override fun onApiConnectionFailure(t: Throwable) {
+                        binding.progressBar.visibility = View.INVISIBLE
                         Toast.makeText(this@LoginFragment.context, resources.getString(R.string.cant_reach_server), Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onButtonClicked() {
+                        binding.progressBar.visibility = View.VISIBLE
                     }
                 })
         }

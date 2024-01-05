@@ -2,8 +2,6 @@ package org.foi.air.login_google
 
 import ResponseListener
 import android.app.Activity
-import android.content.Context
-import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -108,6 +106,7 @@ class GoogleLoginHandler :
 
         loginButton = view.findViewById(R.id.btnLoginGoogle)
         loginButton.setOnClickListener {
+            loginListener.onButtonClicked()
             val signInIntent = mGoogleSignInClient.signInIntent
             launcher.launch(signInIntent)
         }
