@@ -82,4 +82,13 @@
     <string name="consumed_title">Consumed\n(kWh)</string>
     <string name="time_ended_title">Ended</string>
     <string name="or">or</string>
+    <string name="charger_connection">CHARGER CONNECTION</string>
+    <string name="charger">Charger</string>
+    <string name="profile">Profile</string>
+    <string name="register">REGISTER</string>
+    <string name="login">LOGIN</string>
+    <string name="rfid_cards">RFID CARDS</string>
+    <string name="charging_history">CHARGING HISTORY</string>
+    <string name="logout">LOGOUT</string>
+    <string name="successful_logout">Successful logout</string>
 </resources>

@@ -4,13 +4,13 @@
 
 
         <item
-            android:title="Charger">
+            android:title="@string/charger">
             <menu>
                 <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/chargerConnectionItem"
                     android:icon="@drawable/ic_charger"
-                    android:title="CHARGER CONNECTION"
+                    android:title="@string/charger_connection"
                     >
                 </item>
                 </group>
@@ -24,33 +24,33 @@
 
 
         <item
-            android:title="Profile">
+            android:title="@string/profile">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/registerItem"
                         android:icon="@drawable/ic_register"
-                        android:title="REGISTER">
+                        android:title="@string/register">
                     </item>
                     <item
                     android:id="@+id/loginItem"
                     android:icon="@drawable/ic_login"
-                    android:title="LOGIN">
+                    android:title="@string/login">
                     </item>
                     <item
                         android:id="@+id/rfidCardsItem"
                         android:icon="@drawable/ic_cards"
-                        android:title="RFID CARDS">
+                        android:title="@string/rfid_cards">
                     </item>
                     <item
                         android:id="@+id/chargingHistoryItem"
                         android:icon="@drawable/ic_history"
-                        android:title="CHARGING HISTORY">
+                        android:title="@string/charging_history">
                     </item>
                     <item
                         android:id="@+id/logoutItem"
                         android:icon="@drawable/ic_login"
-                        android:title="LOGOUT">
+                        android:title="@string/logout">
                     </item>
 
 
