@@ -36,4 +36,5 @@ object ApiService {
     val authService: AuthenticationService = instance.create(AuthenticationService::class.java)
     val rfidCardService: RfidCardService = instance.create(RfidCardService::class.java)
     val eventService: EventService = instance.create(EventService::class.java)
+    val chargerService: ChargerService = instance.create(ChargerService::class.java)
 }

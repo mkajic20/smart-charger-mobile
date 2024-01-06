@@ -39,7 +39,7 @@ class ChargerConnectionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentChargerConnectionBinding.inflate(layoutInflater)
         nfcScanner = NfcScanner(requireActivity())
 
@@ -90,7 +90,7 @@ class ChargerConnectionFragment : Fragment() {
                     Charger.userId=response.rfidCard.userId.toString()
                     Charger.cardId=response.rfidCard.id.toString()
                     Charger.saveChargerData()
-                    (requireActivity() as MainActivity).changeFragment("ChargerSimulatorFragment")
+                    (requireActivity() as MainActivity).changeFragment("ChargerSelectionFragment")
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {
