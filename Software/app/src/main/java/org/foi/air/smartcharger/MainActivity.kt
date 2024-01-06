@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.core.interfaces.OnNewIntentListener
+import org.foi.air.login_google.GoogleLoginHandler
 import org.foi.air.smartcharger.context.Charger
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
 import org.foi.air.smartcharger.fragments.ChargerConnectionFragment
@@ -142,17 +144,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.rfidCardsItem-> changeFragment("RfidListFragment")
                 R.id.chargingHistoryItem-> changeFragment("ChargingHistoryFragment")
                 R.id.logoutItem-> {
-                    Auth.deleteData()
-                    changeFragment("LoginFragment")
-                    updateMenuVisibilityIfUserLoggedIn()
-                    Handler().postDelayed({
-                        navigationView.setCheckedItem(R.id.loginItem)
-                    }, 200)
+                    performLogout()
                 }
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true}
+
+    private fun performLogout() {
+        Auth.deleteData()
+        changeFragment("LoginFragment")
+        updateMenuVisibilityIfUserLoggedIn()
+        Handler().postDelayed({
+            navigationView.setCheckedItem(R.id.loginItem)
+        }, 200)
+    }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)

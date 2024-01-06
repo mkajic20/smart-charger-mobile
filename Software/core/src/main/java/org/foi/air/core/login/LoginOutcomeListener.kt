@@ -7,4 +7,5 @@ interface LoginOutcomeListener {
     fun onSuccessfulLogin(response: SuccessfulLoginResponseBody)
     fun onFailedLogin(response: ErrorResponseBody)
     fun onApiConnectionFailure(t: Throwable)
+    fun onButtonClicked()
 }
