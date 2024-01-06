@@ -91,4 +91,8 @@
     <string name="charging_history">CHARGING HISTORY</string>
     <string name="logout">LOGOUT</string>
     <string name="successful_logout">Successful logout</string>
+    <string name="select_charger">Select charger:</string>
+    <string name="free_state">Free</string>
+    <string name="occupied_state">Occupied</string>
+    <string name="in_use">In use</string>
 </resources>

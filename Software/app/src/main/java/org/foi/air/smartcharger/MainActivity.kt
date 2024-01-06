@@ -19,6 +19,7 @@ import org.foi.air.login_google.GoogleLoginHandler
 import org.foi.air.smartcharger.context.Charger
 import org.foi.air.smartcharger.databinding.ActivityMainBinding
 import org.foi.air.smartcharger.fragments.ChargerConnectionFragment
+import org.foi.air.smartcharger.fragments.ChargerSelectionFragment
 import org.foi.air.smartcharger.fragments.ChargerSimulatorFragment
 import org.foi.air.smartcharger.fragments.ChargingHistoryFragment
 import org.foi.air.smartcharger.fragments.LoginFragment
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "ChargerSimulatorFragment" -> ChargerSimulatorFragment()
             "RfidListFragment" -> RfidListFragment()
             "ChargingHistoryFragment" -> ChargingHistoryFragment()
+            "ChargerSelectionFragment" -> ChargerSelectionFragment()
             else -> throw IllegalArgumentException("Unknown fragment name: $fragmentName")
         }
     }

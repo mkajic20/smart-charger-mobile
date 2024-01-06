@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import org.foi.air.api.models.StartEventBody
 import org.foi.air.api.models.StopEventBody
 import org.foi.air.api.request_handlers.StartChargingRequestHandler
@@ -37,6 +38,7 @@ class ChargerSimulatorFragment : Fragment() {
     lateinit var btnChangeState : ImageButton
     lateinit var changeStateInstruction : TextView
     lateinit var btnDisconnect : Button
+    lateinit var chargerName : TextView
     var state = false
 
     override fun onCreateView(
@@ -44,31 +46,39 @@ class ChargerSimulatorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChargerSimulatorBinding.inflate(inflater,container,false)
+        val startTime = Charger.startTime
 
         tvState = binding.tvChargingStatus
+        chargerName = binding. tvMainTitleCharger
         chronometer = binding.chChargingTime
         power = binding.tvConsumedValue
         btnChangeState = binding.ibState
         changeStateInstruction = binding.tvChangeStateInstructions
         btnDisconnect = binding.btnDisconnect
+        chargerName.text = Charger.chargerName
+
         //in case app closed while charging was on
         if(Charger.eventId!="") {
-            stopCharging()
+            val elapsedMillis = System.currentTimeMillis() - startTime!!
+            chronometer.base = SystemClock.elapsedRealtime() - elapsedMillis
+            changeInterfaceStart()
+            chronometer.start()
+            state = true
         }
         btnChangeState.setOnClickListener{
             changeState()
-
-            chronometer.setOnChronometerTickListener { chronometer ->
-                val elapsedMillis = SystemClock.elapsedRealtime()
-
-                // Check if 10 seconds have passed since the last update
-                if (elapsedMillis - lastUpdateTime >= 1000) {
-                    updatePower()
-                    lastUpdateTime = elapsedMillis
-                }
-            }
-
         }
+
+        chronometer.setOnChronometerTickListener { chronometer ->
+            val elapsedMillis = SystemClock.elapsedRealtime()
+
+            // Check if 10 seconds have passed since the last update
+            if (elapsedMillis - lastUpdateTime >= 1000) {
+                updatePower()
+                lastUpdateTime = elapsedMillis
+            }
+        }
+
         btnDisconnect.setOnClickListener{
 
             if(state)
@@ -121,15 +131,14 @@ class ChargerSimulatorFragment : Fragment() {
         stopChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
             override fun onSuccessfulResponse(response: StopEventResponseBody) {
                 Log.i("punjenje", response.message)
-                btnChangeState.setImageResource(R.drawable.ic_start)
-                changeStateInstruction.text = getString(R.string.start_charger_instruction)
-                tvState.text = getString(R.string.status_not_charging)
+                changeInterfaceStop()
                 pauseTimer()
-                power.text = "0.0"
+
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                Log.i("punjenje", response.message)
+                val toast = Toast.makeText(this@ChargerSimulatorFragment.context, response.message, Toast.LENGTH_LONG)
+                toast.show()
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
@@ -138,6 +147,7 @@ class ChargerSimulatorFragment : Fragment() {
 
         })
         Charger.eventId=""
+        Charger.startTime = 0
         Charger.saveChargerData()
     }
 
@@ -145,27 +155,26 @@ class ChargerSimulatorFragment : Fragment() {
         val eventBody = StartEventBody(
             getTime(),
             Charger.cardId!!,
-            Charger.chargerId,
+            Charger.chargerId!!,
             Charger.userId!!
         )
-
         val startChargingHandler = StartChargingRequestHandler(eventBody)
         startChargingHandler.sendRequest(object: ResponseListener<StartEventResponseBody>{
             override fun onSuccessfulResponse(response: StartEventResponseBody) {
-
+                val startTime = System.currentTimeMillis()
+                Charger.startTime = startTime
                 Charger.eventId = response.event.eventId
                 Charger.saveChargerData()
                 Log.i("punjenje", response.message)
-                btnChangeState.setImageResource(R.drawable.ic_pause)
-                changeStateInstruction.text = getString(R.string.pause_charger_instruction)
-                tvState.text = getString(R.string.status_charging)
-
-                startTimer()
+                changeInterfaceStart()
+                if(Charger.eventId != "")
+                    startTimer()
 
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                Log.i("punjenje", response.message)
+                val toast = Toast.makeText(this@ChargerSimulatorFragment.context, response.message, Toast.LENGTH_LONG)
+                toast.show()
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
@@ -173,6 +182,18 @@ class ChargerSimulatorFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun changeInterfaceStart(){
+        btnChangeState.setImageResource(R.drawable.ic_pause)
+        changeStateInstruction.text = getString(R.string.pause_charger_instruction)
+        tvState.text = getString(R.string.status_charging)
+    }
+    private fun changeInterfaceStop(){
+        btnChangeState.setImageResource(R.drawable.ic_start)
+        changeStateInstruction.text = getString(R.string.start_charger_instruction)
+        tvState.text = getString(R.string.status_not_charging)
+        power.text = "0.0"
     }
 
     private fun getTime(): String {
@@ -205,6 +226,8 @@ class ChargerSimulatorFragment : Fragment() {
             chronometer.base = SystemClock.elapsedRealtime()
         }
     }
+
+
 
 
 }
