@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "org.foi.air.login_google"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -36,7 +36,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation(project(mapOf("path" to ":core")))
     implementation(project(mapOf("path" to ":api")))
     implementation("com.google.android.gms:play-services-auth:20.7.0")
