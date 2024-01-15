@@ -25,16 +25,15 @@ object ApiService {
         .addInterceptor(interceptor)
         .build()
 
-    private var instance: Retrofit = Retrofit.Builder()
+    private var retrofitInstance: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
 
 
-
-    val authService: AuthenticationService = instance.create(AuthenticationService::class.java)
-    val rfidCardService: RfidCardService = instance.create(RfidCardService::class.java)
-    val eventService: EventService = instance.create(EventService::class.java)
-    val chargerService: ChargerService = instance.create(ChargerService::class.java)
+    val authService: AuthenticationService = retrofitInstance.create(AuthenticationService::class.java)
+    val rfidCardService: RfidCardService = retrofitInstance.create(RfidCardService::class.java)
+    val eventService: EventService = retrofitInstance.create(EventService::class.java)
+    val chargerService: ChargerService = retrofitInstance.create(ChargerService::class.java)
 }

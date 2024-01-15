@@ -5,5 +5,5 @@ class RfidCard (
     var value: String,
     var active: Boolean,
     var id: Int,
-    var userId: Int
+    var user: UserInfo
 )

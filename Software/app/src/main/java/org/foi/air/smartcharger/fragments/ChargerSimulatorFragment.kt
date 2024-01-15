@@ -163,7 +163,7 @@ class ChargerSimulatorFragment : Fragment() {
             override fun onSuccessfulResponse(response: StartEventResponseBody) {
                 val startTime = System.currentTimeMillis()
                 Charger.startTime = startTime
-                Charger.eventId = response.event.eventId
+                Charger.eventId = response.event.id
                 Charger.saveChargerData()
                 Log.i("punjenje", response.message)
                 changeInterfaceStart()

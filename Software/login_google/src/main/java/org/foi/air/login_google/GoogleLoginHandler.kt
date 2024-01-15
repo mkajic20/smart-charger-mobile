@@ -19,7 +19,7 @@ import org.foi.air.api.request_handlers.GoogleLoginRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.core.models.LoginResponseBody
 
 class GoogleLoginHandler :
     LoginHandler {
@@ -32,8 +32,8 @@ class GoogleLoginHandler :
         val googleLoginRequestHandler = GoogleLoginRequestHandler(accessToken)
 
         googleLoginRequestHandler.sendRequest(object :
-            ResponseListener<SuccessfulLoginResponseBody> {
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
+            ResponseListener<LoginResponseBody> {
+            override fun onSuccessfulResponse(response: LoginResponseBody) {
                 loginListener.onSuccessfulLogin(response)
 
                 // Sign out is here because mGoogleSignInClient is used only during login and not anywhere else

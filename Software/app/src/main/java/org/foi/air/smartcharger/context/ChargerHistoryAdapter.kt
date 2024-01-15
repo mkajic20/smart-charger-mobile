@@ -33,10 +33,10 @@ class ChargerHistoryAdapter (private val eventList: MutableList<EventInfo>) : Re
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = eventList[holder.adapterPosition]
 
-        holder.chargerName.text = currentItem.chargerName
+        holder.chargerName.text = currentItem.charger.name
         holder.started.text = formatDate(currentItem.startTime)
         holder.ended.text = formatDate(currentItem.endTime)
-        holder.consumed.text = currentItem.consumed
+        holder.consumed.text = currentItem.volume
     }
 
     private fun formatDate(date: String): String {

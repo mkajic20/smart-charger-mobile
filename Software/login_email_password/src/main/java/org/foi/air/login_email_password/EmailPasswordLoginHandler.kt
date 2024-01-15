@@ -12,7 +12,7 @@ import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.core.models.LoginResponseBody
 
 class EmailPasswordLoginHandler : LoginHandler {
     private lateinit var fragment: Fragment
@@ -28,8 +28,8 @@ class EmailPasswordLoginHandler : LoginHandler {
         val loginBody = LoginBody(email, password)
         val loginRequestHandler = LoginRequestHandler(loginBody)
 
-        loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
+        loginRequestHandler.sendRequest(object: ResponseListener<LoginResponseBody>{
+            override fun onSuccessfulResponse(response: LoginResponseBody) {
                 loginListener.onSuccessfulLogin(response)
             }
 

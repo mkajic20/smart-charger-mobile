@@ -85,10 +85,10 @@ class ChargerConnectionFragment : Fragment() {
             val verifyCardHandler = VerifyCardRequestHandler(cardValue)
             verifyCardHandler.sendRequest(object: ResponseListener<CardResponseBody>{
                 override fun onSuccessfulResponse(response: CardResponseBody) {
-                    Log.i("scannedCard", "Value: ${response.rfidCard.id}")
-                    Log.i("scannedCard", "Value: ${response.rfidCard.userId}")
-                    Charger.userId=response.rfidCard.userId.toString()
-                    Charger.cardId=response.rfidCard.id.toString()
+                    Log.i("scannedCard", "Value: ${response.card.id}")
+                    Log.i("scannedCard", "Value: ${response.card.user.id}")
+                    Charger.userId=response.card.user.id.toString()
+                    Charger.cardId=response.card.id.toString()
                     Charger.saveChargerData()
                     (requireActivity() as MainActivity).changeFragment("ChargerSelectionFragment")
                 }

@@ -1,6 +1,6 @@
 package org.foi.air.api.network
 
-import okhttp3.ResponseBody
+import org.foi.air.core.models.ChargersResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,5 +10,5 @@ interface ChargerService {
     fun getChargers(
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int = 10
-    ): Call<ResponseBody>
+    ): Call<ChargersResponseBody>
 }

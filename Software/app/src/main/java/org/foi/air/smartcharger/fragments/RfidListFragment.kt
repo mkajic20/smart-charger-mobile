@@ -87,7 +87,7 @@ class RfidListFragment : Fragment() {
         getRfidCardsForUserRequestHandler.sendRequest(object: ResponseListener<RfidCardResponseBody>{
 
             override fun onSuccessfulResponse(response: RfidCardResponseBody) {
-                getRfidCardsData(response.rfidCardList)
+                getRfidCardsData(response.cards)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {

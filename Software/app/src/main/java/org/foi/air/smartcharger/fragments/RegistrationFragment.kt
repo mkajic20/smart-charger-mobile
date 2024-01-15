@@ -12,8 +12,8 @@ import org.foi.air.api.models.RegistrationBody
 import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.api.request_handlers.RegistrationRequestHandler
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
-import org.foi.air.core.models.SuccessfulRegisterResponseBody
+import org.foi.air.core.models.LoginResponseBody
+import org.foi.air.core.models.RegisterResponseBody
 import org.foi.air.smartcharger.MainActivity
 import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
@@ -48,8 +48,8 @@ class RegistrationFragment : Fragment() {
             val registrationRequestHandler = RegistrationRequestHandler(requestBody)
             btnRegister.isEnabled = false
 
-            registrationRequestHandler.sendRequest(object : ResponseListener<SuccessfulRegisterResponseBody>{
-                override fun onSuccessfulResponse(response: SuccessfulRegisterResponseBody) {
+            registrationRequestHandler.sendRequest(object : ResponseListener<RegisterResponseBody>{
+                override fun onSuccessfulResponse(response: RegisterResponseBody) {
                     btnRegister.isEnabled = true
 
                     val loginBody = LoginBody(
@@ -87,9 +87,9 @@ class RegistrationFragment : Fragment() {
     private fun loginUser(loginBody: LoginBody) {
         val loginRequestHandler = LoginRequestHandler(loginBody)
 
-        loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
-                Auth.saveUserData(response.user, response.jwt)
+        loginRequestHandler.sendRequest(object: ResponseListener<LoginResponseBody>{
+            override fun onSuccessfulResponse(response: LoginResponseBody) {
+                Auth.saveUserData(response.user, response.token)
                 val toast = Toast.makeText(this@RegistrationFragment.context, "Successful register.", Toast.LENGTH_LONG)
                 toast.show()
                 (requireActivity() as MainActivity).changeFragment("RfidListFragment")

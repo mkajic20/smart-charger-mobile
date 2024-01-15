@@ -1,17 +1,15 @@
 package org.foi.air.smartcharger.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import org.foi.air.api.models.LoginBody
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.core.models.LoginResponseBody
 import org.foi.air.login_email_password.EmailPasswordLoginHandler
 import org.foi.air.login_google.GoogleLoginHandler
 import org.foi.air.smartcharger.MainActivity
@@ -42,9 +40,9 @@ class LoginFragment : Fragment() {
                 this,
                 view.findViewById(R.id.login_layout),
                 object : LoginOutcomeListener {
-                    override fun onSuccessfulLogin(response: SuccessfulLoginResponseBody) {
+                    override fun onSuccessfulLogin(response: LoginResponseBody) {
                         binding.progressBar.visibility = View.INVISIBLE
-                        Auth.saveUserData(response.user, response.jwt)
+                        Auth.saveUserData(response.user, response.token)
                         Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_successful), Toast.LENGTH_LONG).show()
                         (requireActivity() as MainActivity).changeFragment("RfidListFragment")
                         val mainActivity = activity as MainActivity

@@ -81,7 +81,7 @@ class ChargerSelectionFragment : Fragment(), ChargersAdapter.OnChargerItemClickL
         val getChargersRequestHandler = GetChargersRequestHandler(page)
         getChargersRequestHandler.sendRequest(object: ResponseListener<ChargersResponseBody>{
             override fun onSuccessfulResponse(response: ChargersResponseBody) {
-                sendDataToRV(response.chargerList)
+                sendDataToRV(response.chargers)
                 isLoading = false
             }
 
