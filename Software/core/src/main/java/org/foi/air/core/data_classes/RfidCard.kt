@@ -1,6 +1,6 @@
 package org.foi.air.core.data_classes
 
-class RfidCard (
+data class RfidCard (
     var name: String,
     var value: String,
     var active: Boolean,
