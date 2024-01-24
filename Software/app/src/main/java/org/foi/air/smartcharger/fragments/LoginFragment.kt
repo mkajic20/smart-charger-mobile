@@ -38,25 +38,43 @@ class LoginFragment : Fragment() {
         loginHandlers.forEach { handler ->
             handler.handleLogin(
                 this,
-                view.findViewById(R.id.login_layout),
+                binding.loginLayout,
                 object : LoginOutcomeListener {
                     override fun onSuccessfulLogin(response: LoginResponseBody) {
-                        binding.progressBar.visibility = View.INVISIBLE
-                        Auth.saveUserData(response.user, response.token)
-                        Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_successful), Toast.LENGTH_LONG).show()
-                        (requireActivity() as MainActivity).changeFragment("RfidListFragment")
-                        val mainActivity = activity as MainActivity
-                        mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
+                        if(isAdded) {
+                            binding.progressBar.visibility = View.INVISIBLE
+                            Auth.saveUserData(response.user, response.token)
+                            Toast.makeText(
+                                this@LoginFragment.context,
+                                resources.getString(R.string.login_successful),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                            val mainActivity = activity as MainActivity
+                            mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
+                        }
                     }
 
                     override fun onFailedLogin(response: ErrorResponseBody) {
-                        binding.progressBar.visibility = View.INVISIBLE
-                        Toast.makeText(this@LoginFragment.context, resources.getString(R.string.login_unsuccessful), Toast.LENGTH_LONG).show()
+                        if(isAdded) {
+                            binding.progressBar.visibility = View.INVISIBLE
+                            Toast.makeText(
+                                this@LoginFragment.context,
+                                resources.getString(R.string.login_unsuccessful),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
 
                     override fun onApiConnectionFailure(t: Throwable) {
-                        binding.progressBar.visibility = View.INVISIBLE
-                        Toast.makeText(this@LoginFragment.context, resources.getString(R.string.cant_reach_server), Toast.LENGTH_LONG).show()
+                        if(isAdded) {
+                            binding.progressBar.visibility = View.INVISIBLE
+                            Toast.makeText(
+                                this@LoginFragment.context,
+                                resources.getString(R.string.cant_reach_server),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
 
                     override fun onButtonClicked() {

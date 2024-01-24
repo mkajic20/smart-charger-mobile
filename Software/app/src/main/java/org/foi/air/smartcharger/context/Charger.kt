@@ -4,7 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 
 object Charger {
-    //dummy data for chargerId
+    private const val CARD_ID = "cardId"
+    private const val CHARGER_ID = "chargerId"
+    private const val CHARGER_NAME = "chargerName"
+    private const val USER_ID = "userId"
+    private const val EVENT_ID = "eventId"
+    private const val START_TIME = "startTime"
     var cardId : String? = ""
     var chargerId: String? = ""
     var chargerName: String? = ""
@@ -20,23 +25,23 @@ object Charger {
     fun saveChargerData(){
         val editor = storedChargerData?.edit()
         editor?.apply{
-            putString("eventId", eventId)
-            putString("cardId", cardId)
-            putString("userId", userId)
-            putString("chargerId", chargerId)
-            putString("chargerName", chargerName)
-            putLong("chronometerBase", startTime!!)
+            putString(EVENT_ID, eventId)
+            putString(CARD_ID, cardId)
+            putString(USER_ID, userId)
+            putString(CHARGER_ID, chargerId)
+            putString(CHARGER_NAME, chargerName)
+            putLong(START_TIME, startTime!!)
             apply()
         }
         updateData()
     }
     private fun updateData() {
-        eventId = storedChargerData?.getString("eventId", "")
-        cardId = storedChargerData?.getString("cardId", "")
-        userId = storedChargerData?.getString("userId", "")
-        chargerId = storedChargerData?.getString("chargerId", "")
-        chargerName = storedChargerData?.getString("chargerName", "")
-        startTime = storedChargerData?.getLong("chronometerBase", 0)
+        eventId = storedChargerData?.getString(EVENT_ID, "")
+        cardId = storedChargerData?.getString(CARD_ID, "")
+        userId = storedChargerData?.getString(USER_ID, "")
+        chargerId = storedChargerData?.getString(CHARGER_ID, "")
+        chargerName = storedChargerData?.getString(CHARGER_NAME, "")
+        startTime = storedChargerData?.getLong(START_TIME, 0)
     }
 
     fun deleteChargerData(){

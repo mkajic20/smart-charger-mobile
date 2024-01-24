@@ -1,5 +1,6 @@
 package org.foi.air.api.network
 
+import android.util.Log
 import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -52,12 +53,18 @@ object ApiService {
         onSuccess: (ApiResponse.Success<T>) -> Unit,
         onError: (ApiResponse.Error) -> Unit
     ) {
-        if (response.isSuccessful) {
-            onSuccess(ApiResponse.Success(response.body()!!))
-        } else {
-            val errorResponse = Gson().fromJson(response.errorBody()!!.string(), ErrorResponseBody::class.java)
-            onError(ApiResponse.Error(errorResponse))
-        }
+        try {
+            if (response.isSuccessful) {
+                onSuccess(ApiResponse.Success(response.body()!!))
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.errorBody()!!.string(), ErrorResponseBody::class.java)
+                onError(ApiResponse.Error(errorResponse))
+            }
+    }catch(e : Exception){
+        Log.i("APIconversionError",e.message!!)
+    }
+
     }
 
     fun <T> Call<T>.enqueueWithApiResponse(

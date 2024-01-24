@@ -2,14 +2,11 @@ package org.foi.air.smartcharger.fragments
 
 import ResponseListener
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.foi.air.api.request_handlers.GetChargersRequestHandler
@@ -17,16 +14,13 @@ import org.foi.air.core.data_classes.ChargerInfo
 import org.foi.air.core.models.ChargersResponseBody
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.smartcharger.MainActivity
-import org.foi.air.smartcharger.context.Auth
+import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Charger
 import org.foi.air.smartcharger.context.ChargersAdapter
 import org.foi.air.smartcharger.databinding.FragmentChargerSelectionBinding
 
 class ChargerSelectionFragment : Fragment(), ChargersAdapter.OnChargerItemClickListener {
     private lateinit var binding: FragmentChargerSelectionBinding
-    private lateinit var rvChargers: RecyclerView
-    private lateinit var tvConnectionError : TextView
-    private lateinit var btnRetryConnection : Button
     private lateinit var chargersAdapter: ChargersAdapter
     private var currentPage = 1
     private var isLoading = false
@@ -36,18 +30,13 @@ class ChargerSelectionFragment : Fragment(), ChargersAdapter.OnChargerItemClickL
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChargerSelectionBinding.inflate(inflater,container,false)
-        rvChargers = binding.rvChargers
-        rvChargers.layoutManager = LinearLayoutManager(context)
-        chargersAdapter = ChargersAdapter(mutableListOf(), context, this)
-        rvChargers.adapter = chargersAdapter
-        tvConnectionError = binding.tvFailedConnection
-        btnRetryConnection = binding.btnRetryConnection
+        setupRecyclerView()
 
-        btnRetryConnection.setOnClickListener{
+        binding.btnRetryConnection.setOnClickListener{
             loadMoreData()
         }
 
-        rvChargers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvChargers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -65,23 +54,31 @@ class ChargerSelectionFragment : Fragment(), ChargersAdapter.OnChargerItemClickL
         return binding.root
     }
 
+    private fun setupRecyclerView() {
+        chargersAdapter = ChargersAdapter(mutableListOf(), context, this)
+        binding.rvChargers.layoutManager = LinearLayoutManager(context)
+        binding.rvChargers.adapter = chargersAdapter
+    }
+
     private fun loadMoreData() {
         if(!reachedEnd) {
             isLoading = true
             currentPage++
             getChargersPage(currentPage)
-            btnRetryConnection.visibility = View.INVISIBLE
-            tvConnectionError.visibility = View.INVISIBLE
+            binding.btnRetryConnection.visibility = View.INVISIBLE
+            binding.tvFailedConnection.visibility = View.INVISIBLE
         }
     }
 
     private fun getChargersPage(page: Int) {
-        if(!Auth.isLoggedIn())
-            return
+        binding.progressBar.visibility = View.VISIBLE
         val getChargersRequestHandler = GetChargersRequestHandler(page)
         getChargersRequestHandler.sendRequest(object: ResponseListener<ChargersResponseBody>{
             override fun onSuccessfulResponse(response: ChargersResponseBody) {
-                sendDataToRV(response.chargers)
+                if(isAdded) {
+                    sendDataToRV(response.chargers)
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
                 isLoading = false
             }
 
@@ -89,6 +86,7 @@ class ChargerSelectionFragment : Fragment(), ChargersAdapter.OnChargerItemClickL
             override fun onErrorResponse(response: ErrorResponseBody) {
                 if(response.message=="There are no chargers with that parameters."){
                     val toast = Toast.makeText(this@ChargerSelectionFragment.context, "You have reached the end of the list.", Toast.LENGTH_LONG)
+                    binding.progressBar.visibility = View.INVISIBLE
                     toast.show()
                     isLoading = false
                     reachedEnd = true
@@ -97,10 +95,18 @@ class ChargerSelectionFragment : Fragment(), ChargersAdapter.OnChargerItemClickL
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                Log.i("charger","Connection error: "+t.message)
-                isLoading = false
-                btnRetryConnection.visibility = View.VISIBLE
-                tvConnectionError.visibility = View.VISIBLE
+                if(isAdded) {
+                    val toast = Toast.makeText(
+                        this@ChargerSelectionFragment.context,
+                        resources.getString(R.string.cant_reach_server),
+                        Toast.LENGTH_LONG
+                    )
+                    toast.show()
+                    binding.progressBar.visibility = View.INVISIBLE
+                    isLoading = false
+                    binding.btnRetryConnection.visibility = View.VISIBLE
+                    binding.tvFailedConnection.visibility = View.VISIBLE
+                }
             }
 
         })

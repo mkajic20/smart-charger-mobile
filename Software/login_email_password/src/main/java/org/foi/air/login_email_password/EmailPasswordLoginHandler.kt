@@ -30,16 +30,20 @@ class EmailPasswordLoginHandler : LoginHandler {
 
         loginRequestHandler.sendRequest(object: ResponseListener<LoginResponseBody>{
             override fun onSuccessfulResponse(response: LoginResponseBody) {
-                loginListener.onSuccessfulLogin(response)
+                if(fragment.isAdded)
+                    loginListener.onSuccessfulLogin(response)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                errorResponse(response.error)
-                loginListener.onFailedLogin(response)
+                if(fragment.isAdded) {
+                    errorResponse(response.error)
+                    loginListener.onFailedLogin(response)
+                }
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                loginListener.onApiConnectionFailure(t)
+                if(fragment.isAdded)
+                    loginListener.onApiConnectionFailure(t)
             }
         })
     }

@@ -31,6 +31,7 @@ import java.util.Locale
 class ChargerSimulatorFragment : Fragment() {
 
     private lateinit var binding: FragmentChargerSimulatorBinding
+    private val POWER_CONSUMPTION_RATE = 0.00208
     lateinit var chronometer : Chronometer
     var lastUpdateTime = 0L
     lateinit var tvState: TextView
@@ -96,7 +97,7 @@ class ChargerSimulatorFragment : Fragment() {
     private fun updatePower() {
 
         //If charger has 7.5kW then 7.5/3600 = 0.00208 - every second car gets 0.0028 kW
-        val newPower = 0.00208 * ((SystemClock.elapsedRealtime() - chronometer.base) / 1000)
+        val newPower = POWER_CONSUMPTION_RATE * ((SystemClock.elapsedRealtime() - chronometer.base) / 1000)
         power.text = String.format(Locale.US, "%.4f", newPower)
 
 
@@ -130,9 +131,11 @@ class ChargerSimulatorFragment : Fragment() {
         val stopChargingHandler = StopChargingRequestHandler(eventBody)
         stopChargingHandler.sendRequest(object: ResponseListener<StopEventResponseBody>{
             override fun onSuccessfulResponse(response: StopEventResponseBody) {
-                Log.i("punjenje", response.message)
-                changeInterfaceStop()
-                pauseTimer()
+                if(isAdded) {
+                    Log.i("punjenje", response.message)
+                    changeInterfaceStop()
+                    pauseTimer()
+                }
 
             }
 

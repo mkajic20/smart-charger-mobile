@@ -2,11 +2,11 @@ package org.foi.air.smartcharger.fragments
 
 import ResponseListener
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import org.foi.air.api.models.LoginBody
 import org.foi.air.api.models.RegistrationBody
 import org.foi.air.api.request_handlers.LoginRequestHandler
@@ -29,28 +29,40 @@ class RegistrationFragment : Fragment() {
         binding = FragmentRegistrationBinding.inflate(inflater,container,false)
         val view = binding.root
 
-        val btnRegister = binding.btnRegister
-        btnRegister.setOnClickListener {
-
-            if(!validateInput(binding.txtFirstName.text.toString(),
+        binding.btnRegister.setOnClickListener{
+            if (!validateInput(
+                    binding.txtFirstName.text.toString(),
                     binding.txtLastName.text.toString(),
                     binding.txtEmail.text.toString(),
                     binding.txtPassword.text.toString(),
-                    binding.txtConfirmPassword.text.toString())) return@setOnClickListener
+                    binding.txtConfirmPassword.text.toString()
+                )
+            ) return@setOnClickListener
+            register()
+        }
 
-            val requestBody = RegistrationBody(
-                binding.txtFirstName.text.toString(),
-                binding.txtLastName.text.toString(),
-                binding.txtEmail.text.toString(),
-                binding.txtPassword.text.toString()
-            )
+        binding.btnSwitchLogin.setOnClickListener{
+            switchToLoginFragment()
+        }
 
-            val registrationRequestHandler = RegistrationRequestHandler(requestBody)
-            btnRegister.isEnabled = false
+        return view
+    }
 
-            registrationRequestHandler.sendRequest(object : ResponseListener<RegisterResponseBody>{
-                override fun onSuccessfulResponse(response: RegisterResponseBody) {
-                    btnRegister.isEnabled = true
+    private fun register() {
+        val requestBody = RegistrationBody(
+            binding.txtFirstName.text.toString(),
+            binding.txtLastName.text.toString(),
+            binding.txtEmail.text.toString(),
+            binding.txtPassword.text.toString()
+        )
+
+        val registrationRequestHandler = RegistrationRequestHandler(requestBody)
+        binding.btnRegister.isEnabled = false
+
+        registrationRequestHandler.sendRequest(object : ResponseListener<RegisterResponseBody>{
+            override fun onSuccessfulResponse(response: RegisterResponseBody) {
+                if(isAdded) {
+                    binding.btnRegister.isEnabled = true
 
                     val loginBody = LoginBody(
                         response.user.email,
@@ -59,23 +71,22 @@ class RegistrationFragment : Fragment() {
 
                     loginUser(loginBody)
                 }
+            }
 
-                override fun onErrorResponse(response: ErrorResponseBody) {
-                    btnRegister.isEnabled = true
+            override fun onErrorResponse(response: ErrorResponseBody) {
+                if(isAdded) {
+                    binding.btnRegister.isEnabled = true
                     binding.lbErrorMessages.text = response.error
                 }
+            }
 
-                override fun onApiConnectionFailure(t: Throwable) {
-                    btnRegister.isEnabled = true
+            override fun onApiConnectionFailure(t: Throwable) {
+                if(isAdded) {
+                    binding.btnRegister.isEnabled = true
                     binding.lbErrorMessages.text = t.message
                 }
-            })
-        }
-        binding.btnSwitchLogin.setOnClickListener{
-            switchToLoginFragment()
-        }
-
-        return view
+            }
+        })
     }
 
     private fun switchToLoginFragment() {
@@ -89,20 +100,28 @@ class RegistrationFragment : Fragment() {
 
         loginRequestHandler.sendRequest(object: ResponseListener<LoginResponseBody>{
             override fun onSuccessfulResponse(response: LoginResponseBody) {
-                Auth.saveUserData(response.user, response.token)
-                val toast = Toast.makeText(this@RegistrationFragment.context, "Successful register.", Toast.LENGTH_LONG)
-                toast.show()
-                (requireActivity() as MainActivity).changeFragment("RfidListFragment")
-                val mainActivity = activity as MainActivity
-                mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
+                if(isAdded) {
+                    Auth.saveUserData(response.user, response.token)
+                    val toast = Toast.makeText(
+                        this@RegistrationFragment.context,
+                        "Successful register.",
+                        Toast.LENGTH_LONG
+                    )
+                    toast.show()
+                    (requireActivity() as MainActivity).changeFragment("RfidListFragment")
+                    val mainActivity = activity as MainActivity
+                    mainActivity.navigationView.setCheckedItem(R.id.rfidCardsItem)
+                }
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                binding.lbErrorMessages.text = response.error
+                if(isAdded)
+                    binding.lbErrorMessages.text = response.error
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                binding.lbErrorMessages.text = t.message
+                if(isAdded)
+                    binding.lbErrorMessages.text = t.message
             }
 
         })

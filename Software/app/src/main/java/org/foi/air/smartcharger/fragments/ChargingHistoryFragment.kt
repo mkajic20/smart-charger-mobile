@@ -2,20 +2,20 @@ package org.foi.air.smartcharger.fragments
 
 import ResponseListener
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.foi.air.api.request_handlers.GetEventsForUserRequestHandler
 import org.foi.air.core.data_classes.EventInfo
 import org.foi.air.core.models.ErrorResponseBody
 import org.foi.air.core.models.EventsResponseBody
+import org.foi.air.smartcharger.R
 import org.foi.air.smartcharger.context.Auth
 import org.foi.air.smartcharger.context.ChargerHistoryAdapter
 import org.foi.air.smartcharger.databinding.FragmentChargingHistoryBinding
@@ -27,7 +27,7 @@ class ChargingHistoryFragment : Fragment() {
     private lateinit var rvHistory: RecyclerView
     private var currentPage = 1
     private var isLoading = false
-    private lateinit var chargerHistoryAdapter: ChargerHistoryAdapter
+    private val chargerHistoryAdapter = ChargerHistoryAdapter(mutableListOf())
     private lateinit var tvConnectionError: TextView
     private lateinit var btnRetryConnection: Button
     private var reachedEnd = false
@@ -39,7 +39,6 @@ class ChargingHistoryFragment : Fragment() {
         binding = FragmentChargingHistoryBinding.inflate(inflater,container,false)
         rvHistory = binding.rvChargingHistory
         rvHistory.layoutManager = LinearLayoutManager(context)
-        chargerHistoryAdapter = ChargerHistoryAdapter(mutableListOf())
         rvHistory.adapter = chargerHistoryAdapter
         tvConnectionError = binding.tvFailedConnection
         btnRetryConnection = binding.btnRetryConnection
@@ -79,17 +78,22 @@ class ChargingHistoryFragment : Fragment() {
     private fun getEventPage(page: Int) {
         if(!Auth.isLoggedIn())
             return
+        binding.progressBar.visibility = View.VISIBLE
         val geteventsForUserRequestHandler = GetEventsForUserRequestHandler(Auth.userId!!.toInt(), page)
         geteventsForUserRequestHandler.sendRequest(object: ResponseListener<EventsResponseBody>{
             override fun onSuccessfulResponse(response: EventsResponseBody) {
-                sendDataToRV(response.events)
-                isLoading = false
+                if(isAdded) {
+                    binding.progressBar.visibility = View.INVISIBLE
+                    sendDataToRV(response.events)
+                    isLoading = false
+                }
             }
 
 
             override fun onErrorResponse(response: ErrorResponseBody) {
                 if(response.message=="There are no events with that parameters."){
                     val toast = Toast.makeText(this@ChargingHistoryFragment.context, "You have reached the end of the list.", Toast.LENGTH_LONG)
+                    binding.progressBar.visibility = View.INVISIBLE
                     toast.show()
                     isLoading = false
                     reachedEnd = true
@@ -98,10 +102,18 @@ class ChargingHistoryFragment : Fragment() {
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                Log.i("eventi","Connection error: "+t.message)
-                isLoading = false
-                btnRetryConnection.visibility = View.VISIBLE
-                tvConnectionError.visibility = View.VISIBLE
+                if(isAdded) {
+                    val toast = Toast.makeText(
+                        this@ChargingHistoryFragment.context,
+                        resources.getString(R.string.cant_reach_server),
+                        Toast.LENGTH_LONG
+                    )
+                    binding.progressBar.visibility = View.INVISIBLE
+                    toast.show()
+                    isLoading = false
+                    btnRetryConnection.visibility = View.VISIBLE
+                    tvConnectionError.visibility = View.VISIBLE
+                }
             }
 
         })

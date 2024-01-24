@@ -34,19 +34,23 @@ class GoogleLoginHandler :
         googleLoginRequestHandler.sendRequest(object :
             ResponseListener<LoginResponseBody> {
             override fun onSuccessfulResponse(response: LoginResponseBody) {
-                loginListener.onSuccessfulLogin(response)
+                if(fragment.isAdded) {
+                    loginListener.onSuccessfulLogin(response)
 
-                // Sign out is here because mGoogleSignInClient is used only during login and not anywhere else
-                // Users can now select new account on login screen
-                signOut()
+                    // Sign out is here because mGoogleSignInClient is used only during login and not anywhere else
+                    // Users can now select new account on login screen
+                    signOut()
+                }
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                loginListener.onFailedLogin(response)
+                if(fragment.isAdded)
+                    loginListener.onFailedLogin(response)
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                loginListener.onApiConnectionFailure(t)
+                if(fragment.isAdded)
+                    loginListener.onApiConnectionFailure(t)
             }
         })
     }
@@ -80,7 +84,7 @@ class GoogleLoginHandler :
     }
 
     fun signOut() {
-        mGoogleSignInClient?.signOut()
+        mGoogleSignInClient.signOut()
     }
 
     override fun handleLogin(
@@ -119,7 +123,7 @@ class GoogleLoginHandler :
 
         loginButton = view.findViewById(R.id.btnLoginGoogle)
         loginButton.setOnClickListener {
-            val signInIntent = mGoogleSignInClient?.signInIntent
+            val signInIntent = mGoogleSignInClient.signInIntent
             launcher.launch(signInIntent)
         }
 
