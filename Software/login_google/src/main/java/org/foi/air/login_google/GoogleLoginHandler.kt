@@ -8,13 +8,9 @@ import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
-import org.foi.air.api.request_handlers.GoogleAccessTokenRequestHandler
 import org.foi.air.api.request_handlers.GoogleLoginRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
@@ -37,10 +33,10 @@ class GoogleLoginHandler :
                 if(fragment.isAdded) {
                     loginListener.onSuccessfulLogin(response)
 
-                    // Sign out is here because mGoogleSignInClient is used only during login and not anywhere else
-                    // Users can now select new account on login screen
-                    signOut()
-                }
+                // Sign out is here because mGoogleSignInClient is used only during login in this class
+                // Users can now select new account on login screen
+                mGoogleSignInClient.signOut()
+            }
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
@@ -55,38 +51,6 @@ class GoogleLoginHandler :
         })
     }
 
-    fun handleSignInResult(
-        completedTask: Task<GoogleSignInAccount>,
-        server_client_id: String,
-        client_secret: String
-    ) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            Log.i("success", "ServerAuthCode: ${account.serverAuthCode}")
-
-            val googleAccessTokenRequestHandler = GoogleAccessTokenRequestHandler(
-                account.serverAuthCode!!,
-                server_client_id,
-                client_secret
-            )
-            googleAccessTokenRequestHandler.requestAccessToken { accessTokenResponse ->
-                if (accessTokenResponse != null) {
-                    handleGoogleLogin(accessTokenResponse.access_token)
-                    Log.i("success", "AccessToken: ${accessTokenResponse.access_token}")
-                } else {
-                    Log.i("failure", "Failed to get access token.")
-                    //loginListener.onFailedLogin("Failed to get access token.")
-                }
-            }
-        } catch (e: ApiException) {
-            Log.i("failure", e.toString())
-        }
-    }
-
-    fun signOut() {
-        mGoogleSignInClient.signOut()
-    }
-
     override fun handleLogin(
         fragment: Fragment,
         login_layout: LinearLayout,
@@ -97,7 +61,6 @@ class GoogleLoginHandler :
         val view = LayoutInflater.from(fragment.context).inflate(R.layout.google_login_layout, null)
 
         val server_client_id = fragment.requireContext().getString(R.string.server_client_id)
-        val client_secret = fragment.requireContext().getString(R.string.client_secret)
 
         val gso: GoogleSignInOptions =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -114,10 +77,10 @@ class GoogleLoginHandler :
                 if (result.resultCode == Activity.RESULT_OK) {
                     loginListener.onButtonClicked()
                     val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                    handleSignInResult(task, server_client_id, client_secret)
+                    Log.i("success", "ServerAuthCode: ${task.result.serverAuthCode}")
+                    handleGoogleLogin(task.result.serverAuthCode!!)
                 } else {
-                    Log.i("failure", "Failed to get response from Google")
-                    //loginListener.onFailedLogin("Failed to get response from Google")
+                    loginListener.onFailedLogin(ErrorResponseBody(false, "Result code is not OK", "Google login failed"))
                 }
             }
 
