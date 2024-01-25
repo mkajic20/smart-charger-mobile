@@ -10,9 +10,7 @@ import android.util.Log
 import org.foi.air.core.interfaces.NfcHandling
 
 class NfcScanner(private val activity: Activity) : NfcHandling {
-    private var nfcAdapter: NfcAdapter = NfcAdapter.getDefaultAdapter(activity)
-        ?: throw IllegalStateException("NFC is not supported on this device.")
-
+    private var nfcAdapter: NfcAdapter? = null
     private var pendingIntent: PendingIntent? = null
     private val tagList = mutableListOf<Tag>()
 
@@ -22,13 +20,14 @@ class NfcScanner(private val activity: Activity) : NfcHandling {
 
     private fun initializeNFC() {
         try {
+            nfcAdapter = NfcAdapter.getDefaultAdapter(activity)
             val pendingIntent: PendingIntent = PendingIntent.getActivity(
                 activity,
                 0,
                 Intent(activity, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
                 PendingIntent.FLAG_MUTABLE
             )
-            nfcAdapter.enableForegroundDispatch(activity, pendingIntent, null, null)
+            nfcAdapter?.enableForegroundDispatch(activity, pendingIntent, null, null)
         } catch (e: Exception) {
             Log.e("nfcSuperSecretCode", e.toString())
         }
@@ -43,11 +42,11 @@ class NfcScanner(private val activity: Activity) : NfcHandling {
             )
         }
 
-        nfcAdapter.enableForegroundDispatch(activity, pendingIntent, null, null)
+        nfcAdapter?.enableForegroundDispatch(activity, pendingIntent, null, null)
     }
 
     override fun onPause() {
-        nfcAdapter.disableForegroundDispatch(activity)
+        nfcAdapter?.disableForegroundDispatch(activity)
     }
 
     override fun handleIntent(intent: Intent) {
@@ -67,7 +66,10 @@ class NfcScanner(private val activity: Activity) : NfcHandling {
     }
 
     override fun getNfcAdapterStatus(): Boolean {
-        onResume()
-        return nfcAdapter.isEnabled
+        if (nfcAdapter != null && nfcAdapter!!.isEnabled) {
+            onResume()
+            return true
+        }
+        return false
     }
 }
