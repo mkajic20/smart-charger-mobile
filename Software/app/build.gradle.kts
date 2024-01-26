@@ -54,9 +54,12 @@ dependencies {
     implementation(project(mapOf("path" to ":login_email_password")))
     implementation(project(mapOf("path" to ":nfc_scanner")))
     implementation(project(mapOf("path" to ":login_google")))
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
-
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-beta01")
 }
