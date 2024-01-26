@@ -4,6 +4,11 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("${rootProject.projectDir}/debug.keystore")
+        }
+    }
     namespace = "org.foi.air.smartcharger"
     compileSdk = 34
 

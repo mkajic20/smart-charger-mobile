@@ -5,13 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.nfc_scanner.NfcScanner
 import org.foi.air.api.request_handlers.VerifyCardRequestHandler
+import org.foi.air.core.interfaces.NfcHandling
 import org.foi.air.core.interfaces.OnNewIntentListener
 import org.foi.air.core.models.CardResponseBody
 import org.foi.air.core.models.ErrorResponseBody
@@ -22,7 +23,7 @@ import org.foi.air.smartcharger.databinding.FragmentChargerConnectionBinding
 
 class ChargerConnectionFragment : Fragment() {
     private lateinit var binding : FragmentChargerConnectionBinding
-    private lateinit var nfcScanner: NfcScanner
+    private lateinit var nfcScanner: NfcHandling
     private var isNfcScanningEnabled = false
     private var countDownTimer: CountDownTimer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,20 +46,24 @@ class ChargerConnectionFragment : Fragment() {
 
         binding.btnConnectionButton.setOnClickListener()
         {
-            if(nfcScanner.getNfcAdapterStatus()){
-                isNfcScanningEnabled = !isNfcScanningEnabled
-                if (isNfcScanningEnabled) {
-                    startTimer()
-                    btnCancelBg()
-                } else {
-                    stopTimer()
-                    btnConnectBg()
-                }
-            } else {
-                binding.tvStatus.text = resources.getString(R.string.please_active_nfc)
-            }
+            changeNfcScanningState()
         }
         return binding.root
+    }
+
+    private fun changeNfcScanningState() {
+        if (nfcScanner.getNfcAdapterStatus()) {
+            isNfcScanningEnabled = !isNfcScanningEnabled
+            if (isNfcScanningEnabled) {
+                startTimer()
+                btnCancelBg()
+            } else {
+                stopTimer()
+                btnConnectBg()
+            }
+        } else {
+            binding.tvStatus.text = getString(R.string.please_active_nfc)
+        }
     }
 
     override fun onResume() {
@@ -85,20 +90,22 @@ class ChargerConnectionFragment : Fragment() {
             val verifyCardHandler = VerifyCardRequestHandler(cardValue)
             verifyCardHandler.sendRequest(object: ResponseListener<CardResponseBody>{
                 override fun onSuccessfulResponse(response: CardResponseBody) {
-                    Log.i("scannedCard", "Value: ${response.rfidCard.id}")
-                    Log.i("scannedCard", "Value: ${response.rfidCard.userId}")
-                    Charger.userId=response.rfidCard.userId.toString()
-                    Charger.cardId=response.rfidCard.id.toString()
+                    Log.i("scannedCard", "Value: ${response.card.id}")
+                    Log.i("scannedCard", "Value: ${response.card.user.id}")
+                    Charger.userId=response.card.user.id.toString()
+                    Charger.cardId=response.card.id.toString()
                     Charger.saveChargerData()
                     (requireActivity() as MainActivity).changeFragment("ChargerSelectionFragment")
                 }
 
                 override fun onErrorResponse(response: ErrorResponseBody) {
-                    errorUI()
+                    if(isAdded)
+                        errorUI()
                 }
 
                 override fun onApiConnectionFailure(t: Throwable) {
-                    connectionErrorUI(t)
+                    if(isAdded)
+                        connectionErrorUI(t)
                 }
 
             })
@@ -160,14 +167,18 @@ class ChargerConnectionFragment : Fragment() {
             }
 
             override fun onFinish() {
-                isNfcScanningEnabled = false
-                binding.btnConnectionButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
-                binding.btnConnectionButton.text = resources.getString(R.string.connect_button_text)
-                binding.tvInstructions.text =
-                    getString(R.string.rfid_card_not_detected_within_the_allotted_time)
-                binding.tvStatus.setTextColor(resources.getColor(R.color.orange))
-                binding.tvStatus.text = getString(R.string.status_scan_timeout)
-                binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_timeout))
+                if(isAdded) {
+                    isNfcScanningEnabled = false
+                    binding.btnConnectionButton.background =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.custom_blue_button)
+                    binding.btnConnectionButton.text =
+                        resources.getString(R.string.connect_button_text)
+                    binding.tvInstructions.text =
+                        getString(R.string.rfid_card_not_detected_within_the_allotted_time)
+                    binding.tvStatus.setTextColor(resources.getColor(R.color.orange))
+                    binding.tvStatus.text = getString(R.string.status_scan_timeout)
+                    binding.ivCardIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_rfidcard_timeout))
+                }
             }
         }.start()
     }

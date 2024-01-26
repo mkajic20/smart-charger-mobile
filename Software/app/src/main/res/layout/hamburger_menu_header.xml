@@ -12,7 +12,7 @@
         android:layout_height="110dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:contentDescription="logo"
+        android:contentDescription="@string/logo"
         android:scaleType="fitXY"
         android:scaleX="1"
         android:scaleY="1"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bitter_bold"
-        android:text="SMART CHARGER"
+        android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,8 +41,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/bitter"
         android:textColor="#CBCBCB"
-        app:layout_constraintEnd_toEndOf="@+id/tvHeaderName"
-        app:layout_constraintStart_toStartOf="@+id/tvHeaderName"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/tvHeaderName"
         tools:text="email" />
 </androidx.constraintlayout.widget.ConstraintLayout>

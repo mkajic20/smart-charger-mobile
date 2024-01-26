@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Smart Charger</string>
+    <string name="logo">Logo</string>
+    <string name="app_name">SMART CHARGER</string>
     <string name="main_header_title">WELCOME!</string>
     <string name="body_header_title">Charger connection</string>
     <string name="instructions_before_connection">Before you start using charger you will have to connect with your RFID card.</string>
