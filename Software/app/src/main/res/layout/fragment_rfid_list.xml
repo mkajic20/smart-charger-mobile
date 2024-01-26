@@ -43,6 +43,7 @@
         android:id="@+id/tvServerError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/cant_reach_server"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -70,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:fontFamily="@font/bitter_bold"
         android:text="@string/rfid_list_title"
         android:textColor="@color/white"
         android:textSize="39sp"
@@ -113,5 +115,18 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/svRfidList"
         app:layout_constraintTop_toTopOf="@+id/vHeaderBackground" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:visibility="invisible"
+        android:indeterminateTint="@color/rfidCardColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

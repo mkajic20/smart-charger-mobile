@@ -7,78 +7,69 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.MifareClassic
 import android.util.Log
+import org.foi.air.core.interfaces.NfcHandling
 
-class NfcScanner(private val activity: Activity) {
+class NfcScanner(private val activity: Activity) : NfcHandling {
     private var nfcAdapter: NfcAdapter? = null
     private var pendingIntent: PendingIntent? = null
-
     private val tagList = mutableListOf<Tag>()
 
     init {
         initializeNFC()
     }
 
-    private fun initializeNFC(){
+    private fun initializeNFC() {
         try {
             nfcAdapter = NfcAdapter.getDefaultAdapter(activity)
-
-            val intent = Intent(activity, javaClass).apply {
-                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            }
-            val pendingIntent: PendingIntent = PendingIntent.getActivity(activity,0,intent,
-                PendingIntent.FLAG_MUTABLE)
-            if(nfcAdapter!=null){
-                nfcAdapter?.enableForegroundDispatch(activity,pendingIntent,null,null)
-            }
-        } catch (e: Exception){
-            Log.e("nfcSuperSecretCode",e.toString())
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(
+                activity,
+                0,
+                Intent(activity, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
+                PendingIntent.FLAG_MUTABLE
+            )
+            nfcAdapter?.enableForegroundDispatch(activity, pendingIntent, null, null)
+        } catch (e: Exception) {
+            Log.e("nfcSuperSecretCode", e.toString())
         }
     }
 
-    fun onResume() {
-        if (pendingIntent == null) {
+    override fun onResume() {
+        pendingIntent ?: run {
             pendingIntent = PendingIntent.getActivity(
-                activity, 0, Intent(activity, activity.javaClass).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                }, PendingIntent.FLAG_MUTABLE
+                activity, 0,
+                Intent(activity, activity.javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
+                PendingIntent.FLAG_MUTABLE
             )
         }
 
-        if (nfcAdapter != null) {
-            nfcAdapter?.enableForegroundDispatch(activity, pendingIntent, null, null)
-        }
+        nfcAdapter?.enableForegroundDispatch(activity, pendingIntent, null, null)
     }
 
-    fun onPause() {
-        if (nfcAdapter != null) {
-            nfcAdapter?.disableForegroundDispatch(activity)
-        }
+    override fun onPause() {
+        nfcAdapter?.disableForegroundDispatch(activity)
     }
 
-    fun handleIntent(intent: Intent) {
+    override fun handleIntent(intent: Intent) {
         if (NfcAdapter.ACTION_TAG_DISCOVERED == intent.action) {
             val tag: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)!!
             tagList.add(tag)
         }
     }
 
-    fun getScannedTag(): String? {
+    override fun getScannedTag(): String? {
         val lastTag = tagList.lastOrNull()
-        if (tagList.isNotEmpty()) {
-            val result = MifareClassic.get(lastTag)?.use { mifare ->
+        return lastTag?.let { it ->
+            MifareClassic.get(it)?.use { mifare ->
                 mifare.tag.id.joinToString(":") { "%02X".format(it) }
             }
-            return result
         }
-        return null
     }
 
-    fun getNfcAdapterStatus(): Boolean {
+    override fun getNfcAdapterStatus(): Boolean {
         if (nfcAdapter != null && nfcAdapter!!.isEnabled) {
             onResume()
             return true
         }
-        onPause()
         return false
     }
 }

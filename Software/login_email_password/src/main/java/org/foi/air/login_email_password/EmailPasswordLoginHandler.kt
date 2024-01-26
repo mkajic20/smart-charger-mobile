@@ -12,7 +12,7 @@ import org.foi.air.api.request_handlers.LoginRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.core.models.LoginResponseBody
 
 class EmailPasswordLoginHandler : LoginHandler {
     private lateinit var fragment: Fragment
@@ -28,18 +28,22 @@ class EmailPasswordLoginHandler : LoginHandler {
         val loginBody = LoginBody(email, password)
         val loginRequestHandler = LoginRequestHandler(loginBody)
 
-        loginRequestHandler.sendRequest(object: ResponseListener<SuccessfulLoginResponseBody>{
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
-                loginListener.onSuccessfulLogin(response)
+        loginRequestHandler.sendRequest(object: ResponseListener<LoginResponseBody>{
+            override fun onSuccessfulResponse(response: LoginResponseBody) {
+                if(fragment.isAdded)
+                    loginListener.onSuccessfulLogin(response)
             }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                errorResponse(response.error)
-                loginListener.onFailedLogin(response)
+                if(fragment.isAdded) {
+                    errorResponse(response.error)
+                    loginListener.onFailedLogin(response)
+                }
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                loginListener.onApiConnectionFailure(t)
+                if(fragment.isAdded)
+                    loginListener.onApiConnectionFailure(t)
             }
         })
     }

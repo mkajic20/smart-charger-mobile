@@ -15,10 +15,11 @@ import org.foi.air.api.request_handlers.GoogleLoginRequestHandler
 import org.foi.air.core.login.LoginHandler
 import org.foi.air.core.login.LoginOutcomeListener
 import org.foi.air.core.models.ErrorResponseBody
-import org.foi.air.core.models.SuccessfulLoginResponseBody
+import org.foi.air.core.models.LoginResponseBody
 
 class GoogleLoginHandler :
     LoginHandler {
+    private lateinit var fragment: Fragment
     private lateinit var loginButton: MaterialButton
     private lateinit var loginListener: LoginOutcomeListener
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -27,21 +28,25 @@ class GoogleLoginHandler :
         val googleLoginRequestHandler = GoogleLoginRequestHandler(accessToken)
 
         googleLoginRequestHandler.sendRequest(object :
-            ResponseListener<SuccessfulLoginResponseBody> {
-            override fun onSuccessfulResponse(response: SuccessfulLoginResponseBody) {
-                loginListener.onSuccessfulLogin(response)
+            ResponseListener<LoginResponseBody> {
+            override fun onSuccessfulResponse(response: LoginResponseBody) {
+                if(fragment.isAdded) {
+                    loginListener.onSuccessfulLogin(response)
 
                 // Sign out is here because mGoogleSignInClient is used only during login in this class
                 // Users can now select new account on login screen
                 mGoogleSignInClient.signOut()
             }
+            }
 
             override fun onErrorResponse(response: ErrorResponseBody) {
-                loginListener.onFailedLogin(response)
+                if(fragment.isAdded)
+                    loginListener.onFailedLogin(response)
             }
 
             override fun onApiConnectionFailure(t: Throwable) {
-                loginListener.onApiConnectionFailure(t)
+                if(fragment.isAdded)
+                    loginListener.onApiConnectionFailure(t)
             }
         })
     }
@@ -52,6 +57,7 @@ class GoogleLoginHandler :
         loginListener: LoginOutcomeListener
     ) {
         this.loginListener = loginListener
+        this.fragment = fragment
         val view = LayoutInflater.from(fragment.context).inflate(R.layout.google_login_layout, null)
 
         val server_client_id = fragment.requireContext().getString(R.string.server_client_id)
