@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RegistrationFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/bg_register_wave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bg_simple_wave"
+            android:contentDescription="@string/register_page_title" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bitter_bold"
+            android:text="@string/register_page_title"
+            android:textColor="@color/white"
+            android:textSize="39sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/bg_register_wave"
+            app:layout_constraintEnd_toEndOf="@+id/bg_register_wave"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/txt_first_name"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="75dp"
+            android:background="@drawable/custom_input_field"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="8dp"
+            android:hint="@string/input_field_first_name"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bg_register_wave" />
+
+        <TextView
+            android:id="@+id/lb_first_name_validation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/abeezee"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/txt_first_name"
+            app:layout_constraintTop_toBottomOf="@+id/txt_first_name" />
+
+        <EditText
+            android:id="@+id/txt_last_name"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input_field"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="8dp"
+            android:hint="@string/input_field_last_name"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_first_name" />
+
+        <TextView
+            android:id="@+id/lb_last_name_validation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/abeezee"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/txt_last_name"
+            app:layout_constraintTop_toBottomOf="@+id/txt_last_name" />
+
+        <EditText
+            android:id="@+id/txt_email"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input_field"
+            android:drawableStart="@drawable/ic_email"
+            android:drawablePadding="8dp"
+            android:hint="@string/input_field_email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_last_name" />
+
+        <TextView
+            android:id="@+id/lb_email_validation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/abeezee"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/txt_email"
+            app:layout_constraintTop_toBottomOf="@+id/txt_email" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_password_layout_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_email"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/gray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_password"
+                android:layout_width="300dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/custom_input_field"
+                android:drawableStart="@drawable/ic_key"
+                android:drawablePadding="8dp"
+                android:hint="@string/input_field_password"
+                android:inputType="textPassword"
+                android:paddingStart="15dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lb_password_validation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/abeezee"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/txt_password_layout_wrapper"
+            app:layout_constraintTop_toBottomOf="@+id/txt_password_layout_wrapper" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_confirm_password_layout_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_password_layout_wrapper"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/gray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_confirm_password"
+                android:layout_width="300dp"
+                android:layout_height="52dp"
+                android:background="@drawable/custom_input_field"
+                android:drawableStart="@drawable/ic_key"
+                android:drawablePadding="8dp"
+                android:hint="@string/input_field_confirm_password"
+                android:inputType="textPassword"
+                android:paddingStart="15dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lb_confirm_password_validation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/abeezee"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/txt_confirm_password_layout_wrapper"
+            app:layout_constraintTop_toBottomOf="@+id/txt_confirm_password_layout_wrapper" />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="151dp"
+            android:layout_height="52dp"
+
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_blue_button"
+
+            android:text="@string/lowercase_register"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_confirm_password_layout_wrapper" />
+
+        <TextView
+            android:id="@+id/lb_error_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="50dp"
+            android:fontFamily="@font/abeezee"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+
+        <TextView
+            android:id="@+id/tvOr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/or"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+
+        <View
+            android:id="@+id/verticalLine01"
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="50dp"
+            android:background="#535353"
+            app:layout_constraintStart_toEndOf="@+id/tvOr"
+            app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+
+        <View
+            android:id="@+id/verticalLine02"
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="25dp"
+            android:background="#535353"
+            app:layout_constraintEnd_toStartOf="@+id/tvOr"
+            app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+
+        <Button
+            android:id="@+id/btnSwitchLogin"
+            android:layout_width="151dp"
+            android:layout_height="52dp"
+
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/custom_white_button"
+            android:text="@string/login_button"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvOr" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

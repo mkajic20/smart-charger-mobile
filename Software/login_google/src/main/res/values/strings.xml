@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_login">Google Login</string>
+    <string name="server_client_id" translatable="false">223586710221-3808p3ltsqf0e42ge6jun8mibsa2dt3k.apps.googleusercontent.com</string>
+</resources>
